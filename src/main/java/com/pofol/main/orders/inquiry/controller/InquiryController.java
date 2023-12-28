@@ -44,7 +44,7 @@ public class InquiryController {
 		try {
 			if(ord_det_id != null) {
 				OrderDetailDto dto = ordDetServ.selectByOrderDetId(ord_det_id);
-				dto.setImg_url(ordDetServ.selectByOrderDetImg(ord_det_id));
+				dto.setProd_img_id(ordDetServ.selectByOrderDetImg(ord_det_id));
 				m.addAttribute("ordDetDto", dto);
 			}
 		}catch (Exception e) {

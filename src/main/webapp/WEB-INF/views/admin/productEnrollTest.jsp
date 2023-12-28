@@ -4,7 +4,6 @@
 <html>
 <head>
     <meta charset="UTF-8">
-<%--    <link rel="shortcut icon" href="../resources/img/favicon.ico" type="image/x-icon">--%>
     <title>Insert title here</title>
     <link rel="stylesheet" href="../resources/css/admin/productEnroll.css">
     <%-- 달력 위젯을 위한 스타일 시트 --%>

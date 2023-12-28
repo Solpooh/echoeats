@@ -28,10 +28,15 @@ public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
         String referer = request.getHeader("Referer");
         System.out.println("로그아웃 referer : " + referer);
 
+        //페이지를 동적으로 만들기 위해
+        String fullURL = request.getRequestURL().toString();  //현재 접속중인 페이지
+        String baseURL = fullURL.substring(0, fullURL.indexOf(request.getRequestURI()));
 
 
-        if(referer == null || referer.equals("http://localhost:8080/member/login_form")){
-            referer ="http://localhost:8080/main";
+
+        if(referer == null || referer.equals(baseURL+"/member/login_form")){
+//            referer =baseURL+"/main";
+            referer ="/main";
         }
         setDefaultTargetUrl(referer);
         super.onLogoutSuccess(request, response, authentication);

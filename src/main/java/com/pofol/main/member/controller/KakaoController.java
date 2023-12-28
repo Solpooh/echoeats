@@ -130,8 +130,5 @@ public class KakaoController {
         loginSuccessHandler.onAuthenticationSuccess(httprequest, httpresponse,authenticate);
 
 
-        //그냥 "main"으로 했을 때는 브라우저는 정상적으로 main으로 나오지만 url주소는 kakao/auth/callback/~~~~~ 이렇게 나온다
-        //그래서 리다이렉트로 바꿈
-        //return "redirect:http://localhost:8080/main";
     }
 }

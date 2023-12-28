@@ -43,6 +43,10 @@ public class MemberController {
         String ser = request.getServletPath();
         System.out.println("ser : " +ser);
 
+        //동적 url
+        String fullURL = request.getRequestURL().toString();
+        String baseURL = fullURL.substring(0, fullURL.indexOf(request.getRequestURI()));
+
         //referer - o 버튼으로 들어옴
         //referer - x url
         //loginsuccesshandler를 위해 존재
@@ -74,11 +78,10 @@ public class MemberController {
             if(referer == null){
                 System.out.println("들옴");
 
-                return "redirect:http://localhost:8080/main";
+                return "redirect:"+baseURL+"/main";
                 //return "main";
 
             }
-//            if(referer.equals("http://localhost:8080/member/login_form")){
             if(referer.contains("/member/login_form")){
                 System.out.println("인증이 되고 referer가 login폼");
                 return "main";

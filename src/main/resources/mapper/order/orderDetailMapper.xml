@@ -32,9 +32,9 @@
     </select>
 
 	<select id="selectByOrderDetImg" resultType="string">
-        SELECT pi.img_prod_id
+        SELECT pi.prod_img_id
 		FROM product_image pi
-		JOIN order_detail od ON pi.prd_id = od.prod_id
+		JOIN order_detail od ON pi.prod_id = od.prod_id
 		WHERE od.ord_det_id = #{ord_det_id}
     </select>
     

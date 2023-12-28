@@ -377,7 +377,7 @@
                         <th scope="col" class="w24"><input type="checkbox" id="allChk"></th>
                         <th scope="col" class="w50" style="display:none;">No</th>
                         <th scope="col" class="w120" style="">상품번호</th>
-                        <th scope="col" class="w150" style="">상품명</th>
+                        <th scope="col" class="w290" style="">상품명</th>
                         <th scope="col" class="w95" style="">판매상태 <div class="cTip eSmartMode" code="OD.AO.170"></div></th>
                         <th scope="col" class="w95" style="">전시상태</th>
                         <th scope="col" class="w95" style="">재고상태</th>
@@ -409,7 +409,11 @@
                                 <td scope="col" class="w24"><input type="checkbox" id="allChk" name="selectProductId" value="${product.prod_id}"></td>
                                 <td scope="col" class="w50" style="display:none;">No</td>
                                 <td scope="col" class="w120" style="">${product.prod_id}</td>
-                                <td scope="col" class="w150" style="">${product.prod_name}</td>
+                                <td id="imgTd" scope="col" class="w150" style="">
+                                    <div class="imgId"><img class="productImg" src="${product.prod_img_id}" alt="상품 이미지">
+                                        <div class="prodName">${product.prod_name}</div>
+                                    </div>
+                                </td>
                                 <td scope="col" class="w95" style="">${product.sale_sts} <div class="cTip eSmartMode" code="OD.AO.170"></div></td>
                                 <td scope="col" class="w95" style="">${product.disp_sts}</td>
                                 <td scope="col" class="w95" style="">

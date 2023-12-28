@@ -601,7 +601,7 @@ a {
     color: inherit;
 }
 a:-webkit-any-link {
-    color: -webkit-link;
+    color:rgb(102, 102, 102);
     cursor: pointer;
     /* text-decoration: underline; */
 }
@@ -641,6 +641,9 @@ p {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
 }
-.css-g4g0eu:visited{
+/*.css-g4g0eu:visited{*/
+/*    color:rgb(102, 102, 102);*/
+/*}*/
+.css-g4g0eu:link{
     color:rgb(102, 102, 102);
 }

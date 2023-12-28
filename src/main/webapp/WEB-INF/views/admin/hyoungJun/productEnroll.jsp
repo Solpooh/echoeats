@@ -6,7 +6,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-<%--    <link rel="shortcut icon" href="/resources/icons/favicon.ico" type="image/x-icon">--%>
     <title>상품등록페이지</title>
     <!-- <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" /> -->
     <link href="<c:url value='/resources/common/css/styles.css' />" rel="stylesheet"/>

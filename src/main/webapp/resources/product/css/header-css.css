@@ -48,7 +48,7 @@ font-weight: bold;
 }
 #top > #header > #homeInfo > a:nth-of-type(1) {
   color: #00c73c;
-  padding: 10px;
+  /*padding: 10px;*/
 }
 #top > #header > #homeInfo span {
   width: 8px;
@@ -312,9 +312,9 @@ nav {
   border: none;
   outline: none;
   padding: 14px 16px;
+  margin: 0;
   background-color: inherit;
   font-family: inherit;
-  margin: 0;
   cursor: pointer;
 }
 
@@ -340,9 +340,12 @@ nav {
   background-color: #ddd;
 }
 
-.dropdown:hover .dropdown-content {
-  display: block;
-}
+/*.dropdown:hover .dropdown-content {*/
+/*  display: block;*/
+/*}*/
+#category:hover .dropdown-content {
+   display: block;
+ }
 /*드롭다운 css 끝*/
 
 

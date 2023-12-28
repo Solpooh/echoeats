@@ -35,9 +35,7 @@
     margin: 0px;
     font-weight: bold;
 }
-#beforeWrite {
-    border-right: none;
-}
+
 /* 리뷰창 제목 */
 .proReviewTitle{
     text-align: left;

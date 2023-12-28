@@ -52,4 +52,9 @@ public class DeliveryRepositoryImpl implements DeliveryRepository {
     public List<OrderDetailDto> searchSelectPage(SearchDeliveryCondition sc) throws Exception {
         return session.selectList(namespace + "searchSelectPage", sc);
     }
+
+    @Override
+    public String selectPackTypeByWaybillNum(Long waybill_num) throws Exception {
+        return session.selectOne(namespace + "selectPackTypeByWaybillNum", waybill_num);
+    }
 }

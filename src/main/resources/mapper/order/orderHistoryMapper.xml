@@ -5,9 +5,9 @@
 <mapper namespace="order.repository.orderHistoryMapper">
     <insert id="insert" parameterType="OrderHistoryDto">
         INSERT INTO spring.order_history
-        (ord_id, mem_id, code_name, tot_prod_name, tot_prod_price, tot_pay_price, tot_ord_qty, pay_way, rg_num, md_num)
+        (ord_id, mem_id, code_name, ord_date, tot_prod_name, tot_prod_price, tot_pay_price, tot_ord_qty, pay_way, rg_num, md_num)
         VALUES
-        (#{ord_id},#{mem_id},#{code_name},#{tot_prod_name},#{tot_prod_price},#{tot_pay_price},#{tot_ord_qty},#{pay_way},#{rg_num},#{md_num});
+        (#{ord_id},#{mem_id},#{code_name},#{ord_date}, #{tot_prod_name},#{tot_prod_price},#{tot_pay_price},#{tot_ord_qty},#{pay_way},#{rg_num},#{md_num});
     </insert>
 
     <select id="select" parameterType="long" resultType="OrderHistoryDto">

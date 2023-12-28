@@ -2,6 +2,7 @@ package com.pofol.main.orders.delivery.controller;
 
 import com.pofol.admin.order.Repository.AdminOrderDetailRepository;
 import com.pofol.main.orders.delivery.domain.DeliveryDto;
+import com.pofol.main.orders.delivery.domain.MismatchPackTypeException;
 import com.pofol.main.orders.delivery.domain.PageHandler;
 import com.pofol.main.orders.delivery.domain.SearchDeliveryCondition;
 import com.pofol.main.orders.delivery.repository.DeliveryRepository;
@@ -63,11 +64,15 @@ public class DeliveryController {
     public ResponseEntity<String> setDelivering(@RequestBody List<DeliveryDto> deliveryList){
         try{
             deliveryService.writeDelivery(deliveryList);
+        }catch (MismatchPackTypeException m){
+//            m.printStackTrace();
+            System.out.println("Mismatch packType 발생");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mismatch PackType");
         }catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("DELIVERING fail");
         }
-        return ResponseEntity.ok("DELIVERING success");
+        return ResponseEntity.ok("DELIVERING");
     }
 
     @ResponseBody
@@ -75,7 +80,7 @@ public class DeliveryController {
     public ResponseEntity<String> setDeliveryComplete(@RequestBody List<Long> waybillNumList){
         try{
             deliveryService.selectListByWaybillNum(waybillNumList);
-            return ResponseEntity.ok("DELIVERY_COMPLETE success");
+            return ResponseEntity.ok("DELIVERY_COMPLETE");
         }catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("DELIVERY_COMPLETE fail");

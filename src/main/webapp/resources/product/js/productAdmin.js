@@ -45,7 +45,7 @@ for (let i = 0; i < cate1Array.length; i++) {
 $(cate1Select).on("change", function () {
     let selectVal = $(this).find("option:selected").val();
     cate2Select.children().remove();
-    cate2Select.append('<option selected value="none">- 중분류 선택 -</option>');
+    cate2Select.append('<option selected value="">- 중분류 선택 -</option>');
     for(let i = 0; i < cate2Array.length; i++) {
         if (cate2Array[i].parent_code === selectVal) {
             cate2Select.append('<option value="' + cate2Array[i].cat_code + '">' + cate2Array[i].cat_name + '</option>');

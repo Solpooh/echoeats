@@ -15,5 +15,6 @@ public interface DeliveryRepository {
     List<DeliveryDto> selectListByWaybillNum(Long waybill_num) throws Exception;
     int searchResultCnt(SearchDeliveryCondition sc) throws Exception;
     List<OrderDetailDto> searchSelectPage(SearchDeliveryCondition sc) throws Exception;
+    String selectPackTypeByWaybillNum(Long waybill_num) throws Exception;
 
 }

@@ -1046,3 +1046,7 @@ table .rowChk[type="checkbox"] {
 .deliveryStatus{
     font-weight: bold;
 }
+tbody > tr {
+    border-top: solid 0.5px #5b63761a;
+    height: 40px;
+}

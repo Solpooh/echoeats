@@ -76,7 +76,7 @@ public class OrderPageController {
 			// 주문번호에 대한 주문 상세들 List<ordDetDto>
 			List<OrderDetailDto> ordDetList = ordDetService.selectAllByOrdId(ord_id);
 			for(OrderDetailDto ordDetDto : ordDetList) {
-				ordDetDto.setImg_url(ordDetService.selectByOrderDetImg(ordDetDto.getOrd_det_id()));
+				ordDetDto.setProd_img_id(ordDetService.selectByOrderDetImg(ordDetDto.getOrd_det_id()));
 				ordDetDto.setColumn_sts(ordDetService.selectByCodeName(ordDetDto.getCode_name()));
 			}
 			m.addAttribute("ordDetList", ordDetList);

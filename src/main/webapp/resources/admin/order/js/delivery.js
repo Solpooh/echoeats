@@ -114,11 +114,20 @@ let ajax = function(ajaxData, url){
         dataType: 'text',
         data : JSON.stringify(ajaxData),
         success: function(result){
-            alert("✅"+ result);
+            if(result === 'DELIVERING'){
+                alert("배송중 처리가 성공적으로 완료되었습니다.")
+            }else {
+                //DELIVERY_COMPLETE
+                alert("배송완료 처리가 성공적으로 완료되었습니다.")
+            }
             location.reload();
         },
         error: function (result){
-            alert("🔥"+ result);
+            if (result.responseText === "Mismatch PackType") {
+                alert("포장타입이 일치하지 않습니다. \n운송장 번호를 다시 입력해주세요.\n(주의: 같은 포장 타입일 때만 같은 운송장 번호를 입력할 수 있습니다.)")
+            }else{
+                alert("🔥"+ result.responseText);
+            }
         }
     })
 }

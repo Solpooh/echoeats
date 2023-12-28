@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,9 @@ public class OrderHistoryRepositoryImpl implements OrderHistoryRepository{
 
     @Override
     public int insert(OrderHistoryDto orderHistoryDto) throws Exception {
+        if(orderHistoryDto.getOrd_date() == null) {
+            orderHistoryDto.setOrd_date(new Date());
+        }
         return session.insert(namespace+"insert",orderHistoryDto);
     }
 

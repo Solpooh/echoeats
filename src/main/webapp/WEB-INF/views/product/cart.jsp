@@ -72,7 +72,7 @@
                 <div class="css-zbxehx e149z642">
                     <label class="css-xi6i4x e1dcessg3">
                         <input type="checkbox" class="css-agvwxo e1dcessg2 allCartCheck">&nbsp;&nbsp;
-                        <span> 전체선택 (<span class="selected-product">0</span>/<span class="whole-product">1</span>)</span>
+                        <span> 전체선택 </span>
                     </label>
                     <span class="css-454d5e e149z641"></span>
                     <button disabled="" class="css-0 e149z640">선택삭제</button>
@@ -166,7 +166,7 @@
                 <div class="css-zbxehx e149z642">
                     <label class="css-xi6i4x e1dcessg3">
                         <input type="checkbox" class="css-agvwxo e1dcessg2 allCartCheck">&nbsp;&nbsp;
-                        <span> 전체선택 (<span class="selected-product">0</span>/<span class="whole-product">1</span>)</span>
+                        <span> 전체선택 </span>
                     </label>
                     <span class="css-454d5e e149z641"></span>
                     <button disabled="" class="css-0 e149z640">선택삭제</button>

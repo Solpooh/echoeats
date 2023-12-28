@@ -14,7 +14,6 @@
     <div class="css-1uom1od e146m4rf0">
         <div class="css-1icxyy0 e1ax7ftx3">
             <div class="css-fnh15r e190vd4y4">
-                <img src="https://res.kurly.com/mobile/service/order/1909/img_success_order_end.gif" alt="" class="css-ypnlzr e1hwfd030">
                 <div class="css-yb4g98 e190vd4y3">
                     <p class="css-14is9qy e190vd4y0">${mem_name}님의 주문이 완료되었습니다.</p>
                     <p class="css-114oz6p e190vd4y2">내일 새벽에 만나요!<br></p>

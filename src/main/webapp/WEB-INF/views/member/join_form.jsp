@@ -501,6 +501,9 @@
     let info2 = document.getElementById("info2");
     let info3 = document.getElementById("info3");
 
+    //현재 도메인 주소 동적으로 추가
+    var currentDomain = window.location.origin;
+
     let per_info_col = "N";
     let free_ship_recep = "N";
 
@@ -559,7 +562,7 @@
                 }
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:8080/address/detail",
+                    url: currentDomain+"/address/detail",  //고친 곳
                     data: JSON.stringify(inputed),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json"
@@ -582,7 +585,7 @@
                 }
                 else if (idCheck == 1 && pwdCheck == 1 && emailCheck == 1 && infoCheck()) {
                     alert("회원가입이 완료되었습니다.")
-                    location.href = "http://localhost:8080/main";
+                    location.href = currentDomain+"/main";    //고친 곳
                 }
             }).fail(function (error){
                 alert("회원가입에 실패하셨습니다.")

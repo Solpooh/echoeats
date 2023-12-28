@@ -49,7 +49,7 @@
 }
 .left-menu-list.active {
     background-color: rgb(250, 250, 250);
-    color: rgb(95, 0, 128);
+    color: #00C73C;
     font-weight: 500;
 }
 .center-left-footer {

@@ -117,6 +117,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 		List<OrderDetailDto> list = orderDetailRepository.searchSelectPage(sc);
 		for(OrderDetailDto dto: list) {
 			dto.setColumn_sts(orderDetailRepository.selectByCodeName(dto.getCode_name()));
+			dto.setProd_img_id(orderDetailRepository.selectByOrderDetImg(dto.getOrd_det_id()));
 		}
 		return list;
 	}

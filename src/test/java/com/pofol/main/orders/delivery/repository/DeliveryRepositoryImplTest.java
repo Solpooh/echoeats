@@ -33,4 +33,10 @@ class DeliveryRepositoryImplTest {
 //        int update = deliveryRepository.update(2000000051L, "you11", "DELIVERY_COMPLETE");
 //        assertThat(update).isEqualTo(1);
     }
+
+    @Test
+    void selectPackTypeByWaybillNum() throws Exception{
+        String s = deliveryRepository.selectPackTypeByWaybillNum(111L);
+        assertThat(s).isEqualTo(null);
+    }
 }

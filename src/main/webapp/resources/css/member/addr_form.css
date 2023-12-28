@@ -906,11 +906,11 @@ a {
     text-decoration: none;
     color: inherit;
 }
-a:-webkit-any-link {
-    color: -webkit-link;
-    cursor: pointer;
-    /* text-decoration: underline; */
-}
+/*a:-webkit-any-link {*/
+/*    color: -webkit-link;*/
+/*    cursor: pointer;*/
+/*    !* text-decoration: underline; *!*/
+/*}*/
 
 *, :after, :before, legend, td, th {
     padding: 0;

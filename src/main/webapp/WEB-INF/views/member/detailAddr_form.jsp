@@ -14,13 +14,13 @@
     <div class="css-sv3mbe e1u1sq1y0">
         <div class="css-ixlb9s ecqulhg2">
             <div class="css-0 e11n32x24"><strong class="css-1702mcg e11n32x23"><span type="direct"
-                                                                                     class="css-1kxzrwz e11n32x22">샛별배송</span> 지역입니다.<p class="css-1d1s4ku e11n32x21">매일 새벽,
+                                                                                     class="css-1kxzrwz e11n32x22">에코배송</span> 지역입니다.<p class="css-1d1s4ku e11n32x21">매일 새벽,
                 문 앞까지 신선함을 전해드려요.</p></strong></div>
             <div class="css-19u3hc5 e1n7pxx51">
                 <p class="css-ks8pmw e1n7pxx50" id="addr"><%=addr%></p>
                 <button class="css-1w63xsn e4nu7ef3" type="button" width="120" height="44" radius="3">
                     <span class="css-nytqmg e4nu7ef1">
-                        <img src="https://res.kurly.com/pc/service/common/2006/ico_search.svg" alt="" class="css-1m3kac1 e4nu7ef0">재검색</span>
+                        <img src="/resources/icons/eco_green_search.svg" alt="" class="css-1m3kac1 e4nu7ef0">재검색</span>
                 </button>
             </div>
             <div class="css-1hxvx8x e1uzxhvi6">
@@ -53,7 +53,7 @@
         let svgPath = checkbox.parentElement.querySelector(".css-79hxr7 path");
         if (checkbox.checked) {
             svgPath.setAttribute("stroke", "#fff");
-            svgPath.setAttribute("fill", "#5f0080");
+            svgPath.setAttribute("fill", "#00c73c");
             def_addr = "Y";
         } else {
             svgPath.setAttribute("stroke", "#ddd");

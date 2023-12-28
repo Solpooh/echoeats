@@ -183,7 +183,10 @@ canvas, img, video {
     bottom: 3px;
     border: none;
     cursor: pointer;
-    background: url(/resources/icons/kurly_search.svg) 0px 0px no-repeat;
+    /*background: url(/resources/icons/kurly_search.svg) 0px 0px no-repeat;*/
+    background: url(/resources/icons/eco_green_search.svg) 0px 0px no-repeat;
+    background-size: 22px;
+    background-position: 8px 5px;
 }
 #search > #search-bar > #search-right > button{
     width: 36px;
@@ -1042,3 +1045,4 @@ nav {
 .menu1:hover, .mem_name+.menu1 > div:hover {
     display: block;
 }
+

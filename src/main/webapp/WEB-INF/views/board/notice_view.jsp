@@ -43,7 +43,7 @@
       font-weight: 500;
     }
     .date {
-      color: gray;
+      color: black;
     }
     .main {
       padding-bottom: 24px;
@@ -103,7 +103,7 @@
           </tbody>
           <tfoot>
           <tr style="border-top: 2px solid #FEF7FF;">
-            <td colspan="2" style="padding-top: 25px; padding-bottom: 50px;">
+            <td colspan="2" style="padding-top: 25px; padding-bottom: 50px; height: 350px;" >
               <c:out value="${fn:replace(notice.notice_con, newline, '<br>')}" escapeXml="false"/>
             </td>
           </tr>

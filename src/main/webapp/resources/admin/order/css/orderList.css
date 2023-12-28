@@ -959,7 +959,7 @@ html:lang(ko) .btnNormal span {
 .mBoard th,
 .mBoard td {
     padding: 9px 9px 7px;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .mBoard th {
@@ -1062,4 +1062,23 @@ table .rowChk[type="checkbox"] {
 
 .status{
     font-weight: bold;
+}
+.img{
+    margin: 5px 5px;
+    width: 60px;
+    height: 70px;
+    float: left;
+}
+.img_outer{
+    display: flex;
+    align-items: center;
+    margin: 0px 5px;
+}
+.img_next{
+    display: flex;
+    word-break: break-all;
+    margin: 10px 10px;
+}
+tbody > tr {
+    border-top: solid 0.5px #5b637633;
 }

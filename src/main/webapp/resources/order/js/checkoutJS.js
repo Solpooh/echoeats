@@ -294,9 +294,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
+    let lastClickTime = 0; //결제 버튼 중복 클릭을 방지하기 위함
 
     //결제 버튼 누르면
-    $('#paymentBtn').click(function(){
+    $('#paymentBtn').click(function(e){
 
         let personData = document.getElementById("personData");
         if(personData === null){ //첫 주문
@@ -304,16 +305,26 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        // 결제 버튼 중복 클릭 방지
+        let currentTime = new Date().getTime();
+        console.log("전 currentTime", currentTime)
+        let timeDiff = currentTime - lastClickTime;
+        if(timeDiff < 5000){ //5초 이내에 다시 클릭하면 이벤트를 무시한다.
+
+            e.preventDefault();
+            return;
+        }
+        lastClickTime = currentTime;
+
+        console.log("후 currentTime", currentTime)
+
+        //ajax로 보낼 데이터
         checkout.tot_pay_price = document.getElementById("tot_pay_price").innerText.replace(/,/g, "");
-        // checkout.tot_pay_price = tot_pay_price;
         checkout.prod_disc = checkout.origin_prod_price - checkout.tot_prod_price;
         checkout.coupon_disc = document.getElementById("outputCouponUsed").innerText.replace(/,/g, "");
         checkout.coupon_id = coupon_id;
         checkout.point_used = document.getElementById("outputPointUsed").innerText.replace(/,/g, "");
-        // console.log("1차 검증 바로전 checkout = " + checkout);
 
-        //넘어가야하는 것
-        //총 상품명, 총 주문금액, 총 실결제 금액,총 상품할인 금액, 배송비, 결제 방법, 회원 아이디는 서버에서 세션으로 받는다.
         $.ajax({
             type:'POST',
             url: '/payment/verify/prev',
@@ -321,7 +332,7 @@ document.addEventListener("DOMContentLoaded", function () {
             dataType: 'text',
             data : JSON.stringify(checkout),
             success: function(result){
-                alert("✅ 1차 검증 성공 = " + result);
+                // alert("✅ 1차 검증 성공 = " + result);
                 orderData.ord_id = result*1;
                 if(checkout.tot_pay_price === '0'){
 ;                    window.location.href = "/order/completed/"+orderData.ord_id;

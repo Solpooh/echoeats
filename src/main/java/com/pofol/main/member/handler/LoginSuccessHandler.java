@@ -37,6 +37,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         System.out.println("---------------LoginSuccessHandler---------------");
 
+        String fullURL = request.getRequestURL().toString();
+        String baseURL = fullURL.substring(0, fullURL.indexOf(request.getRequestURI()));
+
         //String username = request.getParameter("mem_id");
         String username = authentication.getName();
         if(username != null){
@@ -49,16 +52,16 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         }
 
+        //마이페이지 상단 등급 표시
         GradeDto gradeDto = gradeService.show_grade(authentication.getName());
 
-        request.getSession().setAttribute("mem_grade", gradeDto.getGd_name());
+        request.getSession().setAttribute("mem_grade", gradeDto);
 
 
 
 
         //가로챈 주소를 보유
         //사용자가 직접url로 /member/admin을 입력했을 때 필요
-
         RequestCache requestCache = new HttpSessionRequestCache();
         SavedRequest savedRequest = requestCache.getRequest(request, response);
         System.out.println(savedRequest);
@@ -83,17 +86,15 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         if(referer != null){
             System.out.println("referer != null");
             //로그인버튼 2번 누르고 카카오 로그인
-//            if (referer.equals("http://localhost:8080/member/login_form")){
             if (referer.contains("/member/login_form")){
-                referer ="http://localhost:8080/main";
+//                referer = baseURL+"/main"; // 그냥/main으로 하면 가끔씩 에러가 난다
+                referer = "/main";
             }
             response.sendRedirect(referer);
         }else{
             // 그럼 둘 다 null 일 때는 어떻게 하냐?
             if (savedRequest == null){
-                System.out.println("referer가 null");
-                referer ="http://localhost:8080/main";
-                System.out.println("ㅇㅋ");
+                referer =baseURL+"/main";
                 response.sendRedirect(referer);
             }else {
                 System.out.println("referer는 null  savedRequest는 null이 아님");

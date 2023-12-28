@@ -105,6 +105,7 @@
             </div>
             <div id="nev">
                 <div id="category">
+<%--                    <div class="dropdown">--%>
                     <span></span>
                     <nav>
                         <div class="dropdown">
@@ -128,6 +129,7 @@
                             </div>
                         </div>
                     </nav>
+<%--                </div>--%>
                 </div>
                 <div id="meun">
                     <ul>

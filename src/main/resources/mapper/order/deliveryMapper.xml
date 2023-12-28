@@ -39,6 +39,16 @@
         order by od.ord_det_id desc
     </select>
 
+    <select id="selectPackTypeByWaybillNum" resultType="string">
+        select d.pack_type
+        from delivery d
+                 join(
+            select max(ord_det_id) ord_det_id
+            from delivery
+            where waybill_num = #{wabill_num}
+        ) max on max.ord_det_id = d.ord_det_id;
+    </select>
+
     <update id="updateStatus" parameterType="DeliveryDto">
         UPDATE spring.delivery
         SET

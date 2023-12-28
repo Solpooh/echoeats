@@ -1120,3 +1120,28 @@ ul.mForm {
 input.duet-date__input:disabled {
     background-color: #00c73c1f;
 }
+
+.productImg {
+    width: 60px;
+    height: 78px;
+}
+
+.imgId {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#imgTd {
+    text-align: left;
+}
+
+.prodName {
+    word-break: break-all;
+    margin-left: 10px;
+}
+
+tbody > tr {
+    border-top : solid 0.5px #5b637633;
+}

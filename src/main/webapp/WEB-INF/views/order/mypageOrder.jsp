@@ -57,14 +57,33 @@
                         </dl>
                         <dl class="css-1ccl3pq e1437c646">
                             <dt class="css-dzjp62 e1437c645">결제금액</dt>
-                            <dd class="css-1i58pf4 e1437c644">${ordDto.tot_pay_price}원</dd>
+                            <dd class="css-1i58pf4 e1437c644">
+                                <fmt:formatNumber value="${ordDto.tot_pay_price}" pattern="#,###"/>원
+                            </dd>
                         </dl>
                     </div>
                 </div>
-                <div class="css-s5xdrg e1437c642"><span class="css-1fdt947 e1437c641">${ordDto.column_sts}</span>
+                <div class="css-s5xdrg e1437c642">
+                    <span class="css-1fdt947 e1437c641">${ordDto.column_sts}</span>
+
                     <div class="css-1bbz142 e1437c640">
-                        <button class="css-oyz24n e4nu7ef3" type="button" height="36" radius="3"><span
-                                class="css-nytqmg e4nu7ef1">1:1 문의</span></button>
+
+
+                        <c:choose>
+                            <c:when test="${ordDto.column_sts == '주문완료'}">
+                                <button class="css-oyz24n e4nu7ef3" type="button" height="36" radius="3"><span
+                                        class="css-nytqmg e4nu7ef1">주문취소</span></button>
+                            </c:when>
+                            <c:when test="${ordDto.column_sts == '배송완료'}">
+                                <button class="css-oyz24n e4nu7ef3" type="button" height="36" radius="3"><span
+                                        class="css-nytqmg e4nu7ef1">1:1 문의</span></button>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="css-oyz25n e4nu7ef3" type="button" height="36" radius="3"><span
+                                        class="css-nytqmg2 e4nu7ef1">주문취소</span></span>
+                            </c:otherwise>
+                        </c:choose>
+
                     </div>
                 </div>
             </div>
