@@ -702,7 +702,7 @@
             </div>
             <div class="seller-btn-area btn-group-xlg">
                 <button type="button" class="btn btn-default" id="cancelBtn">취소</button>
-                <button type="submit" class="btn btn-primary enroll-btn" onclick="submitForm()">
+                <button type="submit" class="btn btn-primary enroll-btn">
                     <span class="content" id="enrollBtn">저장하기</span>
                 </button>
             </div>
@@ -939,30 +939,30 @@
         }
     });
 
-    /* 이미지 업로드 */
-    $("input[type='file']").on("change", (e) => {
-
-        let formData = new FormData();
-        let fileInput = $('input[name="prod_img"]');
-        let fileList = fileInput[0].files;
-        let fileObj = fileList[0];
-
-        if (!fileCheck(fileObj.name, fileObj.size)) {
-            return false;
-        }
-
-        formData.append("uploadFile", fileObj);
-
-        $.ajax({
-            url: '/admin/uploadAjaxAction',
-            processData: false,
-            contentType: false,
-            data: formData,
-            type: 'POST',
-            dataType: 'json'
-        });
-
-    });
+    // /* 이미지 업로드 */
+    // $("input[type='file']").on("change", (e) => {
+    //
+    //     let formData = new FormData();
+    //     let fileInput = $('input[name="prod_img"]');
+    //     let fileList = fileInput[0].files;
+    //     let fileObj = fileList[0];
+    //
+    //     if (!fileCheck(fileObj.name, fileObj.size)) {
+    //         return false;
+    //     }
+    //
+    //     formData.append("uploadFile", fileObj);
+    //
+    //     $.ajax({
+    //         url: '/admin/uploadAjaxAction',
+    //         processData: false,
+    //         contentType: false,
+    //         data: formData,
+    //         type: 'POST',
+    //         dataType: 'json'
+    //     });
+    //
+    // });
 
     let regex = new RegExp("(.*?)\.(jpg|png|jpeg)$");
     let maxSize = 1048576; //1MB
@@ -1423,10 +1423,10 @@
     });
 
     // 등록버튼 한번누르면 비활성화시켜 동시에 등록되는것을 방지한다.
-    function submitForm() {
-        const submitBtn = document.querySelector('.enroll-btn');
-        submitBtn.disabled = true;
-    }
+    // function submitForm() {
+    //     const submitBtn = document.querySelector('.enroll-btn');
+    //     submitBtn.disabled = true;
+    // }
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

@@ -24,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public synchronized void productEnroll(ProductDto productDto) {
+    public void productEnroll(ProductDto productDto) {
         try {
             log.info("-----------상품 이미지등록 시작-----------");
             log.info("{}", productDto);
