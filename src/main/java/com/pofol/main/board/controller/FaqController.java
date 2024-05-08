@@ -3,6 +3,8 @@ package com.pofol.main.board.controller;
 import com.pofol.main.board.domain.FaqDto;
 import com.pofol.main.board.service.FaqService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +14,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/board")
 public class FaqController {
-    @Autowired
-    private FaqService faqService;
+    private final FaqService faqService;
+
+    public FaqController(FaqService faqService) {
+        this.faqService = faqService;
+    }
 
     // FAQ 사용자 페이지
     @RequestMapping(value = "/faq")
@@ -28,15 +33,13 @@ public class FaqController {
 
     // AJAX 로 FAQ 목록 가져오기
     @ResponseBody
-    @RequestMapping(value = "/faqlist", method = RequestMethod.POST)
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     public List<FaqDto> getFaqList(@RequestBody FaqDto dto) {
         String faqType = dto.getFaq_type();
         System.out.println("faqType: " + faqType);
-
         // 가져온 faqType으로 비즈니스 로직을 수행 -> 목록을 얻어옴
-        List<FaqDto> list = faqService.selectAllFaq(dto);
-
-        return list;
+//        List<FaqDto> list = faqService.selectAllFaq(dto);
+        return faqService.selectAllFaq(dto);
     }
 
     // FAQ 작성 페이지
@@ -44,6 +47,7 @@ public class FaqController {
     public String faq_write() {
         return "board/faq_write";
     }
+
     // FAQ 등록 페이지
     @RequestMapping(value = "/insertFaq", method = RequestMethod.POST)
     public String faq_register(FaqDto dto) {
@@ -57,7 +61,7 @@ public class FaqController {
     // FAQ 수정 페이지
     @RequestMapping("/faq_modify")
     public String faq_modify(FaqDto dto, Model model) {
-        FaqDto faq = faqService.selectFaq(dto);
+        FaqDto faq = faqService.selectFaq(dto.getFaq_id());
         model.addAttribute("faq", faq);
 
         System.out.println("faq : " + faq);
@@ -65,25 +69,25 @@ public class FaqController {
         return "board/faq_modify";
     }
 
-    // FAQ 수정 시 양식 제출을 처리하는 역할 (DB 처리)
     @RequestMapping(value = "/updateFaq", method = RequestMethod.POST)
-    public String updateNotice(FaqDto dto, int faq_id) {
+    public String updateNotice(FaqDto dto) {
         System.out.println("===> FAQ 수정");
-        System.out.println(faq_id);
-        faqService.updateFaq(dto);
-
-        System.out.println("dto : " + dto);
-
+        int result = faqService.updateFaq(dto);
+        System.out.println("result = " + result);
         return "redirect:/board/faq_admin";
     }
-    // FAQ 삭제 페이지
-    @RequestMapping("/deleteFaq")
-    public String deleteFaq(FaqDto dto) {
-        System.out.println(">> FAQ 삭제");
-        System.out.println("dto : " + dto);
 
-        faqService.deleteFaq(dto);
+    @ResponseBody
+    @RequestMapping(value = "/deleteFaq", method = RequestMethod.POST)
+    public ResponseEntity<?> deleteFaq(@RequestBody FaqDto dto) {
+        int result = faqService.deleteFaq(dto);
 
-        return "redirect:/board/faq_admin";
+        if (result > 0) {
+            return ResponseEntity.ok().body(dto.getFaq_id());
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 실패");
+        }
     }
+
+
 }

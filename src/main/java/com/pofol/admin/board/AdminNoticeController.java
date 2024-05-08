@@ -110,7 +110,11 @@ public class AdminNoticeController {
     @RequestMapping(value = "/insertNotice", method = RequestMethod.POST)
     public String insertNotice(NoticeDto dto) throws Exception {
         System.out.println("dto : " + dto);
-
+        /* 만약 내용을 작성중에 있는데, 예외가 발생해서 작성한 내용이 모두 날라갈 수 있을 것을 대비해
+        작성했던 내용을 되살릴 수 있도록 구현
+        + 자동 임시저장 기능??
+        + 수정기능에서도 마찬가지임 !!
+         */
         noticeRepository.insertNotice(dto);
 
         return "redirect:/admin1/notice";

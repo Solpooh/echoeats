@@ -137,7 +137,7 @@
             </tbody>
           </table>
           <div style="text-align: right;">
-            <button class="back_btn" type="button" onclick="location.href='faq_admin.do'">취소</button>
+            <button class="back_btn" type="button" onclick="location.href='faq_admin'">취소</button>
             <button class="modify_btn" type="button" onclick="check_faq(${faq.faq_id})">수정</button>
           </div>
         </form>
@@ -153,7 +153,7 @@
 <script>
   //textarea 글자수 제한
   $('.form-control').keyup(function (e) {
-    var content = $(this).val();
+    let content = $(this).val();
     $('#counter').html("(" + content.length + "자 / 2000자)");    //글자수 실시간 카운팅
 
     if (content.length > 2000) {
@@ -167,7 +167,7 @@
   function check_faq(faq_id) {
     event.preventDefault();
 
-    var frm = document.frm;
+    let frm = document.frm;
 
     if (frm.faq_title.value.trim() === "" || frm.faq_con.value.trim() === "") {
       if (frm.faq_title.value.trim() === "") {

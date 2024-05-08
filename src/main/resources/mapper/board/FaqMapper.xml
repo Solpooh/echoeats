@@ -4,13 +4,11 @@
 
 <mapper namespace="com.pofol.main.repository.FaqRepository">
 
-    <!-- 새로운 faq 속성을 데이터베이스에 추가 -->
     <insert id="insert" parameterType="FaqDto">
         INSERT INTO faq (faq_id, faq_type, faq_title, faq_con)
         VALUES (#{faq_id}, #{faq_type}, #{faq_title}, #{faq_con})
     </insert>
 
-    <!-- faq 정보를 수정 -->
     <update id="update" parameterType="FaqDto">
         UPDATE faq
         SET faq_title = #{faq_title},
@@ -25,7 +23,7 @@
     </delete>
 
     <!-- 특정 faq 정보를 조회 -->
-    <select id="select" parameterType="FaqDto" resultType="FaqDto">
+    <select id="select" parameterType="int" resultType="FaqDto">
         SELECT *
         FROM faq WHERE faq_id = #{faq_id}
     </select>
@@ -33,7 +31,6 @@
 
     <select id="selectAll" parameterType="FaqDto" resultType="FaqDto">
     SELECT
-        <!-- 조회된 faq_id를 다시 순차적 1,2,3 .. 으로 나타내기 위한 ROW_NUMBER() -->
         faq_id,
         faq_type,
         faq_title,
@@ -58,7 +55,7 @@
     ORDER BY faq_id DESC
     </select>
 
-    <select id="count" resultType="int">
+    <select id="count" parameterType="FaqDto" resultType="int">
         SELECT count(*) FROM faq
     </select>
 

@@ -56,7 +56,7 @@ public class NoticeRepositoryImpl implements NoticeRepository {
     @Override
     public int searchResultCnt(SearchBoardCondition sc) throws Exception {
         return session.selectOne(namespace + "searchResultCnt", sc);
-    } // T selectOne(String statement, Object parameter)
+    }
 
     @Override
     public List<NoticeDto> searchSelectPage(SearchBoardCondition sc) throws Exception {

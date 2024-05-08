@@ -211,24 +211,16 @@ a {
 
 
 .left-button {
-    background-image: url(/resources/icons/left_button_open.svg);
+    /*background-image: url(/resources/icons/left_button_open.svg);*/
     width: 44px;
     height: 44px;
     padding: 0px;
     margin: 0px;
     border: 0px;
     cursor: pointer;
-    background-color: transparent;
+    background-color: #4CAF50;
     background-repeat: no-repeat;
     background-size: cover;
-}
-
-.left-button1 {
-    overflow: hidden;
-    position: absolute;
-    left: -9999px;
-    width: 1px;
-    height: 1px;
 }
 
 .right-button {
@@ -238,18 +230,24 @@ a {
     margin: 0px;
     border: 0px;
     cursor: pointer;
-    background-color: transparent;
-    background-image: url(/resources/icons/right_button_open.svg);
+    background-color: #4CAF50;
+    /*background-image: url(/resources/icons/right_button_open.svg);*/
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.right-button1 {
+.faq_btn {
+    padding: 0px 10px;
+    text-align: center;
     overflow: hidden;
-    position: absolute;
-    left: -9999px;
-    width: 1px;
-    height: 1px;
+    width: 120px;
+    height: 44px;
+    border-radius: 33px;
+    color: rgb(255, 255, 255);
+    background-color: #4CAF50;
+    border: 0px none;
+    font-size: small;
+    float: right;
 }
 
 .right-menu {
@@ -303,12 +301,12 @@ a {
     width: 100%;
 }
 
-button {
-    border-radius: 0;
-    display: inline-block;
-    background-color: transparent;
-    border: none;
-}
+/*button {*/
+/*    border-radius: 0;*/
+/*    display: inline-block;*/
+/*    background-color: transparent;*/
+/*    border: none;*/
+/*}*/
 
 .bottom-button {
     width: 100%;
@@ -446,4 +444,41 @@ h4 {
 h4 span {
     vertical-align: middle;
     font-size: small;
+}
+
+/* bootstrap */
+.card {
+    border: white;
+}
+
+.card-header {
+    background-color: white;
+    height: 55px;
+    padding-top: 13px;
+}
+
+.card-header a {
+    color: black;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+.card-header span {
+    text-align: center;
+    font-size: 10.5pt;
+}
+
+.card-header:hover {
+    color: black;
+    text-decoration: none;
+    background-color: white;
+}
+
+.card-body {
+    border-top-color: white;
+}
+
+.card_answer {
+    padding: 30px 30px 30px 70px;
+    font-size: 14px;
 }

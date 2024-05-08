@@ -67,6 +67,7 @@ public class NoticeController {
 
     // 공지사항 등록 페이지
     @RequestMapping("/notice_write")
+    // 단순 view만 리턴 => view-controller로 지정해주기
     public String notice_write() {
         return "/board/notice_write";
     }
@@ -103,6 +104,7 @@ public class NoticeController {
     // 공지사항 삭제 처리
     @RequestMapping("/deleteNotice")
     public String deleteNotice(NoticeDto dto) throws Exception {
+        // 공지사항 삭제 시 기존에 보고있던 page로 redirect 되는지 여부 확인하기
         System.out.println("dto : " + dto);
 
         noticeService.deleteNotice(dto);

@@ -11,8 +11,12 @@ import java.util.List;
 
 @Repository
 public class FaqRepositoryImpl implements FaqRepository {
-    @Autowired
-    private SqlSession session;
+    private final SqlSession session;
+
+    public FaqRepositoryImpl(SqlSession session) {
+        this.session = session;
+    }
+
     private static String namespace = "com.pofol.main.repository.FaqRepository.";
 
     // 등록하기
@@ -29,27 +33,18 @@ public class FaqRepositoryImpl implements FaqRepository {
         return session.delete(namespace + "delete", dto);
     }
 
-    // 카테고리 선택 시 리스트 보여주기
+    // 전체 리스트 보여주기
     public List<FaqDto> selectAll(FaqDto dto) {
         return session.selectList(namespace + "selectAll", dto);
     }
 
     // 내용 상세보기
-    public FaqDto select(FaqDto dto) {
-        return session.selectOne(namespace + "select", dto);
+    public FaqDto select(int bno) {
+        return session.selectOne(namespace + "select", bno);
     }
 
     public int count(FaqDto dto) {
         return session.selectOne(namespace + "count", dto);
-    }
-    @Override
-    public List searchSelectPage(SearchOrderCondition sc) throws Exception {
-        return session.selectList(namespace+"searchSelectPage", sc);
-    }
-
-    @Override
-    public int searchResultCnt(SearchOrderCondition sc) throws Exception {
-        return session.selectOne(namespace+"searchResultCnt", sc);
     }
 
 }

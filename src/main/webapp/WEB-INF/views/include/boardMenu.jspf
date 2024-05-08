@@ -1,0 +1,130 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<html>
+<head>
+  <title>Title</title>
+</head>
+<body>
+<div class="content-page">
+  <div class="customer-service-center">
+    <div class="center-left-menu"> <!--고객센터 메뉴(화면 왼쪽)-->
+      <div class="center-left-header">고객센터</div> <!--메뉴 제목-->
+      <ul class="left-menu-alllists">
+        <li>
+          <a class="left-menu-list" href="/board/notice">
+            공지사항
+            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24">
+              <defs>
+                <path id="gfk9q0rhta" d="M1.657 1.657L9.657 1.657 9.657 9.657"></path>
+              </defs>
+              <g fill="none" fill-rule="evenodd">
+                <g>
+                  <g>
+                    <g>
+                      <g transform="translate(-339 -398) translate(0 386) translate(339 12) translate(4.69 6.343)">
+                        <use stroke="#5f0080" stroke-linecap="round" stroke-width="1.8" stroke-linejoin="round"
+                             transform="rotate(45 5.657 5.657)" xlink:href="#gfk9q0rhta"></use>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a class="active left-menu-list" href="/board/faq">
+            자주하는 질문
+            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24">
+              <defs>
+                <path id="gfk9q0rhta" d="M1.657 1.657L9.657 1.657 9.657 9.657"></path>
+              </defs>
+              <g fill="none" fill-rule="evenodd">
+                <g>
+                  <g>
+                    <g>
+                      <g transform="translate(-339 -398) translate(0 386) translate(339 12) translate(4.69 6.343)">
+                        <use stroke="#5f0080" stroke-linecap="round" stroke-width="1.8" stroke-linejoin="round"
+                             transform="rotate(45 5.657 5.657)" xlink:href="#gfk9q0rhta"></use>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a class="left-menu-list">
+            1:1문의
+            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24">
+              <defs>
+                <path id="gfk9q0rhta" d="M1.657 1.657L9.657 1.657 9.657 9.657"></path>
+              </defs>
+              <g fill="none" fill-rule="evenodd">
+                <g>
+                  <g>
+                    <g>
+                      <g transform="translate(-339 -398) translate(0 386) translate(339 12) translate(4.69 6.343)">
+                        <use stroke="#5f0080" stroke-linecap="round" stroke-width="1.8" stroke-linejoin="round"
+                             transform="rotate(45 5.657 5.657)" xlink:href="#gfk9q0rhta"></use>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a class="left-menu-list">
+            대량주문 문의
+            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24">
+              <defs>
+                <path id="gfk9q0rhta" d="M1.657 1.657L9.657 1.657 9.657 9.657"></path>
+              </defs>
+              <g fill="none" fill-rule="evenodd">
+                <g>
+                  <g>
+                    <g>
+                      <g transform="translate(-339 -398) translate(0 386) translate(339 12) translate(4.69 6.343)">
+                        <use stroke="#5f0080" stroke-linecap="round" stroke-width="1.8" stroke-linejoin="round"
+                             transform="rotate(45 5.657 5.657)" xlink:href="#gfk9q0rhta"></use>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </li>
+      </ul>
+      <a href="" class="center-left-footer">
+        <div clss="left-footer-list">
+          <span class="left-footer-list1">도움이 필요하신가요?</span>
+          <span class="left-footer-list2">1:1 문의하기</span>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24">
+          <defs>
+            <path id="gfk9q0rhta" d="M1.657 1.657L9.657 1.657 9.657 9.657"></path>
+          </defs>
+          <g fill="none" fill-rule="evenodd">
+            <g>
+              <g>
+                <g>
+                  <g transform="translate(-339 -398) translate(0 386) translate(339 12) translate(4.69 6.343)">
+                    <use stroke="#333" stroke-linecap="round" stroke-width="1.8" stroke-linejoin="round"
+                         transform="rotate(45 5.657 5.657)" xlink:href="#gfk9q0rhta"></use>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </a>
+    </div>
+</body>
+</html>
+

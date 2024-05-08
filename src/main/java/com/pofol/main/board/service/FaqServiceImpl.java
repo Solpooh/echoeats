@@ -9,8 +9,11 @@ import java.util.List;
 
 @Service
 public class FaqServiceImpl implements FaqService {
-    @Autowired
-    private FaqRepositoryImpl faqRepository;
+    private final FaqRepositoryImpl faqRepository;
+
+    public FaqServiceImpl(FaqRepositoryImpl faqRepository) {
+        this.faqRepository = faqRepository;
+    }
 
     @Override
     public int insertFaq(FaqDto dto) {
@@ -28,8 +31,8 @@ public class FaqServiceImpl implements FaqService {
     }
 
     @Override
-    public FaqDto selectFaq(FaqDto dto) {
-        return faqRepository.select(dto);
+    public FaqDto selectFaq(int bno) {
+        return faqRepository.select(bno);
     }
 
     @Override

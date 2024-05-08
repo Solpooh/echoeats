@@ -11,6 +11,7 @@ import java.util.Map;
 
 @Service
 public class NoticeServiceImpl implements NoticeService {
+    // 생성자 주입 방식으로 바꿔보기
     @Autowired
     NoticeRepository noticeRepository;
     public NoticeServiceImpl() {
