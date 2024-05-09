@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FaqServiceImpl implements FaqService {
@@ -39,6 +40,12 @@ public class FaqServiceImpl implements FaqService {
     public List<FaqDto> selectAllFaq(FaqDto dto) {
         return faqRepository.selectAll(dto);
     }
+
+    @Override
+    public List<FaqDto> selectPaged(FaqDto dto) {
+        return faqRepository.selectPaged(dto);
+    }
+
     public int countFaq(FaqDto dto) {
         return faqRepository.count(dto);
     }

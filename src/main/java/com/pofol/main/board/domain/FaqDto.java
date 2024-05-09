@@ -5,6 +5,11 @@ public class FaqDto {
     private String faq_type;
     private String faq_title;
     private String faq_con;
+    private Integer page = 1;
+    private Integer pageSize = 10;
+    private Integer offset = 0;
+    private Integer totalCnt;
+    private Integer totalPage;
     public int getFaq_id() {
         return faq_id;
     }
@@ -14,12 +19,19 @@ public class FaqDto {
     }
 
     public FaqDto() {}
-    public FaqDto(int faq_id, String faq_type, String faq_title, String faq_con) {
+
+    public FaqDto(int faq_id, String faq_type, String faq_title, String faq_con, Integer page, Integer pageSize, Integer offset, Integer totalCnt, Integer totalPage) {
         this.faq_id = faq_id;
         this.faq_type = faq_type;
         this.faq_title = faq_title;
         this.faq_con = faq_con;
+        this.page = page;
+        this.pageSize = pageSize;
+        this.offset = offset;
+        this.totalCnt = totalCnt;
+        this.totalPage = totalPage;
     }
+
     public String getFaq_type() {
         if("전체".equals(faq_type)) {
             return null;
@@ -47,6 +59,45 @@ public class FaqDto {
         this.faq_con = faq_con;
     }
 
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Integer getOffset() {
+        return (page-1) * pageSize;
+    }
+
+    public void setOffset(Integer offset) {
+        this.offset = offset;
+    }
+
+    public Integer getTotalCnt() {
+        return totalCnt;
+    }
+
+    public void setTotalCnt(Integer totalCnt) {
+        this.totalCnt = totalCnt;
+    }
+
+    public Integer getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(Integer pageSize) {
+        this.totalPage = totalPage;
+    }
 
     @Override
     public String toString() {
@@ -55,6 +106,11 @@ public class FaqDto {
                 ", faq_type='" + faq_type + '\'' +
                 ", faq_title='" + faq_title + '\'' +
                 ", faq_con='" + faq_con + '\'' +
+                ", page=" + page +
+                ", pageSize=" + pageSize +
+                ", offset=" + offset +
+                ", totalCnt=" + totalCnt +
+                ", totalPage=" + totalPage +
                 '}';
     }
 }

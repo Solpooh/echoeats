@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class FaqRepositoryImpl implements FaqRepository {
@@ -36,6 +37,11 @@ public class FaqRepositoryImpl implements FaqRepository {
     // 전체 리스트 보여주기
     public List<FaqDto> selectAll(FaqDto dto) {
         return session.selectList(namespace + "selectAll", dto);
+    }
+
+    // 페이징된 리스트 보여주기
+    public List<FaqDto> selectPaged(FaqDto dto) {
+        return session.selectList(namespace + "selectPaged", dto);
     }
 
     // 내용 상세보기

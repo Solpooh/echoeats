@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/board")
@@ -34,12 +36,26 @@ public class FaqController {
     // AJAX 로 FAQ 목록 가져오기
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public List<FaqDto> getFaqList(@RequestBody FaqDto dto) {
+    public Map<String, Object> getFaqList(@RequestBody FaqDto dto) {
         String faqType = dto.getFaq_type();
         System.out.println("faqType: " + faqType);
+        System.out.println("dto: " + dto);
+
+        int totalCnt = faqService.countFaq(dto);
+        int totalPage = (int) Math.ceil((double) totalCnt / dto.getPageSize());
+
+        dto.setFaq_type(faqType);
+        dto.setTotalCnt(totalCnt);
+        dto.setTotalPage(dto.getPageSize());
+
         // 가져온 faqType으로 비즈니스 로직을 수행 -> 목록을 얻어옴
-//        List<FaqDto> list = faqService.selectAllFaq(dto);
-        return faqService.selectAllFaq(dto);
+        List<FaqDto> list = faqService.selectPaged(dto);
+        Map<String, Object> response = new HashMap<>();
+        response.put("faqList", list);
+        response.put("totalCnt", totalCnt);
+        response.put("totalPage", totalPage);
+
+        return response;
     }
 
     // FAQ 작성 페이지
