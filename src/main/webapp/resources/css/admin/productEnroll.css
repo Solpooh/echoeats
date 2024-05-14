@@ -608,7 +608,7 @@ p {
     text-align: center;
 }
 
-@media (min-width: 768px)
+@media (min-width: 768px){
 .seller-btn-area .btn {
     margin-left: 5px;
     margin-right: 5px;
@@ -760,4 +760,4 @@ input[type="number"]::-webkit-outer-spin-button {
 
 #discount-interface {
     width : 150px;
-}
+}}

@@ -1,9 +1,11 @@
 package com.pofol.main.board.service;
 
 import com.pofol.main.board.domain.FaqDto;
+import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.repository.FaqRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -16,9 +18,19 @@ public class FaqServiceImpl implements FaqService {
         this.faqRepository = faqRepository;
     }
 
+    /* FAQ 등록 */
     @Override
+    @Transactional
     public int insertFaq(FaqDto dto) {
-        return faqRepository.insert(dto);
+        // 이미지를 등록할 때도 있고 안할 때도 있음
+        int result = faqRepository.insert(dto);
+        if(!dto.getImageList().isEmpty()) {
+            for (ImageDto image : dto.getImageList()) {
+                image.setFaq_id(dto.getFaq_id());
+                int imgResult = faqRepository.imageInsert(image);
+            }
+        }
+        return result;
     }
 
     @Override
@@ -49,4 +61,10 @@ public class FaqServiceImpl implements FaqService {
     public int countFaq(FaqDto dto) {
         return faqRepository.count(dto);
     }
+
+    @Override
+    public List<ImageDto> getImageList(int faq_id) {
+        return faqRepository.getImageList(faq_id);
+    }
+
 }

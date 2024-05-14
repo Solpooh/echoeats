@@ -229,7 +229,7 @@ a {
 }
 
 .left-button:disabled {
-    color: #4f5050;
+    display: none;
 }
 
 .right-button {
@@ -490,4 +490,139 @@ h4 span {
 .card_answer {
     padding: 30px 30px 30px 70px;
     font-size: 14px;
+}
+
+/* FAQ Write */
+.list-group-item a {
+    text-decoration: none;
+    color: black;
+}
+
+.list-group-item:hover>a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #B03FE3;
+}
+
+.list-group-item:hover>span {
+    font-weight: bold;
+    text-decoration: none;
+    color: #B03FE3;
+}
+
+.list-group-item a {
+    width: 100%;
+    display: block;
+}
+
+h2 {
+    font-weight: bold;
+}
+
+h4 {
+    font-weight: bolder;
+}
+
+h4 span {
+    vertical-align: middle;
+    font-size: small;
+}
+
+.main {
+    padding-bottom: 24px;
+    padding-top: 10px;
+}
+
+.table {
+    width: 100%;
+    text-align: center;
+}
+
+.title {
+    width: 100%;
+    vertical-align: middle;
+    padding-bottom: 9px;
+    border-color: lightgray;
+    border-width: 1px;
+}
+
+.back_btn {
+    padding: 0px 10px;
+    text-align: center;
+    overflow: hidden;
+    width: 120px;
+    height: 44px;
+    border-radius: 3px;
+    color: rgb(255, 255, 255);
+    background-color: #4CAF50;
+    border: 0px none;
+    font-size: small;
+}
+.back_btn:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.notice_btn {
+    padding: 0px 10px;
+    text-align: center;
+    overflow: hidden;
+    width: 120px;
+    height: 44px;
+    border-radius: 3px;
+    color: rgb(255, 255, 255);
+    background-color: #4CAF50;
+    border: 0px none;
+    font-size: small;
+}
+.notice_btn:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.modify_btn {
+    padding: 0px 10px;
+    text-align: center;
+    overflow: hidden;
+    width: 120px;
+    height: 44px;
+    border-radius: 3px;
+    color: rgb(255, 255, 255);
+    background-color: #4CAF50;
+    border: 0px none;
+    font-size: small;
+}
+.modify_btn:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* 이미지 관련 css */
+#result_card img{
+    max-width: 100%;
+    height: auto;
+    display: block;
+    padding: 5px;
+}
+#result_card {
+    position: relative;
+}
+.imgDeleteBtn{
+    position: absolute;
+    top: 0;
+    right: 5%;
+    background-color: #ef7d7d;
+    color: wheat;
+    font-weight: 900;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    line-height: 26px;
+    text-align: center;
+    border: none;
+    display: block;
+    cursor: pointer;
+}
+#uploadImages:has(> img) .imgDeleteBtn {
+    display: none;
 }

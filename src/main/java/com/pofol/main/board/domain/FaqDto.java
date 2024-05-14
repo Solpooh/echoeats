@@ -1,5 +1,7 @@
 package com.pofol.main.board.domain;
 
+import java.util.List;
+
 public class FaqDto {
     private int faq_id;
     private String faq_type;
@@ -7,9 +9,11 @@ public class FaqDto {
     private String faq_con;
     private Integer page = 1;
     private Integer pageSize = 10;
-    private Integer offset = 0;
+    private Integer offset;
     private Integer totalCnt;
     private Integer totalPage;
+    /* 이미지 정보 */
+    private List<ImageDto> imageList;
     public int getFaq_id() {
         return faq_id;
     }
@@ -83,7 +87,7 @@ public class FaqDto {
         this.offset = offset;
     }
 
-    public Integer getTotalCnt() {
+    public Integer getTotalCnt () {
         return totalCnt;
     }
 
@@ -99,8 +103,16 @@ public class FaqDto {
         this.totalPage = totalPage;
     }
 
+    public List<ImageDto> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<ImageDto> imageList) {
+        this.imageList = imageList;
+    }
+
     @Override
-    public String toString() {
+    public String   toString() {
         return "FaqDto{" +
                 "faq_id=" + faq_id +
                 ", faq_type='" + faq_type + '\'' +
@@ -111,6 +123,7 @@ public class FaqDto {
                 ", offset=" + offset +
                 ", totalCnt=" + totalCnt +
                 ", totalPage=" + totalPage +
+                ", imageList=" + imageList +
                 '}';
     }
 }

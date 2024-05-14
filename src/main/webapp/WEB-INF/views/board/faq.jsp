@@ -5,22 +5,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoEats</title>
+    <title>EcoEats-FAQ</title>
     <%@ include file="../include/bootstrap.jspf" %>
     <link rel="stylesheet" href="/resources/product/css/main-css.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/projectPratice.css">
 </head>
-<body>
 <header>
     <%@ include file="../include/header.jspf" %>
 </header>
+<body>
 <%@ include file="../include/boardMenu.jspf" %>
         <div class="board"> <!--게시판 (화면 중앙)-->
             <div class="board-top"> <!--게시판 상단1-->
                 <div class="board-top-content">
                     <h2 class="Notice1">자주하는 질문
                     <span class="Notice2">고객님들께서 가장 자주하시는 질문을 모두 모았습니다.</span>
-                        <div id="option" class="dropdown" style="width: 180px; border-radius: 0; padding-bottom: 0.5cm; position: absolute; right: 220; top: 200;" >
+                        <div id="option" class="dropdown" style="width: 260px; border-radius: 0; padding-bottom: 0.5cm; padding-left: 110px; float: right" >
                             <select name="category" class="form-control">
                                 <option value="전체" selected="selected">전체</option>
                                 <option value="회원">회원</option>
@@ -45,16 +45,23 @@
                     </div>
                 </div>
             </div>
+            <div class="board-footer"> <!--게시판 하단-->
+                <div class="board-footer-button">
+                    <button type="button" class="left-button">이전</button>
+                    <button type="button" class="right-button">다음</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<!-- JavaScript -->
 <script>
     const pageSize = 10;
-    let page = 1;
+    let page;
     let totalCnt;
     let totalPage;
 
-    $(document).ready(function() {
+    $(document).ready(function(e) {
         getFaqList();
         let leftBtn = $('.left-button');
         let rightBtn = $('.right-button');
@@ -63,7 +70,9 @@
         rightBtn.click(function() {
             if (totalPage > page) page++;
             getFaqList(); // FAQ 목록 다시 가져오기
+
             leftBtn.prop('disabled', false); // 다음 페이지로 이동했으므로 왼쪽 버튼 활성화
+                // rightBtn.prop('disabled', true);
         });
 
         // 이전 버튼 클릭 시 페이지를 감소시키고 FAQ 목록을 다시 가져옴
@@ -83,6 +92,7 @@
             page: page,
             pageSize: pageSize,
         };
+        console.log(dataSend);
 
         $.ajax({
             type: "POST",
@@ -114,7 +124,7 @@
                     displayData += "<a class='card-link' data-toggle='collapse' href='#collapseOne" + FaqDto.faq_id + "'>";
                     displayData += "<span style='width: 75px; display: inline-block;'>" + FaqDto.faq_id + "</span>";
                     displayData += "<span style='width: 150px; display: inline-block;' class='" + FaqDto.faq_type + "'>" + FaqDto.faq_type + "</span>";
-                    displayData += "<span style='width: 840px; display: inline-block;'>" + FaqDto.faq_title + "</span></a>";
+                    displayData += "<span style='width: 840px; display: inline;'>" + FaqDto.faq_title + "</span></a>";
                     displayData += "</div>";
                     displayData += "<div id='collapseOne" + FaqDto.faq_id + "' class='collapse' data-parent='#accordion'>";
                     displayData += "<div class='card-body'>";
@@ -138,18 +148,11 @@
     // 카테고리가 변경(새롭게 선택)될 때마다 change 이벤트 발생
     $("select[name=category]").change(function(){
         console.log($(this).val()); // 여기서 this는 이벤트가 발생한 DOM요소를 참조
-
-        // 카테고리가 변경되었으므로, 새로운 FAQ 목록을 가져옴
+        page = 1;
         getFaqList();
     });
 
 </script>
-<div class="board-footer"> <!--게시판 하단-->
-    <div class="board-footer-button">
-        <button type="button" class="left-button">이전</button>
-        <button type="button" class="right-button">다음</button>
-    </div>
-</div>
 </body>
 <footer>
     <%@ include file="../include/footer.jspf" %>

@@ -238,16 +238,6 @@
     </div>
 </div>
 <script>
-    <%--$(document).ready(function() {--%>
-    <%--    $('.delete_btn').on("click", function() {--%>
-    <%--        if(!confirm("정말로 삭제하시겠습니까?")) return;--%>
-
-    <%--        let frm = $('#form');--%>
-    <%--        frm.attr("action", "<c:url value='/admin1/deleteNotice?notice_id=${notice.notice_id}'/>");--%>
-    <%--        frm.attr("method", "post");--%>
-    <%--        frm.submit();--%>
-    <%--    })--%>
-    <%--})--%>
     function notice_delete(notice_id) {
         if (confirm("정말 삭제하시겠습니까??") == true) {    //확인
             location.href = "deleteNotice?notice_id=" + notice_id  //공지사항 삭제 요청

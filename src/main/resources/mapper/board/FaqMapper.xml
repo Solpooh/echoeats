@@ -5,6 +5,9 @@
 <mapper namespace="com.pofol.main.repository.FaqRepository">
 
     <insert id="insert" parameterType="FaqDto">
+        <selectKey resultType="int" keyProperty="faq_id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         INSERT INTO faq (faq_id, faq_type, faq_title, faq_con)
         VALUES (#{faq_id}, #{faq_type}, #{faq_title}, #{faq_con})
     </insert>
@@ -64,5 +67,16 @@
         SELECT count(*) FROM faq
     </select>
 
+    <!-- 이미지 등록 -->
+    <insert id="imageInsert" parameterType="ImageDto">
+        INSERT INTO faq_image (faq_id, fileName, uploadPath, uuid)
+        VALUES (#{faq_id}, #{fileName}, #{uploadPath}, #{uuid})
+    </insert>
+
+    <!-- 이미지 조회 -->
+    <select id="getImageList" resultType="ImageDto">
+        SELECT * FROM faq_image
+        WHERE faq_id = #{faq_id}
+    </select>
 </mapper>
 

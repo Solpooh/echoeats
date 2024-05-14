@@ -5,90 +5,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoEats</title>
-  <link rel="stylesheet" href="/resources/product/css/main-css.css">
+  <title>EcoEats-FAQ 수정</title>
   <%@ include file="../include/bootstrap.jspf" %>
-
-  <style>
-    .list-group-item a {
-      text-decoration: none;
-      color: black;
-    }
-
-    .list-group-item:hover>a {
-      font-weight: bold;
-      text-decoration: none;
-      color: #B03FE3;
-    }
-
-    .list-group-item:hover>span {
-      font-weight: bold;
-      text-decoration: none;
-      color: #B03FE3;
-    }
-
-    .list-group-item a {
-      width: 100%;
-      display: block;
-    }
-
-    h2 {
-      font-weight: bold;
-    }
-
-    h4 {
-      font-weight: bolder;
-    }
-
-    h4 span {
-      vertical-align: middle;
-      font-size: small;
-    }
-
-    .main {
-      padding-bottom: 24px;
-      padding-top: 10px;
-    }
-
-    .table {
-      width: 100%;
-      text-align: center;
-    }
-
-    .title {
-      width: 100%;
-      vertical-align: middle;
-      padding-bottom: 9px;
-      border-color: lightgray;
-      border-width: 1px;
-    }
-
-    .back_btn {
-      padding: 0px 10px;
-      text-align: center;
-      overflow: hidden;
-      width: 120px;
-      height: 44px;
-      border-radius: 3px;
-      color: rgb(255, 255, 255);
-      background-color: #9A30AE;
-      border: 0px none;
-      font-size: small;
-    }
-
-    .modify_btn {
-      padding: 0px 10px;
-      text-align: center;
-      overflow: hidden;
-      width: 120px;
-      height: 44px;
-      border-radius: 3px;
-      color: rgb(255, 255, 255);
-      background-color: #9A30AE;
-      border: 0px none;
-      font-size: small;
-    }
-  </style>
+  <link rel="stylesheet" href="/resources/product/css/main-css.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/projectPratice.css">
 </head>
 <header>
   <%@ include file="../include/header.jspf" %>
@@ -114,7 +34,7 @@
               </th>
             </tr>
             <tr>
-              <th style="width: 10%; vertical-align: middle; border-color: white;">카테고리</th>
+              <th style="white-space: nowrap; width: 10%; vertical-align: middle; border-color: white;">카테고리</th>
               <th style="vertical-align: middle; border-bottom-color: white;">
                 <select class="form-control" name="faq_type">
                   <option value="회원">회원</option>
@@ -165,6 +85,8 @@
 
   //제목,내용 미입력시 알림
   function check_faq(faq_id) {
+    if (!confirm("정말 수정하시겠습니까??")) return;
+    alert("수정이 완료되었습니다");
     event.preventDefault();
 
     let frm = document.frm;
@@ -180,5 +102,7 @@
       frm.submit();
     }
   }
+
+
 </script>
 </html>

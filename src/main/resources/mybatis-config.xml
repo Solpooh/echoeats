@@ -20,6 +20,7 @@
 		<typeAlias alias="SearchOrderCondition" type="com.pofol.main.orders.order.domain.SearchOrderCondition"/>
 		<typeAlias alias="FaqDto" type="com.pofol.main.board.domain.FaqDto"/>
 		<typeAlias alias="NoticeDto" type="com.pofol.main.board.domain.NoticeDto"/>
+		<typeAlias alias="ImageDto" type="com.pofol.main.board.domain.ImageDto"/>
 		<typeAlias alias="SearchBoardCondition" type="com.pofol.main.board.domain.SearchBoardCondition"/>
 		<typeAlias alias="ProductDto" type="com.pofol.main.product.domain.ProductDto"/>
 		<typeAlias alias="EventGroupDto" type="com.pofol.main.product.domain.EventGroupDto"/>

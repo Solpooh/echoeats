@@ -249,6 +249,14 @@
             <artifactId>aws-java-sdk-s3</artifactId>
             <version>1.12.595</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
