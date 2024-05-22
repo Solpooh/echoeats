@@ -24,4 +24,6 @@ public interface FaqRepository {
     List<ImageDto> getImageList(int faq_id) throws Exception;
     /* 지정 게시물 이미지 전체 삭제 */
     void deleteImageAll(int faq_id) throws Exception;
+    /* 어제 날짜 이미지 가져오기 */
+    List<ImageDto> checkFileList() throws Exception;
 }

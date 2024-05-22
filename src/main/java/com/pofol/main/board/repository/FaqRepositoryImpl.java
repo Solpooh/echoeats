@@ -69,5 +69,10 @@ public class FaqRepositoryImpl implements FaqRepository {
         session.delete(namespace + "deleteImageAll", faq_id);
     }
 
+    @Override
+    public List<ImageDto> checkFileList() throws Exception {
+        return session.selectList(namespace + "checkFileList");
+    }
+
 
 }

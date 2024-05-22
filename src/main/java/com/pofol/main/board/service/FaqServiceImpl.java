@@ -49,8 +49,11 @@ public class FaqServiceImpl implements FaqService {
         return result;
     }
 
+
     @Override
+    @Transactional
     public int deleteFaq(FaqDto dto) {
+        faqRepository.deleteImageAll(dto.getFaq_id());
         return faqRepository.delete(dto);
     }
 

@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 
@@ -165,6 +167,23 @@ public class FaqController {
     @RequestMapping(value = "/deleteFaq", method = RequestMethod.POST)
     public ResponseEntity<?> deleteFaq(@RequestBody FaqDto dto) {
         int result = faqService.deleteFaq(dto);
+
+        List<ImageDto> fileList = faqService.getImageList(dto.getFaq_id());
+        if (fileList != null) {
+            List<Path> pathList = new ArrayList<>();
+            fileList.forEach(list -> {
+                // 원본 이미지
+                Path path = Paths.get("C:\\upload", list.getUploadPath(), list.getUuid() + "_" + list.getFileName());
+                pathList.add(path);
+
+                // 섬네일 이미지
+                path = Paths.get("C:\\upload", list.getUploadPath(), "s_" + list.getUuid()+"_" + list.getFileName());
+                pathList.add(path);
+            });
+            pathList.forEach(path ->{
+                path.toFile().delete();
+            });
+        }
 
         if (result > 0) {
             return ResponseEntity.ok().body(dto.getFaq_id());

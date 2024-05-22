@@ -36,4 +36,5 @@
 
 	<task:annotation-driven/>
 	<context:component-scan base-package="com.pofol.main.member.task"></context:component-scan>
+	<context:component-scan base-package="com.pofol.main.board.task"></context:component-scan>
 </beans>

@@ -84,5 +84,11 @@
         DELETE FROM faq_image
         WHERE faq_id = #{faq_id}
     </delete>
+
+    <!-- 어제자 날짜 이미지 리스트 조회 -->
+    <select id="checkFileList" resultType="ImageDto">
+        SELECT * FROM faq_image
+        WHERE uploadPath = DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 DAY), '%Y\%m\%d')
+    </select>
 </mapper>
 
