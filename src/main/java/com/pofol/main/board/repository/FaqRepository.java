@@ -22,4 +22,6 @@ public interface FaqRepository {
     int imageInsert(ImageDto dto) throws Exception;
     /* 이미지 데이터 반환 */
     List<ImageDto> getImageList(int faq_id) throws Exception;
+    /* 지정 게시물 이미지 전체 삭제 */
+    void deleteImageAll(int faq_id) throws Exception;
 }

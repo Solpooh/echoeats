@@ -1,5 +1,6 @@
 package com.pofol.main.board.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FaqDto {
@@ -13,7 +14,7 @@ public class FaqDto {
     private Integer totalCnt;
     private Integer totalPage;
     /* 이미지 정보 */
-    private List<ImageDto> imageList;
+    private List<ImageDto> imageList = new ArrayList<>();
     public int getFaq_id() {
         return faq_id;
     }
@@ -22,9 +23,11 @@ public class FaqDto {
         this.faq_id = faq_id;
     }
 
-    public FaqDto() {}
+    public FaqDto() {
+//        this.imageList = new ArrayList<>();
+    }
 
-    public FaqDto(int faq_id, String faq_type, String faq_title, String faq_con, Integer page, Integer pageSize, Integer offset, Integer totalCnt, Integer totalPage) {
+    public FaqDto(int faq_id, String faq_type, String faq_title, String faq_con, Integer page, Integer pageSize, Integer offset, Integer totalCnt, Integer totalPage, List<ImageDto> imageList) {
         this.faq_id = faq_id;
         this.faq_type = faq_type;
         this.faq_title = faq_title;
@@ -34,6 +37,7 @@ public class FaqDto {
         this.offset = offset;
         this.totalCnt = totalCnt;
         this.totalPage = totalPage;
+        this.imageList = imageList;
     }
 
     public String getFaq_type() {

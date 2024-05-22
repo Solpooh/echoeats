@@ -1,5 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%--<%@ page import="com.pofol.main.board.util.UrlEncoder" %>--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!-- FAQ 등록 페이지 -->
 <html lang="ko">
 <head>
@@ -9,86 +13,96 @@
   <%@ include file="../include/bootstrap.jspf" %>
   <link rel="stylesheet" href="/resources/product/css/main-css.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/projectPratice.css">
-  <style>
-  </style>
 </head>
-<header>
-  <%@ include file="../include/header.jspf" %>
-</header>
 <body>
-<%--<%@ include file="../include/boardMenu.jspf" %>--%>
+<%@ include file="../include/header.jspf" %>
 <div class="container-fluid">
   <div class="row" style="padding-top:50px; padding-bottom: 50px">
     <div class="col-sm-2"></div>
-    <div class="col-sm-2">
-    </div>
-    <div class="col-sm-6">
+    <div class="col-sm-8">
       <div class="main" style="border-bottom:2px solid black">
-        <h4>자주하는 질문 등록</h4>
+        <h4>FAQ ${mode == "new" ? "등록" : "수정"}</h4>
       </div>
-      <div>
-        <form name="frm" method="post" action="${pageContext.request.contextPath}/board/insertFaq">
-          <table class="table">
-            <thead>
-            <tr style="height: 60px;">
-              <th style="width: 10%; vertical-align: middle; border-color: white;">제목</th>
-              <th style="vertical-align: middle; border-bottom-color: white;">
-                <input type="text" class="title" name="faq_title" placeholder=" 제목을 입력하세요.">
-              </th>
-            </tr>
-            <tr>
-              <th style="white-space: nowrap; width: 10%; vertical-align: middle; border-color: white; font-size: 15px">카테고리</th>
-              <th style="vertical-align: middle; border-bottom-color: white;">
-                <select class="form-control" name="faq_type">
-                  <option value="회원">회원</option>
-                  <option value="주문/결제/대량주문">주문/결제/대량주문</option>
-                  <option value="배송">배송</option>
-                  <option value="상품">상품</option>
-                </select>
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td style="font-weight: bolder;">내용</td>
-              <td>
-                <textarea class="form-control" rows="18" id="comment" name="faq_con" placeholder="내용을 입력하세요.">
-                </textarea>
-                <span style="color:#aaa; float: right;" id="counter">(0 /2000자)</span>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <div class="form-section">
-            <div class="form_section_title">
-              <label></label>
-              <div class="form-section-content">
-                <input type="file" id="fileItem" name="uploadFile" style="height: 30px;" multiple>
-                <div id="uploadResult">
-<%--                  <div id="result_card">--%>
-<%--                    <div class="imgDeleteBtn">x</div>--%>
-<%--                    <img src="/board/display?fileName=test.png">--%>
-<%--                  </div>--%>
-                </div>
+      <form name="frm" method="post" action="${pageContext.request.contextPath}/board/saveFaq">
+        <table class="table">
+          <thead>
+          <tr style="height: 60px;">
+            <th style="width: 10%; vertical-align: middle; border-color: white;">제목</th>
+            <th style="vertical-align: middle; border-bottom-color: white;">
+              <input type="hidden" name="mode" value="${mode}">
+              <input type="hidden" name="faq_id" value="${faq.faq_id}">
+              <input type="text" class="title" name="faq_title" value="${mode == 'new' ? '' : faq.faq_title}">
+            </th>
+          </tr>
+          <tr>
+            <th style="white-space: nowrap; width: 10%; vertical-align: middle; border-color: white; font-size: 15px">카테고리</th>
+            <th style="vertical-align: middle; border-bottom-color: white;">
+              <select class="form-control" name="faq_type">
+                <option value="회원">회원</option>
+                <option value="주문/결제/대량주문">주문/결제/대량주문</option>
+                <option value="배송">배송</option>
+                <option value="상품">상품</option>
+              </select>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td style="font-weight: bolder;">내용</td>
+            <td>
+              <textarea class="form-control" rows="18" id="comment" name="faq_con">${mode == 'new' ? '' : faq.faq_con}</textarea>
+              <span style="color:#aaa; float: right;" id="counter">(0 /2000자)</span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="form-section">
+          <div class="form_section_title">
+            <label></label>
+            <div class="form-section-content">
+              <input type="file" id="fileItem" name="uploadFile" style="height: 30px;" multiple>
+              <div id="uploadResult">
+
               </div>
             </div>
           </div>
-          <div style="text-align: right;">
-            <button class="back_btn" type="button" onclick="location.href='${pageContext.request.contextPath}/board/faq_admin'">취소</button>
-            <button class="notice_btn" type="submit" onclick="check_faq()">등록</button>
-          </div>
-        </form>
-      </div>
+        </div>
+        <div style="text-align: right;">
+          <button class="back_btn" type="button" onclick="location.href='${pageContext.request.contextPath}/board/faq_admin'">취소</button>
+          <button class="notice_btn" type="submit" onclick="saveFaq(event)">${mode == 'new' ? '등록' : '수정'}</button>
+        </div>
+      </form>
     </div>
+    <div class="col-sm-2"></div>
   </div>
-  <div class="col-sm-2"></div>
 </div>
-</body>
-<footer>
-    <%@ include file="../include/footer.jspf" %>
-</footer>
+<%@ include file="../include/footer.jspf" %>
 <script>
-  //textarea 글자수 제한
+  // 페이지 로딩 후 이미지를 표시
+  $(document).ready(function() {
+    <c:if test="${mode == 'edit'}">
+      let faq_id = '<c:out value="${faq.faq_id}"/>';
+      let uploadResult = $("#uploadResult");
+      $.getJSON("/board/getImageList", {faq_id : faq_id}, function (data) {
+        console.log(data);
+
+        let str = "";
+        data.forEach((obj, index) => {
+        let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+          str += "<div id='result_card'>";
+          str += "<img src='/board/display?fileName=" + fileCallPath + "'>";
+          str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
+          str += "<input type='hidden' name='imageList[" + index + "].fileName' value='" + obj.fileName + "'>";
+          str += "<input type='hidden' name='imageList[" + index + "].uuid' value='" + obj.uuid + "'>";
+          str += "<input type='hidden' name='imageList[" + index + "].uploadPath' value='" + obj.uploadPath + "'>";
+          str += "</div>";
+
+          uploadResult.append(str);
+        })
+      });
+    </c:if>
+  })
+
   $('.form-control').keyup(function (e) {
     let content = $(this).val();
     $('#counter').html("(" + content.length + "자 / 2000자)");    //글자수 실시간 카운팅
@@ -100,25 +114,22 @@
     }
   });
 
-  //제목,내용 미입력시 알림
-  function check_faq() {
-      event.preventDefault();
+  function saveFaq(event) {
+    event.preventDefault();
 
-      let frm = document.frm;
+    let frm = document.frm;
 
-      if (frm.faq_title.value.trim() === "" || frm.faq_con.value.trim() === "") {
-          if (frm.faq_title.value.trim() === "") {
-              alert("제목을 입력해주세요.");
-          } else if (frm.faq_con.value.trim() === "") {
-              alert("내용을 입력해주세요.");
-          }
-      } else {
-          frm.action = "insertFaq";
-          frm.submit();
+    if (frm.faq_title.value.trim() === "" || frm.faq_con.value.trim() === "") {
+      if (frm.faq_title.value.trim() === "") {
+        alert("제목을 입력해주세요.");
+      } else if (frm.faq_con.value.trim() === "") {
+        alert("내용을 입력해주세요.");
       }
+    } else {
+      frm.submit();
+    }
   }
 
-  // 파일 등록
   let regex = new RegExp("(.*?)\.(jpg|png)$");
   let maxSize = 1048576; //1MB
 
@@ -135,94 +146,92 @@
   }
 
   $("input[type='file']").on("change", function(e) {
-    /* 이미지 존재시 삭제 => 근데 나 여러개 이미지 올릴건데?? 고민해보자 */
-    if($(".imgDeleteBtn").length > 0){
-      deleteFile();
+    if ($(".imgDeleteBtn").length > 0) {
+      deleteFile(); // 필요에 따라 파일 삭제 처리
     }
 
-    let formData = new FormData(); // 가상의 <form> 태그, 서버로 첨부파일 전송위해 (화면이동 없이)
+    let formData = new FormData();
     let fileInput = $('input[name="uploadFile"]');
-    // fileList객체 = input 태그의 files속성으로 얻음
     let fileList = fileInput[0].files;
-    let fileObj = fileList[0];
+    console.log(fileList);
 
-    // if (!fileCheck(fileObj.name, fileObj.size)) {
-    //   return false;
-    // }
     for (let i = 0; i < fileList.length; i++) {
       formData.append("uploadFile", fileList[i]);
     }
 
-
     $.ajax({
-      url: '/board/uploadAjaxAction',
+      url: '/board/uploadImage',
       processData: false,
       contentType: false,
       data: formData,
       type: 'POST',
       dataType: 'json',
-      success: function (result) {
+      success: function(result) {
         console.log(result);
         showUploadImage(result);
       },
-      error : function(result){
+      error: function(result) {
         alert("이미지 파일이 아닙니다");
       }
     });
   });
 
-  function showUploadImage(data) { // data에는 여러 이미지에 대한 dto값들이 담겨있음
+  // mode가 new일 때만??
+  function showUploadImage(data) {
     if (!data || data.length === 0) return;
 
     let uploadResult = $("#uploadResult");
-    let obj = data[0];
-    let str = "";
-    let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+    data.forEach((obj, index) => {
+      let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
 
-    str += "<div id='result_card'>";
-    str += "<img src='/board/display?fileName=" + fileCallPath +"'>";
-    str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
-    str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
-    str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
-    str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";
-    str += "</div>";
+      let str = "";
 
-    uploadResult.append(str);
-  }
+      str += "<div id='result_card'>";
+      str += "<img src='/board/display?fileName=" + fileCallPath + "'>";
+      str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
+      str += "<input type='hidden' name='imageList[" + index + "].fileName' value='" + obj.fileName + "'>";
+      str += "<input type='hidden' name='imageList[" + index + "].uuid' value='" + obj.uuid + "'>";
+      str += "<input type='hidden' name='imageList[" + index + "].uploadPath' value='" + obj.uploadPath + "'>";
+      str += "</div>";
 
-  /* 이미지 삭제 버튼 동작 */
-  $("#uploadResult").on("click", ".imgDeleteBtn", function(e){
-
-    deleteFile();
-
-  });
-
-  /* 파일 삭제 메서드 */
-  function deleteFile(){
-    let targetFile = $(".imgDeleteBtn").data("file");
-
-    let targetDiv = $("#result_card, #uploadImages");
-
-    $.ajax({
-      url: '/board/deleteFile',
-      data : {
-        fileName : targetFile
-      },
-      dataType : 'text',
-      type : 'POST',
-      success : function(result){
-        console.log(result);
-
-        targetDiv.remove();
-        $("input[type='file']").val("");
-
-      },
-      error : function(result){
-        console.log(result);
-
-        alert("파일을 삭제하지 못하였습니다.")
-      }
+      uploadResult.append(str);
     });
   }
+
+  $("#uploadResult").on("click", ".imgDeleteBtn", function(e){
+    deleteFile();
+  });
+
+  function deleteFile() {
+    $("#result_card").remove();
+  }
+
+  // /* 파일 삭제 메서드 */
+  // function deleteFile(){
+  //   let targetFile = $(".imgDeleteBtn").data("file");
+  //
+  //   let targetDiv = $("#result_card");
+  //
+  //   $.ajax({
+  //     url: '/board/deleteFile',
+  //     data : {
+  //       fileName : targetFile
+  //     },
+  //     dataType : 'text',
+  //     type : 'POST',
+  //     success : function(result){
+  //       console.log(result);
+  //
+  //       targetDiv.remove();
+  //       $("input[type='file']").val("");
+  //
+  //     },
+  //     error : function(result){
+  //       console.log(result);
+  //
+  //       alert("파일을 삭제하지 못하였습니다.")
+  //     }
+  //   });
+  // }
 </script>
 </html>

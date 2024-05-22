@@ -135,47 +135,55 @@
             contentType: "application/json; charset=utf-8",
 
             // 콜백함수 -> 성공시 받은 데이터를 이용하여 FAQ 목록을 동적으로 생성하여 화면에 출력
-            success: function (data) {
-                console.log(data);
-                let faqList = data['faqList'];
+          success: function(data) {
+              console.log(data);
+              let faqList = data['faqList'];
 
-                if (faqList.length === 0) {
+              if (faqList.length === 0) {
                   console.log("더 이상 게시물이 없습니다.");
                   return; // 호출 중단
-                }
-                totalCnt = data['totalCnt'];
-                totalPage = data['totalPage'];
+              }
+              totalCnt = data['totalCnt'];
+              totalPage = data['totalPage'];
 
-                let displayData = "";
+              let displayData = "";
 
-                // for 루프를 통해 서버에서 받아온 FAQ 데이터 순회하며 HTML 코드 생성
-                for (let FaqDto of faqList) {
+              // for 루프를 통해 서버에서 받아온 FAQ 데이터 순회하며 HTML 코드 생성
+              for (let FaqDto of faqList) {
+                  console.log(FaqDto); // FaqDto 객체의 속성 값을 확인
 
-                    // FAQ 세부 내용을 접을 수 있는 collapse -> BootStrap 사용
-                    displayData += "<div class='card-header'>";
-                    displayData += "<a class='card-link' data-toggle='collapse' href='#collapseOne" + FaqDto.faq_id + "'>";
-                    displayData += "<span style='width: 75px; display: inline-block;'>" + FaqDto.faq_id + "</span>";
-                    displayData += "<span style='width: 150px; display: inline-block;' class='" + FaqDto.faq_type + "'>" + FaqDto.faq_type + "</span>";
-                    displayData += "<span style='width: 840px; display: inline'>" + FaqDto.faq_title + "</span></a>";
-                    displayData += "</div>";
-                    displayData += "<div id='collapseOne" + FaqDto.faq_id + "' class='collapse' data-parent='#accordion'>";
-                    displayData += "<div class='card-body'>";
-                    displayData += "<div class='card_answer'>";
-                    displayData += FaqDto.faq_con
-                    displayData += "</div>";
+                  // FAQ 세부 내용을 접을 수 있는 collapse -> BootStrap 사용
+                  displayData += "<div class='card-header'>";
+                  displayData += "<a class='card-link' data-toggle='collapse' href='#collapseOne" + FaqDto.faq_id + "'>";
+                  displayData += "<span style='width: 75px; display: inline-block;'>" + FaqDto.faq_id + "</span>";
+                  displayData += "<span style='width: 150px; display: inline-block;' class='" + FaqDto.faq_type + "'>" + FaqDto.faq_type + "</span>";
+                  displayData += "<span style='width: 840px; display: inline'>" + FaqDto.faq_title + "</span></a>";
+                  displayData += "</div>";
+                  displayData += "<div id='collapseOne" + FaqDto.faq_id + "' class='collapse' data-parent='#accordion'>";
+                  displayData += "<div class='card-body'>";
+                  displayData += "<div class='card_answer'>";
 
-                    displayData += "<div style='text-align: right;'>";
-                    displayData += "<a href='faq_modify?faq_id=" + FaqDto.faq_id + "' style='font-size:9pt; color: darkgray; text-decoration: none;'>수정 |</a>";
-                    displayData += "<a onclick='faq_delete(" + FaqDto.faq_id + ")' style='font-size:9pt; color: red; text-decoration: none;'> 삭제</a>";
-                    displayData += "</div></div></div>";
-                }
+                  // 이미지가 있는 경우 이미지를 추가
+                  if (FaqDto.imageList && FaqDto.imageList.length > 0) {
+                      for (let image of FaqDto.imageList) {
+                          let fileCallPath = encodeURIComponent(image.uploadPath + "/s_" + image.uuid + "_" + image.fileName);
+                          displayData += "<img src='/board/display?fileName=" + fileCallPath + "'>";
+                      }
+                  }
+                  // FAQ 내용을 추가
+                  displayData += FaqDto.faq_con;
+                  displayData += "</div>";
 
-                // FAQ 목록은 id= #type_faq 엘리먼트에 추가
-                $("#type_faq").html(displayData);
+                  displayData += "<div style='text-align: right;'>";
+                  displayData += "<a href='faq_write?mode=edit&faq_id=" + FaqDto.faq_id + "' style='font-size:9pt; color: darkgray; text-decoration: none;'>수정 |</a>";
+                  displayData += "<a onclick='faq_delete(" + FaqDto.faq_id + ")' style='font-size:9pt; color: red; text-decoration: none;'> 삭제</a>";
+                  displayData += "</div></div></div>";
+              }
+              $('#type_faq').html(displayData);
+          },
 
-            },
 
-            // 콜백함수 -> 실패 시 경고창 출력
+          // 콜백함수 -> 실패 시 경고창 출력
             error: function () {
                 alert("실패했습니다. 개발자도구를 통해 오류를 확인하세요.");
 

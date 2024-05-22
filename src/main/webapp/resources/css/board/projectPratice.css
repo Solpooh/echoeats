@@ -623,6 +623,4 @@ h4 span {
     display: block;
     cursor: pointer;
 }
-#uploadImages:has(> img) .imgDeleteBtn {
-    display: none;
-}
+

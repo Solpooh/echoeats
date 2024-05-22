@@ -19,7 +19,7 @@ public class FaqRepositoryImpl implements FaqRepository {
         this.session = session;
     }
 
-    private static String namespace = "com.pofol.main.repository.FaqRepository.";
+    private static final String namespace = "com.pofol.main.repository.FaqRepository.";
 
     // 등록하기
     public int insert(FaqDto dto) {
@@ -62,6 +62,11 @@ public class FaqRepositoryImpl implements FaqRepository {
     @Override
     public List<ImageDto> getImageList(int faq_id) {
         return session.selectList(namespace + "getImageList", faq_id);
+    }
+
+    @Override
+    public void deleteImageAll(int faq_id) {
+        session.delete(namespace + "deleteImageAll", faq_id);
     }
 
 
