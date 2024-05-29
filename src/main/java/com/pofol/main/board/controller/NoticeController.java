@@ -19,8 +19,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/board")
 public class NoticeController {
-    @Autowired
-    private NoticeService noticeService;
+    private final NoticeService noticeService;
+
+    public NoticeController(NoticeService noticeService) {
+        this.noticeService = noticeService;
+    }
 
     // 공지사항 조회 페이지
     @RequestMapping(value = "/notice")
@@ -75,7 +78,6 @@ public class NoticeController {
     // 공지사항 실제입력 처리
     @RequestMapping(value = "/insertNotice", method = RequestMethod.POST)
     public String insertNotice(NoticeDto dto) throws Exception {
-        System.out.println("dto : " + dto);
 
         noticeService.insertNotice(dto);
 
@@ -83,32 +85,27 @@ public class NoticeController {
     }
 
     // 공지사항 수정페이지
-    @RequestMapping("/notice_modify")
+    @GetMapping("/notice_modify")
     public String notice_modify(NoticeDto dto, Model model) throws Exception {
         NoticeDto notice = noticeService.getNotice(dto);
         model.addAttribute("notice", notice);
-        System.out.println("notice : " + notice);
         return "/board/notice_modify";
     }
 
     // 공지사항 실제수정 처리
-    @RequestMapping(value = "/updateNotice", method = RequestMethod.POST)
-    public String updateNotice(NoticeDto dto, int notice_id) throws Exception {
-        System.out.println(notice_id);
+//    @RequestMapping(value = "/updateNotice", method = RequestMethod.POST)
+    @PostMapping("/updateNotice")
+    public String updateNotice(NoticeDto dto) throws Exception {
         noticeService.updateNotice(dto);
-        System.out.println("dto : " + dto);
 
         return "redirect:/board/notice";
     }
 
     // 공지사항 삭제 처리
-    @RequestMapping("/deleteNotice")
+    @PostMapping("/deleteNotice")
     public String deleteNotice(NoticeDto dto) throws Exception {
         // 공지사항 삭제 시 기존에 보고있던 page로 redirect 되는지 여부 확인하기
-        System.out.println("dto : " + dto);
-
         noticeService.deleteNotice(dto);
-
         return "redirect:/board/notice";
     }
 }

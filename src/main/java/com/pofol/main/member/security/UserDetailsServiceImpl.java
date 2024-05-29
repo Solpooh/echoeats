@@ -51,7 +51,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         securityUser.setPassword(pwd);
         securityUser.setMem_name(vo2.getMem_name());
 
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(vo2.getRole()));
         securityUser.setAuthorities(grantedAuthorities);
 

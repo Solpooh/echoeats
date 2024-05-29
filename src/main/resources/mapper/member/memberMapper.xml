@@ -13,7 +13,7 @@
 
     <insert id="insert_member" parameterType="MemberDto">
         INSERT INTO member
-        (mem_id,mem_pwd, mem_name, mem_email, mem_phone, mem_gender, mem_birth, per_info_col, free_ship_recep, rg_date, md_date)
+        (mem_id, mem_pwd, mem_name, mem_email, mem_phone, mem_gender, mem_birth, per_info_col, free_ship_recep, rg_date, md_date)
         VALUES
             (#{mem_id}, #{mem_pwd}, #{mem_name}, #{mem_email}, #{mem_phone}, #{mem_gender}, #{mem_birth}, #{per_info_col}, #{free_ship_recep}, now(), now())
     </insert>

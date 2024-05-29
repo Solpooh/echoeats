@@ -589,6 +589,7 @@
                 }
             }).fail(function (error){
                 alert("회원가입에 실패하셨습니다.")
+                console.log(error);
                 alert(JSON.stringify(error));
             });
             // })

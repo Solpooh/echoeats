@@ -196,7 +196,7 @@
       uploadResult.append(str);
     });
   }
-
+  // 동적으로 click event 거는 방법
   $("#uploadResult").on("click", ".imgDeleteBtn", function(e){
     deleteFile();
   });

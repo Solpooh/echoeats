@@ -15,7 +15,6 @@ public class NoticeServiceImpl implements NoticeService {
     @Autowired
     NoticeRepository noticeRepository;
     public NoticeServiceImpl() {
-        System.out.println(">> NoticeServiceImpl 객체 생성");
     }
     @Override
     public int insertNotice(NoticeDto dto) throws Exception {

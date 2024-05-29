@@ -1,5 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <!-- FAQ 관리자 페이지 (등록,수정,삭제버튼) -->
 <html lang="ko">
 <head>
@@ -7,13 +9,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoEats-FAQ 관리페이지</title>
     <%@ include file="../include/bootstrap.jspf" %>
-    <link rel="stylesheet" href="/resources/product/css/main-css.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/product/css/main-css.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/projectPratice.css">
 </head>
 <body>
 <header>
     <%@ include file="../include/header.jspf" %>
 </header>
+<sec:authorize access="hasAuthority('ADMIN')">
 <%@ include file="../include/boardMenu.jspf" %>
 <div class="board"> <!--게시판 (화면 중앙)-->
     <div class="board-top"> <!--게시판 상단1-->
@@ -59,6 +62,11 @@
 </div>
 </div>
 </div>
+</sec:authorize>
+<sec:authorize access="!hasAuthority('ADMIN')">
+    <!-- 접근 제한 메시지 -->
+    <h1 style="font-size: 24px; text-align: center; padding: 20px 20px">접근 권한이 없습니다.</h1>
+</sec:authorize>
 </body>
 <!-- JavaScript -->
 <script>
@@ -134,7 +142,7 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
 
-            // 콜백함수 -> 성공시 받은 데이터를 이용하여 FAQ 목록을 동적으로 생성하여 화면에 출력
+          // 콜백함수 -> 성공시 받은 데이터를 이용하여 FAQ 목록을 동적으로 생성하여 화면에 출력
           success: function(data) {
               console.log(data);
               let faqList = data['faqList'];

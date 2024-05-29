@@ -22,7 +22,6 @@ public class AwsS3ImgUploaderService {
     private String bucketName; //버킷 이름
     public AwsS3ImgUploaderService(AmazonS3 amazonS3,
                                    @Value("${cloud.aws.s3.bucketName}") String bucketName) {
-        System.out.println(amazonS3+","+bucketName);
         this.amazonS3 = amazonS3;
         this.bucketName = bucketName;
     }

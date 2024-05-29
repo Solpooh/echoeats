@@ -129,6 +129,13 @@
                     displayData += "<div id='collapseOne" + FaqDto.faq_id + "' class='collapse' data-parent='#accordion'>";
                     displayData += "<div class='card-body'>";
                     displayData += "<div class='card_answer'>";
+                    // 이미지가 있는 경우 이미지를 추가
+                    if (FaqDto.imageList && FaqDto.imageList.length > 0) {
+                        for (let image of FaqDto.imageList) {
+                            let fileCallPath = encodeURIComponent(image.uploadPath + "/s_" + image.uuid + "_" + image.fileName);
+                            displayData += "<img src='/board/display?fileName=" + fileCallPath + "'>";
+                        }
+                    }
                     displayData += FaqDto.faq_con
                     displayData += "</div>";
                     displayData += "</div></div>";
