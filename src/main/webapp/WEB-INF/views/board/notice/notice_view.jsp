@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:scriptlet> pageContext.setAttribute("newline", "\n"); </jsp:scriptlet>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!-- 공지사항 상세 조회 페이지 -->
@@ -8,66 +9,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>공지사항 - 컬리</title>
-  <%@ include file="../include/bootstrap.jspf" %>
+  <%@ include file="../../include/bootstrap.jspf" %>
   <header>
-    <%@ include file="../include/header.jspf" %>
+    <%@ include file="../../include/header.jspf" %>
   </header>
-  <link rel="stylesheet" href="/resources/product/css/main-css.css">
-  <style>
-    h4 {
-      font-weight: bolder;
-      font-size: 28px;
-    }
-    p {
-      vertical-align: middle;
-      font-size: 14px;
-    }
-    .table {
-      width: 100%;
-      text-align: center;
-      border: black;
-    }
-    tbody {
-      border-bottom: 1px solid rgb(244, 244, 244);
-    }
-    tbody td {
-      height: 50px;
-      font-size: 14px;
-      font-weight: bolder;
-    }
-    tfoot td {
-      font-size: 14px;
-      text-align: left;
-      letter-spacing: -0.8px;
-      word-spacing: 2px;
-      font-weight: 500;
-    }
-    .date {
-      color: black;
-    }
-    .main {
-      padding-bottom: 24px;
-      padding-top: 10px;
-      text-align: center;
-    }
-
-    .list_btn {
-      padding: 0px 10px;
-      text-align: center;
-      overflow: hidden;
-      width: 120px;
-      height: 44px;
-      border-radius: 3px;
-      color: rgb(255, 255, 255);
-      background-color: #4CAF50;
-      border: 0px none;
-      font-size: 13px;
-      float: right;
-    }
-    .list_btn:hover {
-      background-color: #7F208D;
-    }
-  </style>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/product/css/main-css.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/board.css">
 </head>
 <body>
 
@@ -98,7 +45,7 @@
             <td class="tbody_td" style="width: 10%; background-color: #4CAF50; vertical-align: middle; text-align: left; padding-left: 20px;">
               작성일</td>
             <td class="date"style="text-align: left; vertical-align: middle; letter-spacing: -1px; padding-left: 20px;">
-              ${notice.notice_date }</td>
+              <fmt:formatDate value="${notice.notice_date}" pattern="yyyy-MM-dd HH:mm" /></td>
           </tr>
           </tbody>
           <tfoot>
@@ -117,6 +64,6 @@
 </div>
 </body>
 <footer>
-  <%@ include file="../include/footer.jspf" %>
+  <%@ include file="../../include/footer.jspf" %>
 </footer>
 </html>

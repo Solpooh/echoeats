@@ -8,16 +8,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoEats-FAQ 관리페이지</title>
-    <%@ include file="../include/bootstrap.jspf" %>
+    <%@ include file="../../include/bootstrap.jspf" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/product/css/main-css.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/projectPratice.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/board.css">
 </head>
 <body>
 <header>
-    <%@ include file="../include/header.jspf" %>
+    <%@ include file="../../include/header.jspf" %>
 </header>
 <sec:authorize access="hasAuthority('ADMIN')">
-<%@ include file="../include/boardMenu.jspf" %>
+<%@ include file="../../include/boardMenu.jspf" %>
 <div class="board"> <!--게시판 (화면 중앙)-->
     <div class="board-top"> <!--게시판 상단1-->
         <div class="board-top-content">
@@ -210,6 +210,6 @@
 </script>
 
 <footer>
-    <%@ include file="../include/footer.jspf" %>
+    <%@ include file="../../include/footer.jspf" %>
 </footer>
 </html>

@@ -1,6 +1,5 @@
 package com.pofol.main.board.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pofol.main.board.domain.FaqDto;
 import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.domain.ImageUpload;
@@ -15,7 +14,6 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -39,13 +37,13 @@ public class FaqController {
     // FAQ 사용자 페이지
     @RequestMapping(value = "/faq")
     public String faqPage() {
-        return "board/faq";
+        return "board/faq/faq";
     }
 
     // FAQ 관리자 페이지
     @RequestMapping("/faq_admin")
     public String faq_admin() {
-        return "board/faq_admin";
+        return "board/faq/faq_admin";
     }
 
     // FAQ 목록
@@ -81,12 +79,11 @@ public class FaqController {
             FaqDto faq = faqService.selectFaq(dto.getFaq_id());
             List<ImageDto> imageList = faqService.getImageList(dto.getFaq_id());
             faq.setImageList(imageList);
-            System.out.println("faq = " + faq);
             m.addAttribute("faq", faq);
         }
 
         m.addAttribute("mode", mode);
-        return "board/faq_write";
+        return "board/faq/faq_write";
     }
 
     // FAQ 등록, 수정

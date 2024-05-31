@@ -91,7 +91,7 @@
                             </a>
                             <div class="collapse" id="boardCollapse" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="/admin1/notice">공지사항 관리</a>
+                                    <a class="nav-link" href="/admin/notice">공지사항 관리</a>
                                     <a class="nav-link" href="#">자주받는 질문 관리</a>
                                     <a class="nav-link" href="#">1:1 문의 관리</a>
                                 </nav>

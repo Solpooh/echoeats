@@ -9,12 +9,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EcoEats-FAQ 등록</title>
-  <%@ include file="../include/bootstrap.jspf" %>
+  <%@ include file="../../include/bootstrap.jspf" %>
   <link rel="stylesheet" href="/resources/product/css/main-css.css">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/projectPratice.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/board.css">
 </head>
 <body>
-<%@ include file="../include/header.jspf" %>
+<%@ include file="../../include/header.jspf" %>
 <div class="container-fluid">
   <div class="row" style="padding-top:50px; padding-bottom: 50px">
     <div class="col-sm-2"></div>
@@ -75,7 +75,7 @@
     <div class="col-sm-2"></div>
   </div>
 </div>
-<%@ include file="../include/footer.jspf" %>
+<%@ include file="../../include/footer.jspf" %>
 <script>
   // 페이지 로딩 후 이미지를 표시
   $(document).ready(function() {

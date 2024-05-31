@@ -6,9 +6,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>공지사항 - 에코잇츠</title>
-  <%@ include file="../include/bootstrap.jspf" %>
+  <%@ include file="../../include/bootstrap.jspf" %>
   <header>
-    <%@ include file="../include/header.jspf" %>
+    <%@ include file="../../include/header.jspf" %>
   </header>
   <style>
     h4 {
@@ -126,10 +126,10 @@
   function check_notice() {
     var frm = document.frm;
     console.log(frm);
-    if (frm.notice_title.value == "" || frm.notice_con.value == "") {
-      if (frm.notice_title.value == "") {
+    if (frm.notice_title.value === "" || frm.notice_con.value === "") {
+      if (frm.notice_title.value === "") {
         alert("제목을 입력해주세요.");
-      } else if (frm.notice_con.value == "") {
+      } else if (frm.notice_con.value === "") {
         alert("내용을 입력해주세요.");
       }
       return false;
@@ -142,6 +142,6 @@
 </body>
 
 <footer>
-  <%@ include file="../include/footer.jspf" %>
+  <%@ include file="../../include/footer.jspf" %>
 </footer>
 </html>

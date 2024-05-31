@@ -1,6 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<c:set var="today" value="<%= new java.util.Date() %>" />
+
 <!-- 공지사항 관리자 페이지 -->
 <html lang="ko">
 <head>
@@ -158,7 +161,7 @@
 </style>
 
 <body class="sb-nav-fixed">
-<%@ include file="../include/top_side_nav.jspf" %>
+<%@ include file="../../include/top_side_nav.jspf" %>
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -166,7 +169,7 @@
             <button class="notice_btn" onclick="location.href='notice_write'" type="button">등록하기</button>
             <div class="card">
                 <div class="card-body">
-                    <form action="<c:url value="/admin1/notice"/>" class="form-inline mb-4">
+                    <form action="<c:url value="/admin/notice"/>" class="form-inline mb-4">
                         <select class="form-control mr-2" name="option">
                             <option value="A" ${ph.sc.option=='A' || ph.sc.option=='' ? "selected" : ""}>제목+내용</option>
                             <option value="T" ${ph.sc.option=='T' ? "selected" : ""}>제목만</option>
@@ -190,20 +193,29 @@
                 </thead>
                 <tbody>
                 <c:forEach var="notice" items="${list}">
+                    <c:set var="isToday" value="${fn:substring(today, 0, 10) eq fn:substring(notice.notice_date, 0, 10)}" />
                     <tr>
                         <td>${notice.notice_id}</td>
                         <td>
                             <a class="n_title"
-                               href="notice_view?notice_id=${notice.notice_id}">${notice.notice_title}</a>
+                               href="notice_view?notice_id=${notice.notice_id}&page=${page}&pageSize=${pageSize}">${notice.notice_title}</a>
                         </td>
                         <td>에코잇츠</td>
-                        <td class="date"><fmt:formatDate value="${notice.notice_date}" pattern="yyyy-MM-dd"
-                                                         type="date"/></td>
+                        <td class="date">
+                            <c:choose>
+                                <c:when test="${isToday}">
+                                    <fmt:formatDate value="${notice.notice_date}" pattern="HH:mm" />
+                                </c:when>
+                                <c:otherwise>
+                                    <fmt:formatDate value="${notice.notice_date}" pattern="yyyy-MM-dd" />
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                         <td>
                             <form id="form" class="frm" action="" method="post">
                             <!-- 수정, 삭제 버튼 -->
                                 <button class="modify_btn" type="button"
-                                        onclick="location.href='notice_modify?notice_id=${notice.notice_id }'">수정하기
+                                        onclick="location.href='notice_modify?notice_id=${notice.notice_id }&page=${page}&pageSize=${pageSize}'">수정하기
                                 </button>
                                 <button class="delete_btn" type="button" onclick="notice_delete(${notice.notice_id})">삭제하기</button>
                             </form>
@@ -222,14 +234,14 @@
                     <c:if test="${ph.totalCnt!=null && ph.totalCnt!=0}">
                         <c:if test="${ph.showPrev}">
                             <a class="page"
-                               href="<c:url value='/admin1/notice${ph.sc.getQueryString(ph.beginPage-1)}'/>">&lt;</a>
+                               href="<c:url value='/admin/notice${ph.sc.getQueryString(ph.beginPage-1)}'/>">&lt;</a>
                         </c:if>
                         <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
                             <a class="page ${i==ph.sc.page? "paging-active" : ""}"
-                               href="<c:url value='/admin1/notice${ph.sc.getQueryString(i)}'/>">${i}</a>
+                               href="<c:url value='/admin/notice${ph.sc.getQueryString(i)}'/>">${i}</a>
                         </c:forEach>
                         <c:if test="${ph.showNext}">
-                            <a class="page" href="<c:url value='/admin1/notice${ph.sc.getQueryString(ph.endPage+1)}'/>">&gt;</a>
+                            <a class="page" href="<c:url value='/admin/notice${ph.sc.getQueryString(ph.endPage+1)}'/>">&gt;</a>
                         </c:if>
                     </c:if>
                 </div>
@@ -239,10 +251,10 @@
 </div>
 <script>
     function notice_delete(notice_id) {
-        if (confirm("정말 삭제하시겠습니까??") == true) {    //확인
-            location.href = "deleteNotice?notice_id=" + notice_id  //공지사항 삭제 요청
-        } else {   //취소
+        if (!confirm("정말 삭제하시겠습니까??")) {
             return false;
+        } else {
+            location.href = "deleteNotice?notice_id=" + notice_id + "&page=" + ${page} + "&pageSize=" + ${pageSize};
         }
     }
 </script>

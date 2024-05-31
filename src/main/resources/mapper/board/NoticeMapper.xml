@@ -18,13 +18,13 @@
 
     <insert id="insertNotice" parameterType="NoticeDto">
         INSERT INTO notice (notice_id,notice_title,notice_con,notice_date)
-        VALUES (#{notice_id}, #{notice_title},#{notice_con},DATE_FORMAT(NOW(), '%Y-%m-%d'))
+        VALUES (#{notice_id}, #{notice_title},#{notice_con}, now())
     </insert>
 
     <update id="updateNotice" parameterType="NoticeDto">
         UPDATE notice
         SET notice_title = #{notice_title},
-            notice_con = #{notice_con}
+            notice_con = #{notice_con},
         WHERE notice_id = #{notice_id}
     </update>
 

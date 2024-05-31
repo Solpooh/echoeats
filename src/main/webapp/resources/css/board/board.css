@@ -32,6 +32,7 @@
     border: 1px solid #f2f2f2;
     margin: 0px;
     padding: 0px;
+
 }
 
 .left-menu-list {
@@ -622,5 +623,171 @@ h4 span {
     border: none;
     display: block;
     cursor: pointer;
+}
+/* notice css */
+.table th {
+    padding: 10px;
+    font-size: 11pt;
+    vertical-align: middle;
+}
+
+.table td {
+    font-size: 10.5pt;
+    height: 55px;
+    padding-top: 17px;
+    border-bottom: 1px solid lightgray;
+}
+
+.date {
+    color: gray;
+}
+
+.n_title,
+.n_title:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.board-container {
+    width: 100%;
+    height: 90px;
+    margin: 0 auto;
+}
+
+.search-container {
+    background-color: white;
+    width: 60%;
+    height: 60px;
+    border: 1px solid #4CAF50;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-form {
+    height: 37px;
+    display: flex;
+}
+
+.search-option {
+    width: 100px;
+    height: 100%;
+    outline: none;
+    margin-right: 5px;
+    border: 1px solid #4CAF50;
+    color: #4CAF50;
+}
+
+.search-option > option {
+    text-align: center;
+}
+
+.search-input {
+    color: gray;
+    background-color: white;
+    border: 1px solid #4CAF50;
+    height: 100%;
+    width: 300px;
+    font-size: 15px;
+    padding: 5px 7px;
+}
+
+.search-input::placeholder {
+    color: #4CAF50;
+}
+
+.search-button {
+    /* 메뉴바의 검색 버튼 아이콘  */
+    width: 20%;
+    height: 100%;
+    background-color: #4CAF50;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+}
+
+.search-button:hover {
+    color: #45a049;
+}
+
+.paging {
+    color: black;
+    width: 100%;
+    align-items: center;
+}
+
+.page {
+    color: black;
+    padding: 6px;
+    margin-right: 10px;
+}
+
+.paging-active {
+    background-color: #4CAF50;
+    border-radius: 5px;
+    color: rgb(24, 24, 24);
+}
+
+.paging-container {
+    width: 100%;
+    height: 70px;
+    display: flex;
+}
+h4 {
+    font-weight: bolder;
+    font-size: 28px;
+}
+p {
+    vertical-align: middle;
+    font-size: 14px;
+}
+.table {
+    width: 100%;
+    text-align: center;
+    border: black;
+}
+tbody {
+    border-bottom: 1px solid rgb(244, 244, 244);
+}
+tbody td {
+    height: 50px;
+    font-size: 14px;
+    font-weight: bolder;
+}
+tfoot td {
+    font-size: 14px;
+    text-align: left;
+    letter-spacing: -0.8px;
+    word-spacing: 2px;
+    font-weight: 500;
+}
+.date {
+    color: black;
+}
+.main {
+    padding-bottom: 24px;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.list_btn {
+    padding: 0px 10px;
+    text-align: center;
+    overflow: hidden;
+    width: 120px;
+    height: 44px;
+    border-radius: 3px;
+    color: rgb(255, 255, 255);
+    background-color: #4CAF50;
+    border: 0px none;
+    font-size: 13px;
+    float: right;
+}
+.list_btn:hover {
+    background-color: #7F208D;
 }
 

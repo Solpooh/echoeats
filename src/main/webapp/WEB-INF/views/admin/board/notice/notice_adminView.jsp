@@ -71,7 +71,7 @@
     </style>
 </head>
 <body class="sb-nav-fixed">
-<%@ include file="../include/top_side_nav.jspf" %>
+<%@ include file="../../include/top_side_nav.jspf" %>
 <div class="container-fluid">
     <div class="row" style="padding-top:50px; padding-bottom: 50px">
         <div class="col-sm-2"></div>
@@ -99,7 +99,7 @@
                         <td class="tbody_td" style="width: 10%; background-color: #4CAF50; vertical-align: middle; text-align: left; padding-left: 20px;">
                             작성일</td>
                         <td class="date"style="text-align: left; vertical-align: middle; letter-spacing: -1px; padding-left: 20px;">
-                            <fmt:formatDate value="${notice.notice_date}" pattern="yyyy-MM-dd" /></td>
+                            <fmt:formatDate value="${notice.notice_date}" pattern="yyyy-MM-dd HH:mm" /></td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -111,7 +111,7 @@
                     </tfoot>
                 </table>
             </div>
-            <button class="list_btn" type="button" onclick="location.href='/admin1/notice?page=${page}&pageSize=${pageSize}'">목록</button>
+            <button class="list_btn" type="button" onclick="location.href='/admin/notice?page=${page}&pageSize=${pageSize}'">목록</button>
         </div>
     </div>
     <div class="col-sm-2"></div>
