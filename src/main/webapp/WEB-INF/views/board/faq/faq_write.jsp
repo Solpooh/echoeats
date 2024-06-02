@@ -8,9 +8,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoEats-FAQ 등록</title>
+  <title>FAQ 등록</title>
   <%@ include file="../../include/bootstrap.jspf" %>
-  <link rel="stylesheet" href="/resources/product/css/main-css.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/product/css/main-css.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/board.css">
 </head>
 <body>
@@ -29,7 +29,9 @@
             <th style="width: 10%; vertical-align: middle; border-color: white;">제목</th>
             <th style="vertical-align: middle; border-bottom-color: white;">
               <input type="hidden" name="mode" value="${mode}">
+              <c:if test="${mode == 'edit'}">
               <input type="hidden" name="faq_id" value="${faq.faq_id}">
+              </c:if>
               <input type="text" class="title" name="faq_title" value="${mode == 'new' ? '' : faq.faq_title}">
             </th>
           </tr>
@@ -67,8 +69,12 @@
           </div>
         </div>
         <div style="text-align: right;">
-          <button class="back_btn" type="button" onclick="location.href='${pageContext.request.contextPath}/board/faq_admin'">취소</button>
-          <button class="notice_btn" type="submit" onclick="saveFaq(event)">${mode == 'new' ? '등록' : '수정'}</button>
+          <button class="back_btn" type="button" onclick="location.href='${pageContext.request.contextPath}/board/faq_admin'">
+            취소
+          </button>
+          <button class="notice_btn" type="submit" onclick="saveFaq()">
+            ${mode == 'new' ? '등록' : '수정'}
+          </button>
         </div>
       </form>
     </div>
@@ -82,14 +88,14 @@
     <c:if test="${mode == 'edit'}">
       let faq_id = '<c:out value="${faq.faq_id}"/>';
       let uploadResult = $("#uploadResult");
-      $.getJSON("/board/getImageList", {faq_id : faq_id}, function (data) {
+      $.getJSON("/getImageList", {faq_id : faq_id}, function (data) {
         console.log(data);
 
         let str = "";
         data.forEach((obj, index) => {
         let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
           str += "<div id='result_card'>";
-          str += "<img src='/board/display?fileName=" + fileCallPath + "'>";
+          str += "<img src='/display?fileName=" + fileCallPath + "'>";
           str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
           str += "<input type='hidden' name='imageList[" + index + "].fileName' value='" + obj.fileName + "'>";
           str += "<input type='hidden' name='imageList[" + index + "].uuid' value='" + obj.uuid + "'>";
@@ -113,8 +119,8 @@
     }
   });
 
-  function saveFaq(event) {
-    event.preventDefault();
+  function saveFaq() {
+    // event.preventDefault();
 
     let frm = document.frm;
 
@@ -159,7 +165,7 @@
     }
 
     $.ajax({
-      url: '/board/uploadImage',
+      url: '/uploadImage',
       processData: false,
       contentType: false,
       data: formData,
@@ -175,7 +181,6 @@
     });
   });
 
-  // mode가 new일 때만??
   function showUploadImage(data) {
     if (!data || data.length === 0) return;
 
@@ -186,7 +191,7 @@
       let str = "";
 
       str += "<div id='result_card'>";
-      str += "<img src='/board/display?fileName=" + fileCallPath + "'>";
+      str += "<img src='/display?fileName=" + fileCallPath + "'>";
       str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
       str += "<input type='hidden' name='imageList[" + index + "].fileName' value='" + obj.fileName + "'>";
       str += "<input type='hidden' name='imageList[" + index + "].uuid' value='" + obj.uuid + "'>";
@@ -205,32 +210,5 @@
     $("#result_card").remove();
   }
 
-  // /* 파일 삭제 메서드 */
-  // function deleteFile(){
-  //   let targetFile = $(".imgDeleteBtn").data("file");
-  //
-  //   let targetDiv = $("#result_card");
-  //
-  //   $.ajax({
-  //     url: '/board/deleteFile',
-  //     data : {
-  //       fileName : targetFile
-  //     },
-  //     dataType : 'text',
-  //     type : 'POST',
-  //     success : function(result){
-  //       console.log(result);
-  //
-  //       targetDiv.remove();
-  //       $("input[type='file']").val("");
-  //
-  //     },
-  //     error : function(result){
-  //       console.log(result);
-  //
-  //       alert("파일을 삭제하지 못하였습니다.")
-  //     }
-  //   });
-  // }
 </script>
 </html>

@@ -175,7 +175,7 @@
                   if (FaqDto.imageList && FaqDto.imageList.length > 0) {
                       for (let image of FaqDto.imageList) {
                           let fileCallPath = encodeURIComponent(image.uploadPath + "/s_" + image.uuid + "_" + image.fileName);
-                          displayData += "<img src='/board/display?fileName=" + fileCallPath + "'>";
+                          displayData += "<img src='/display?fileName=" + fileCallPath + "'>";
                       }
                   }
                   // FAQ 내용을 추가
