@@ -1,10 +1,12 @@
 package com.pofol.main.board.service;
 
+import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.domain.NoticeDto;
 import com.pofol.main.board.domain.SearchBoardCondition;
 import com.pofol.main.board.repository.NoticeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -17,47 +19,117 @@ public class NoticeServiceImpl implements NoticeService {
         this.noticeRepository = noticeRepository;
     }
     @Override
-    public int insertNotice(NoticeDto dto) throws Exception {
-        return noticeRepository.insertNotice(dto);
+    @Transactional
+    public int insertNotice(NoticeDto dto) {
+        try {
+            int result = noticeRepository.insertNotice(dto);
+            List<ImageDto> imageList = dto.getImageList();
+            if (imageList != null && !imageList.isEmpty()) {
+                for (ImageDto imageDto : imageList) {
+                    imageDto.setItem_id(dto.getNotice_id()); // 외래 키 설정
+                    imageDto.setMode("notice"); // 모드 설정
+                    noticeRepository.imageInsert(imageDto);
+                }
+            }
+            return result;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public int updateNotice(NoticeDto dto) throws Exception {
-        return noticeRepository.updateNotice(dto);
+    @Transactional
+    public int updateNotice(NoticeDto dto) {
+        try {
+            int result = noticeRepository.updateNotice(dto);
+            List<ImageDto> imageList = dto.getImageList();
+            if (result == 1 && imageList != null && !imageList.isEmpty()) {
+                // 일단 이미지 모두 삭제
+                noticeRepository.deleteImageAll(dto.getNotice_id());
+                for (ImageDto imageDto : imageList) {
+                    imageDto.setItem_id(dto.getNotice_id()); // 외래 키 설정
+                    imageDto.setMode("notice");
+                    noticeRepository.imageInsert(imageDto);
+                }
+            }
+            return result;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public int deleteNotice(NoticeDto dto) throws Exception {
-        return noticeRepository.deleteNotice(dto);
+    public List<ImageDto> getImageList(int item_id, String mode) {
+        try {
+            return noticeRepository.getImageList(item_id, mode);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public NoticeDto getNotice(NoticeDto dto) throws Exception {
-        return noticeRepository.getNotice(dto);
+    @Transactional
+    public int deleteNotice(NoticeDto dto) {
+        try {
+            noticeRepository.deleteImageAll(dto.getNotice_id());
+            return noticeRepository.deleteNotice(dto);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public List<NoticeDto> getNoticeList(NoticeDto dto) throws Exception {
-        return noticeRepository.getNoticeList(dto);
+    public NoticeDto getNotice(NoticeDto dto) {
+        try {
+            return noticeRepository.getNotice(dto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
-    public int countNotice(NoticeDto dto) throws Exception {
-        return noticeRepository.count(dto);
+    public List<NoticeDto> getNoticeList(NoticeDto dto) {
+        try {
+            return noticeRepository.getNoticeList(dto);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public List<NoticeDto> getPage(Map map) throws Exception {
-        return noticeRepository.selectPage(map);
+    public int countNotice(NoticeDto dto) {
+        try {
+            return noticeRepository.count(dto);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     @Override
-    public int getSearchResultCnt(SearchBoardCondition sc) throws Exception {
-        return noticeRepository.searchResultCnt(sc);
+    public List<NoticeDto> getPage(Map map) {
+        try {
+            return noticeRepository.selectPage(map);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public List<NoticeDto> getSearchResultPage(SearchBoardCondition sc) throws Exception {
-        return noticeRepository.searchSelectPage(sc);
+    public int getSearchResultCnt(SearchBoardCondition sc) {
+        try {
+            return noticeRepository.searchResultCnt(sc);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<NoticeDto> getSearchResultPage(SearchBoardCondition sc) {
+        try {
+            return noticeRepository.searchSelectPage(sc);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

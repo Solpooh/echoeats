@@ -1,5 +1,6 @@
 package com.pofol.main.board.controller;
 
+import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.domain.NoticeDto;
 import com.pofol.main.board.domain.PageHandler;
 import com.pofol.main.board.domain.SearchBoardCondition;
@@ -19,6 +20,11 @@ public class NoticeController {
         this.noticeService = noticeService;
     }
 
+//    @ExceptionHandler(RuntimeException.class)
+//    public String handleRuntimeException(RuntimeException e, Model m) {
+//        m.addAttribute("errorMessage", e.getMessage());
+//        return "errorPage"; // error 페이지로 리디렉션
+//    }
     // 공지사항 조회 페이지
     @GetMapping(value = "/notice")
     public String notice(SearchBoardCondition sc, Model m) throws Exception {
@@ -46,6 +52,8 @@ public class NoticeController {
         // 이전 페이지의 검색 조건을 유지하기 위해 현재 페이지 정보를 이전 페이지의 페이지 정보로 설정
 
         NoticeDto notice = noticeService.getNotice(dto);
+        List<ImageDto> imageList = noticeService.getImageList(dto.getNotice_id(), "notice");
+        notice.setImageList(imageList);
         m.addAttribute("notice", notice);
         m.addAttribute("page", sc.getPage());
         m.addAttribute("pageSize", sc.getPageSize());

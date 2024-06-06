@@ -135,6 +135,7 @@
                             let fileCallPath = encodeURIComponent(image.uploadPath + "/s_" + image.uuid + "_" + image.fileName);
                             displayData += "<img src='/display?fileName=" + fileCallPath + "'>";
                         }
+                        displayData += "<br/><br/>"
                     }
                     displayData += FaqDto.faq_con
                     displayData += "</div>";

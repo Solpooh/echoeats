@@ -1,6 +1,5 @@
 package com.pofol.main.board.domain;
 
-
 public class ImageDto {
     /* 경로 */
     private String uploadPath;
@@ -12,8 +11,12 @@ public class ImageDto {
     private String fileName;
 
     /* 게시물 id */
-    private int faq_id;
+    private int item_id;
 
+    /* 모드 (faq 또는 notice) */
+    private String mode;
+
+    // Getters and Setters
 
     public String getUploadPath() {
         return uploadPath;
@@ -39,21 +42,19 @@ public class ImageDto {
         this.fileName = fileName;
     }
 
-    public int getFaq_id() {
-        return faq_id;
+    public int getItem_id() {
+        return item_id;
     }
 
-    public void setFaq_id(int faq_id) {
-        this.faq_id = faq_id;
+    public void setItem_id(int item_id) {
+        this.item_id = item_id;
     }
 
-    @Override
-    public String toString() {
-        return "ImageDto{" +
-                "uploadPath='" + uploadPath + '\'' +
-                ", uuid='" + uuid + '\'' +
-                ", fileName='" + fileName + '\'' +
-                ", faq_id=" + faq_id +
-                '}';
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 }

@@ -21,7 +21,7 @@ public interface FaqRepository {
     /* 이미지 등록 */
     int imageInsert(ImageDto dto) throws Exception;
     /* 이미지 데이터 반환 */
-    List<ImageDto> getImageList(int faq_id) throws Exception;
+    List<ImageDto> getImageList(int faq_id, String mode) throws Exception;
     /* 지정 게시물 이미지 전체 삭제 */
     void deleteImageAll(int faq_id) throws Exception;
     /* 어제 날짜 이미지 가져오기 */

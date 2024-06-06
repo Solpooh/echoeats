@@ -5,6 +5,7 @@ import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.repository.FaqRepository;
 import com.pofol.main.board.repository.FaqRepositoryImpl;
 import com.pofol.main.board.service.FaqServiceImpl;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +49,11 @@ public class FaqServiceImplTest {
 //        int result = service.insertFaq(dto);
 //        System.out.println("dto = " + dto);
 //    }
+    @DisplayName("이미지 가져오기 테스트")
     @Test
     public void getImageListTest() throws Exception {
         int faq_id = 66;
-        System.out.println("repository = " + repository.getImageList(faq_id));
+        String mode = "faq";
+        System.out.println("repository = " + repository.getImageList(faq_id, mode));
     }
 }

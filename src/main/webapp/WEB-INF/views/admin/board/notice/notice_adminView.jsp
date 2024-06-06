@@ -104,7 +104,19 @@
                     </tbody>
                     <tfoot>
                     <tr style="border-top: 2px solid #FEF7FF;">
-                        <td colspan="2" style="padding-top: 25px; padding-bottom: 50px;">
+                        <td colspan="2" style="padding-top: 25px; padding-bottom: 50px; height: 350px;" >
+                            <%--이미지가 있으면 이미지 출력--%>
+                            <c:if test="${not empty notice.imageList}">
+                                <c:forEach var="image" items="${notice.imageList}">
+                                    <c:url var="fileCallPath" value="/display">
+                                        <c:param name="fileName" value="${image.uploadPath}/${image.uuid}_${image.fileName}" />
+                                    </c:url>
+                                    <img src="${fileCallPath}" alt="Notice Image">
+                                </c:forEach>
+                                <br/><br/>
+                            </c:if>
+
+                            <%--내용 출력--%>
                             <c:out value="${fn:replace(notice.notice_con, newline, '<br>')}" escapeXml="false"/>
                         </td>
                     </tr>

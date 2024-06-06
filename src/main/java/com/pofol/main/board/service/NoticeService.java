@@ -1,5 +1,6 @@
 package com.pofol.main.board.service;
 
+import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.domain.NoticeDto;
 import com.pofol.main.board.domain.SearchBoardCondition;
 
@@ -16,4 +17,6 @@ public interface NoticeService {
     List<NoticeDto> getPage(Map map) throws Exception;
     int getSearchResultCnt(SearchBoardCondition sc) throws Exception;
     List<NoticeDto> getSearchResultPage(SearchBoardCondition sc) throws Exception;
+    List<ImageDto> getImageList(int item_id, String mode) throws Exception;
+
 }

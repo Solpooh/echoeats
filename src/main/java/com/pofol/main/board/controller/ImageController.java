@@ -86,7 +86,7 @@ public class ImageController {
 
     // 이미지 리스트 반환
     @GetMapping(value = "/getImageList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<ImageDto>> getImageList(int faq_id) {
-        return new ResponseEntity<>(faqService.getImageList(faq_id), HttpStatus.OK);
+    public ResponseEntity<List<ImageDto>> getImageList(int item_id, String mode) {
+        return new ResponseEntity<>(faqService.getImageList(item_id, mode), HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.pofol.main.board.repository;
 
+import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.domain.NoticeDto;
 import com.pofol.main.board.domain.SearchBoardCondition;
 
@@ -16,4 +17,11 @@ public interface NoticeRepository {
     List<NoticeDto> selectPage(Map map) throws Exception;
     int searchResultCnt(SearchBoardCondition sc) throws Exception;
     List<NoticeDto> searchSelectPage(SearchBoardCondition sc) throws Exception;
+
+    int imageInsert(ImageDto dto) throws Exception;
+    List<ImageDto> getImageList(int notice_id, String mode) throws Exception;
+
+    void deleteImageAll(int notice_id) throws Exception;
+
+    List<ImageDto> checkFileList() throws Exception;
 }

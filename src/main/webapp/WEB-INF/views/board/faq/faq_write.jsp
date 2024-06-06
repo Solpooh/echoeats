@@ -57,6 +57,7 @@
           </tr>
           </tbody>
         </table>
+        <!-- 이미지 input 추가 -->
         <div class="form-section">
           <div class="form_section_title">
             <label></label>
@@ -86,9 +87,9 @@
   // 페이지 로딩 후 이미지를 표시
   $(document).ready(function() {
     <c:if test="${mode == 'edit'}">
-      let faq_id = '<c:out value="${faq.faq_id}"/>';
+      let item_id = '<c:out value="${faq.faq_id}"/>';
       let uploadResult = $("#uploadResult");
-      $.getJSON("/getImageList", {faq_id : faq_id}, function (data) {
+      $.getJSON("/getImageList", {item_id: item_id, mode: "faq"}, function (data) {
         console.log(data);
 
         let str = "";

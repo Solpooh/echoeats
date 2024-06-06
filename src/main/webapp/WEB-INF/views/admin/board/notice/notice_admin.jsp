@@ -212,7 +212,7 @@
                             </c:choose>
                         </td>
                         <td>
-                            <form id="form" class="frm" action="" method="post">
+                            <form id="form" class="form" method="post">
                             <!-- 수정, 삭제 버튼 -->
                                 <button class="modify_btn" type="button"
                                         onclick="location.href='notice_modify?notice_id=${notice.notice_id }&page=${page}&pageSize=${pageSize}'">수정하기
@@ -251,10 +251,12 @@
 </div>
 <script>
     function notice_delete(notice_id) {
-        if (!confirm("정말 삭제하시겠습니까??")) {
+        let frm = document.getElementById('form');
+        if (!confirm("정말 삭제하시겠습니까?")) {
             return false;
         } else {
-            location.href = "deleteNotice?notice_id=" + notice_id + "&page=" + ${page} + "&pageSize=" + ${pageSize};
+            frm.action = "deleteNotice?notice_id=" + notice_id + "&page=" + ${page} + "&pageSize=" + ${pageSize};
+            frm.submit(); // 폼 제출을 잊지 마세요.
         }
     }
 </script>

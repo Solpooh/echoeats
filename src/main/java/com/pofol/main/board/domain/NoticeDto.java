@@ -1,12 +1,25 @@
 package com.pofol.main.board.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class NoticeDto {
     private int notice_id;
     private String notice_title;
     private String notice_con;
     private Date notice_date;
+
+    private List<ImageDto> imageList;
+    public NoticeDto() {}
+
+    public NoticeDto(int notice_id, String notice_title, String notice_con, Date notice_date, List<ImageDto> imageList) {
+        this.notice_id = notice_id;
+        this.notice_title = notice_title;
+        this.notice_con = notice_con;
+        this.notice_date = notice_date;
+        this.imageList = imageList;
+    }
 
     public int getNotice_id() {
         return notice_id;
@@ -40,6 +53,14 @@ public class NoticeDto {
         this.notice_date = notice_date;
     }
 
+    public List<ImageDto> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<ImageDto> imageList) {
+        this.imageList = imageList;
+    }
+
     @Override
     public String toString() {
         return "NoticeDto{" +
@@ -47,6 +68,7 @@ public class NoticeDto {
                 ", notice_title='" + notice_title + '\'' +
                 ", notice_con='" + notice_con + '\'' +
                 ", notice_date=" + notice_date +
+                ", imageList=" + imageList +
                 '}';
     }
 }

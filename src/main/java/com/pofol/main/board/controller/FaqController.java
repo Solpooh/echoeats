@@ -75,7 +75,7 @@ public class FaqController {
                             Model m) {
         if ("edit".equals(mode)) {
             FaqDto faq = faqService.selectFaq(dto.getFaq_id());
-            List<ImageDto> imageList = faqService.getImageList(dto.getFaq_id());
+            List<ImageDto> imageList = faqService.getImageList(dto.getFaq_id(), "faq");
             faq.setImageList(imageList);
             m.addAttribute("faq", faq);
         }
@@ -84,7 +84,7 @@ public class FaqController {
         return "board/faq/faq_write";
     }
 
-    // FAQ 등록, 수정
+    // FAQ 등록, 수정 => 수정 후에 페이지 유지하기
     @PostMapping("/saveFaq")
     public String saveFaq(FaqDto dto,
                           @RequestParam String mode) {
@@ -96,74 +96,13 @@ public class FaqController {
         return "redirect:/board/faq_admin";
     }
 
-//    // 서버에 이미지 저장
-//    @PostMapping(value = "/uploadImage", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public ResponseEntity<List<ImageDto>> uploadAjaxActionPOST(MultipartFile[] uploadFile) {
-//        List<ImageDto> list = imageUpload.handleFileUpload(uploadFile);
-//
-//        // 이미지 파일이 아닌 경우 처리
-//        if (list.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//        return new ResponseEntity<>(list, HttpStatus.OK);
-//    }
-//
-//    // 이미지 출력
-//    @GetMapping("/display")
-//    public ResponseEntity<byte[]> getImage(String fileName){
-//        File file = new File("C:\\upload\\" + fileName);
-//        ResponseEntity<byte[]> result = null;
-//
-//        try {
-//            HttpHeaders header = new HttpHeaders();
-//            // content-type 확실하게 명시
-//            header.add("Content-type", Files.probeContentType(file.toPath()));
-//            result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-//        }catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return result;
-//    }
-//
-//    /* 이미지 파일 삭제 */
-//    @PostMapping("/deleteFile")
-//    public ResponseEntity<String> deleteFile(String fileName){
-//        File file = null;
-//        System.out.println("deleteFile........" + fileName);
-//        try {
-//            /* 썸네일 파일 삭제 */
-//            file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
-//
-//            file.delete();
-//
-//            /* 원본 파일 삭제 */
-//            String originFileName = file.getAbsolutePath().replace("s_", "");
-//            file = new File(originFileName);
-//
-//            file.delete();
-//            System.out.println("originFileName : " + originFileName);
-//
-//        } catch(Exception e) {
-//            e.printStackTrace();
-//            return new ResponseEntity<String>("fail", HttpStatus.NOT_IMPLEMENTED);
-//
-//        }
-//        return new ResponseEntity<String>("success", HttpStatus.OK);
-//    }
-//
-//    // 이미지 리스트 반환
-//    @GetMapping(value = "/getImageList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public ResponseEntity<List<ImageDto>> getImageList(int faq_id) {
-//        return new ResponseEntity<>(faqService.getImageList(faq_id), HttpStatus.OK);
-//    }
-
-    // FAQ 삭제
+    // FAQ 삭제 => 삭제 후 페이지 유지하기
     @ResponseBody
-    @RequestMapping(value = "/deleteFaq", method = RequestMethod.POST)
+    @PostMapping("/deleteFaq")
     public ResponseEntity<?> deleteFaq(@RequestBody FaqDto dto) {
         int result = faqService.deleteFaq(dto);
 
-        List<ImageDto> fileList = faqService.getImageList(dto.getFaq_id());
+        List<ImageDto> fileList = faqService.getImageList(dto.getFaq_id(), "faq");
         if (fileList != null) {
             List<Path> pathList = new ArrayList<>();
             fileList.forEach(list -> {

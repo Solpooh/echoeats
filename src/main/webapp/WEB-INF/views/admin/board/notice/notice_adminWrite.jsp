@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link href="<c:url value='/resources/common/css/styles.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/admin/order/css/orderList.css' />" rel="stylesheet" />
+
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/@duetds/date-picker@1.4.0/dist/duet/duet.esm.js"></script>
@@ -69,6 +70,22 @@
         }
         .back_btn:hover {
             background-color: #7F208D;
+        }
+        .imgDeleteBtn{
+            position: absolute;
+            top: 0;
+            right: 5%;
+            background-color: #ef7d7d;
+            color: wheat;
+            font-weight: 900;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            line-height: 26px;
+            text-align: center;
+            border: none;
+            display: block;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -139,7 +156,6 @@
         }
     });
 
-    //제목,내용 미입력시 알림
     function check_notice() {
         let frm = document.frm;
         console.log(frm);
@@ -154,6 +170,82 @@
             frm.action="insertNotice"
             frm.submit();
         }
+    }
+
+    // 이미지
+    let regex = new RegExp("(.*?)\.(jpg|png)$");
+    let maxSize = 1048576; //1MB
+
+    function fileCheck(fileName, fileSize){
+        if(fileSize >= maxSize){
+            alert("파일 사이즈 초과");
+            return false;
+        }
+        if(!regex.test(fileName)){
+            alert("해당 종류의 파일은 업로드할 수 없습니다.");
+            return false;
+        }
+        return true;
+    }
+
+    $("input[type='file']").on("change", function(e) {
+        if ($(".imgDeleteBtn").length > 0) {
+            deleteFile(); // 필요에 따라 파일 삭제 처리
+        }
+
+        let formData = new FormData();
+        let fileInput = $('input[name="uploadFile"]');
+        let fileList = fileInput[0].files;
+        console.log(fileList);
+
+        for (let i = 0; i < fileList.length; i++) {
+            formData.append("uploadFile", fileList[i]);
+        }
+
+        $.ajax({
+            url: '/uploadImage',
+            processData: false,
+            contentType: false,
+            data: formData,
+            type: 'POST',
+            dataType: 'json',
+            success: function(result) {
+                console.log(result);
+                showUploadImage(result);
+            },
+            error: function(result) {
+                alert("이미지 파일이 아닙니다");
+            }
+        });
+    });
+
+    function showUploadImage(data) {
+        if (!data || data.length === 0) return;
+
+        let uploadResult = $("#uploadResult");
+        data.forEach((obj, index) => {
+            let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+
+            let str = "";
+
+            str += "<div id='result_card'>";
+            str += "<img src='/display?fileName=" + fileCallPath + "'>";
+            str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
+            str += "<input type='hidden' name='imageList[" + index + "].fileName' value='" + obj.fileName + "'>";
+            str += "<input type='hidden' name='imageList[" + index + "].uuid' value='" + obj.uuid + "'>";
+            str += "<input type='hidden' name='imageList[" + index + "].uploadPath' value='" + obj.uploadPath + "'>";
+            str += "</div>";
+
+            uploadResult.append(str);
+        });
+    }
+    // 동적으로 click event 거는 방법
+    $("#uploadResult").on("click", ".imgDeleteBtn", function(e){
+        deleteFile();
+    });
+
+    function deleteFile() {
+        $("#result_card").remove();
     }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

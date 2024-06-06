@@ -1,5 +1,6 @@
 package com.pofol.admin.board;
 
+import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.domain.NoticeDto;
 import com.pofol.main.board.domain.PageHandler;
 import com.pofol.main.board.domain.SearchBoardCondition;
@@ -48,6 +49,9 @@ public class AdminNoticeController {
         // 이전 페이지의 검색 조건을 유지하기 위해 현재 페이지 정보를 이전 페이지의 페이지 정보로 설정
 
         NoticeDto notice = noticeService.getNotice(dto);
+        List<ImageDto> imageList = noticeService.getImageList(dto.getNotice_id(), "notice");
+        notice.setImageList(imageList);
+
         m.addAttribute("notice", notice);
         m.addAttribute("page", sc.getPage());
         m.addAttribute("pageSize", sc.getPageSize());
@@ -65,6 +69,8 @@ public class AdminNoticeController {
     @GetMapping("/notice_modify")
     public String notice_modify(SearchBoardCondition sc, NoticeDto dto, Model m) throws Exception {
         NoticeDto notice = noticeService.getNotice(dto);
+        List<ImageDto> imageList = noticeService.getImageList(dto.getNotice_id(), "notice");
+        notice.setImageList(imageList);
         m.addAttribute("notice", notice);
         m.addAttribute("page", sc.getPage());
         m.addAttribute("pageSize", sc.getPageSize());
@@ -108,7 +114,14 @@ public class AdminNoticeController {
         작성했던 내용을 되살릴 수 있도록 구현
         + 자동 임시저장 기능??
         + 수정기능에서도 마찬가지임 !! */
-        noticeService.insertNotice(dto);
+        try {
+            int rowCnt = noticeService.insertNotice(dto);
+            if (rowCnt != 1)
+                throw new Exception("게시글 등록 실패");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return "redirect:/admin/notice";
     }

@@ -177,6 +177,7 @@
                           let fileCallPath = encodeURIComponent(image.uploadPath + "/s_" + image.uuid + "_" + image.fileName);
                           displayData += "<img src='/display?fileName=" + fileCallPath + "'>";
                       }
+                      displayData += "<br/><br/>"
                   }
                   // FAQ 내용을 추가
                   displayData += FaqDto.faq_con;

@@ -70,6 +70,32 @@
         .back_btn:hover {
             background-color: #7F208D;
         }
+        /* 이미지 관련 css */
+        #result_card img{
+            max-width: 100%;
+            height: auto;
+            display: block;
+            padding: 5px;
+        }
+        #result_card {
+            position: relative;
+        }
+        .imgDeleteBtn {
+            position: absolute;
+            top: 0;
+            right: 5%;
+            background-color: #ef7d7d;
+            color: wheat;
+            font-weight: 900;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            line-height: 26px;
+            text-align: center;
+            border: none;
+            display: block;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="sb-nav-fixed">
@@ -107,6 +133,18 @@
                         </tr>
                         </tbody>
                     </table>
+                    <!-- 이미지 input 추가 -->
+                    <div class="form-section">
+                        <div class="form_section_title">
+                            <label></label>
+                            <div class="form-section-content">
+                                <input type="file" id="fileItem" name="uploadFile" style="height: 30px;" multiple>
+                                <div id="uploadResult">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div style="text-align: right;">
                         <button class="back_btn" type="button" onclick="location.href='notice?notice_id=${notice.notice_id}&page=${page}&pageSize=${pageSize}'">취소</button>
                         <button class="modify_btn" type="button" onclick="check_notice(${notice.notice_id})">수정</button>
@@ -119,6 +157,25 @@
 
 <script>
     $(document).ready(function() {
+        let item_id = '<c:out value="${notice.notice_id}"/>';
+        let uploadResult = $("#uploadResult");
+        $.getJSON("/getImageList", {item_id: item_id, mode: "notice"}, function (data) {
+            console.log(data);
+
+            let str = "";
+            data.forEach((obj, index) => {
+                let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+                str += "<div id='result_card'>";
+                str += "<img src='/display?fileName=" + fileCallPath + "'>";
+                str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
+                str += "<input type='hidden' name='imageList[" + index + "].fileName' value='" + obj.fileName + "'>";
+                str += "<input type='hidden' name='imageList[" + index + "].uuid' value='" + obj.uuid + "'>";
+                str += "<input type='hidden' name='imageList[" + index + "].uploadPath' value='" + obj.uploadPath + "'>";
+                str += "</div>";
+
+                uploadResult.append(str);
+            })
+        });
         // 초기화 함수: 모든 .form-control 요소의 글자 수를 초기화
         $('.form-control').each(function() {
             let content = $(this).val();
@@ -159,6 +216,66 @@
             frm.action="updateNotice?notice_id=" + notice_id + "&page=" + ${page} + "&pageSize=" + ${pageSize};
             frm.submit();
         }
+    }
+
+    $("input[type='file']").on("change", function(e) {
+        if ($(".imgDeleteBtn").length > 0) {
+            deleteFile(); // 필요에 따라 파일 삭제 처리
+        }
+
+        let formData = new FormData();
+        let fileInput = $('input[name="uploadFile"]');
+        let fileList = fileInput[0].files;
+        console.log(fileList);
+
+        for (let i = 0; i < fileList.length; i++) {
+            formData.append("uploadFile", fileList[i]);
+        }
+
+        $.ajax({
+            url: '/uploadImage',
+            processData: false,
+            contentType: false,
+            data: formData,
+            type: 'POST',
+            dataType: 'json',
+            success: function(result) {
+                console.log(result);
+                showUploadImage(result);
+            },
+            error: function(result) {
+                alert("이미지 파일이 아닙니다");
+            }
+        });
+    });
+
+    function showUploadImage(data) {
+        if (!data || data.length === 0) return;
+
+        let uploadResult = $("#uploadResult");
+        data.forEach((obj, index) => {
+            let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+
+            let str = "";
+
+            str += "<div id='result_card'>";
+            str += "<img src='/display?fileName=" + fileCallPath + "'>";
+            str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
+            str += "<input type='hidden' name='imageList[" + index + "].fileName' value='" + obj.fileName + "'>";
+            str += "<input type='hidden' name='imageList[" + index + "].uuid' value='" + obj.uuid + "'>";
+            str += "<input type='hidden' name='imageList[" + index + "].uploadPath' value='" + obj.uploadPath + "'>";
+            str += "</div>";
+
+            uploadResult.append(str);
+        });
+    }
+    // 동적으로 click event 거는 방법
+    $("#uploadResult").on("click", ".imgDeleteBtn", function(e){
+        deleteFile();
+    });
+
+    function deleteFile() {
+        $("#result_card").remove();
     }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

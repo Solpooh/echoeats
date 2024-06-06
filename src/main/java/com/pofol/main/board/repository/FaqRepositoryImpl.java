@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,8 +61,11 @@ public class FaqRepositoryImpl implements FaqRepository {
     }
 
     @Override
-    public List<ImageDto> getImageList(int faq_id) {
-        return session.selectList(namespace + "getImageList", faq_id);
+    public List<ImageDto> getImageList(int item_id, String mode) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("item_id", item_id);
+        map.put("mode", mode);
+        return session.selectList(namespace + "getImageList", map);
     }
 
     @Override
@@ -70,7 +74,7 @@ public class FaqRepositoryImpl implements FaqRepository {
     }
 
     @Override
-    public List<ImageDto> checkFileList() throws Exception {
+    public List<ImageDto> checkFileList() {
         return session.selectList(namespace + "checkFileList");
     }
 
