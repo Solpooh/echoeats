@@ -2,6 +2,7 @@ package com.pofol.main.board.task;
 
 import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.repository.FaqRepositoryImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +13,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
+@RequiredArgsConstructor
 public class ImageFileCheckTask {
     private final FaqRepositoryImpl faqRepository;
 
-    public ImageFileCheckTask(FaqRepositoryImpl faqRepository) {
-        this.faqRepository = faqRepository;
-    }
     private String getYesFolder() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
@@ -25,6 +24,7 @@ public class ImageFileCheckTask {
         String str = sdf.format(cal.getTime());
         return str.replace("-", File.separator);
     }
+
     // 매일 새벽 1시에 수행
     @Scheduled(cron = "0 0 1 * * *")
     public void checkFiles() throws Exception {

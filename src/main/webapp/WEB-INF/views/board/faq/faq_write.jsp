@@ -2,16 +2,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
-<!-- FAQ 등록 페이지 -->
+<!-- FAQ 등록/수정 페이지 -->
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FAQ 등록</title>
   <%@ include file="../../include/bootstrap.jspf" %>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/product/css/main-css.css">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/board.css">
+  <link rel="stylesheet" href="${contextPath}/resources/product/css/main-css.css">
+  <link rel="stylesheet" href="${contextPath}/resources/css/board/board.css">
+  <style>
+    .main {
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 <%@ include file="../../include/header.jspf" %>
@@ -22,7 +28,7 @@
       <div class="main" style="border-bottom:2px solid black">
         <h4>FAQ ${mode == "new" ? "등록" : "수정"}</h4>
       </div>
-      <form name="frm" method="post" action="${pageContext.request.contextPath}/board/saveFaq">
+      <form name="frm" method="post" onsubmit="return saveFaq()">
         <table class="table">
           <thead>
           <tr style="height: 60px;">
@@ -33,6 +39,7 @@
               <input type="hidden" name="faq_id" value="${faq.faq_id}">
               </c:if>
               <input type="text" class="title" name="faq_title" value="${mode == 'new' ? '' : faq.faq_title}">
+              <div id="titleMessage" style="color: red;"></div> <!-- 제목 검증 메시지 -->
             </th>
           </tr>
           <tr>
@@ -52,6 +59,7 @@
             <td style="font-weight: bolder;">내용</td>
             <td>
               <textarea class="form-control" rows="18" id="comment" name="faq_con">${mode == 'new' ? '' : faq.faq_con}</textarea>
+              <div id="contentMessage" style="color: red;"></div> <!-- 내용 검증 메시지 -->
               <span style="color:#aaa; float: right;" id="counter">(0 /2000자)</span>
             </td>
           </tr>
@@ -69,8 +77,9 @@
             </div>
           </div>
         </div>
+
         <div style="text-align: right;">
-          <button class="back_btn" type="button" onclick="location.href='${pageContext.request.contextPath}/board/faq_admin'">
+          <button class="back_btn" type="button" onclick="location.href='${contextPath}/board/faq'">
             취소
           </button>
           <button class="notice_btn" type="submit" onclick="saveFaq()">
@@ -84,7 +93,6 @@
 </div>
 <%@ include file="../../include/footer.jspf" %>
 <script>
-  // 페이지 로딩 후 이미지를 표시
   $(document).ready(function() {
     <c:if test="${mode == 'edit'}">
       let item_id = '<c:out value="${faq.faq_id}"/>';
@@ -106,6 +114,17 @@
           uploadResult.append(str);
         })
       });
+
+    // 초기화 함수: 모든 .form-control 요소의 글자 수를 초기화
+    $('.form-control').each(function () {
+      let content = $(this).val();
+      $('#counter').html("(" + content.length + "자 / 2000자)"); // 글자 수 초기화
+
+      if (content.length > 2000) {
+        $(this).val(content.substring(0, 2000));
+        $('#counter').html("(2000 / 2000자)");
+      }
+    });
     </c:if>
   })
 
@@ -121,18 +140,34 @@
   });
 
   function saveFaq() {
-    // event.preventDefault();
-
     let frm = document.frm;
+    let title = frm.faq_title.value.trim();
+    let content = frm.faq_con.value.trim();
 
-    if (frm.faq_title.value.trim() === "" || frm.faq_con.value.trim() === "") {
-      if (frm.faq_title.value.trim() === "") {
-        alert("제목을 입력해주세요.");
-      } else if (frm.faq_con.value.trim() === "") {
-        alert("내용을 입력해주세요.");
-      }
+    // 기존 메시지 초기화
+    document.getElementById("titleMessage").innerText = "";
+    document.getElementById("contentMessage").innerText = "";
+
+    let isValid = true;
+
+    // 제목이 비어있는 경우
+    if (title === "") {
+      document.getElementById("titleMessage").innerText = "제목을 입력해주세요.";
+      isValid = false;
+    }
+
+    // 내용이 비어있는 경우
+    if (content === "") {
+      document.getElementById("contentMessage").innerText = "내용을 입력해주세요.";
+      isValid = false;
+    }
+
+    // 검증이 모두 통과되었을 경우에만 폼 제출
+    if (isValid) {
+      frm.action = "saveFaq";
+      return true;  // 폼을 제출합니다.
     } else {
-      frm.submit();
+      return false;  // 폼 제출을 중단합니다.
     }
   }
 

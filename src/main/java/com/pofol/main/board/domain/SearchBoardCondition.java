@@ -5,7 +5,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Objects;
 
 public class SearchBoardCondition {
-    private Integer page = 1;
+    private int page = 1;
     private Integer pageSize = DEFAULT_PAGE_SIZE;
     private Integer offset = 0;
     private String  option = "";
@@ -42,11 +42,12 @@ public class SearchBoardCondition {
                 .queryParam("keyword",  keyword)
                 .build().toString();
     }
-    public Integer getPage() {
+
+    public int getPage() {
         return page;
     }
 
-    public void setPage(Integer page) {
+    public void setPage(int page) {
         this.page = page;
     }
 

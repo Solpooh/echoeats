@@ -2,21 +2,26 @@ package com.pofol.main.board.service;
 
 import com.pofol.main.board.domain.FaqDto;
 import com.pofol.main.board.domain.ImageDto;
+import com.pofol.main.board.repository.FaqRepository;
 import com.pofol.main.board.repository.FaqRepositoryImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class FaqServiceImpl implements FaqService {
-    private final FaqRepositoryImpl faqRepository;
-
-    public FaqServiceImpl(FaqRepositoryImpl faqRepository) {
-        this.faqRepository = faqRepository;
-    }
+    private final FaqRepository faqRepository;
+    private final FileService fileService;
 
     @Override
     @Transactional
@@ -33,7 +38,7 @@ public class FaqServiceImpl implements FaqService {
             }
             return result;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("FAQ 등록 실패", e);
         }
     }
 
@@ -44,8 +49,10 @@ public class FaqServiceImpl implements FaqService {
             int result = faqRepository.update(dto);
             List<ImageDto> imageList = dto.getImageList();
             if (result == 1 && imageList != null && !imageList.isEmpty()) {
-                // 일단 이미지 모두 삭제
+                // 이미지 모두 삭제
                 faqRepository.deleteImageAll(dto.getFaq_id());
+
+                // 새로운 이미지로 업데이트
                 for (ImageDto imageDto : imageList) {
                     imageDto.setItem_id(dto.getFaq_id()); // 외래 키 설정
                     imageDto.setMode("faq");
@@ -54,7 +61,7 @@ public class FaqServiceImpl implements FaqService {
             }
             return result;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("FAQ 수정 실패", e);
         }
     }
 
@@ -63,7 +70,7 @@ public class FaqServiceImpl implements FaqService {
         try {
             return faqRepository.getImageList(item_id, mode);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("FAQ 이미지 조회 실패", e);
         }
     }
 
@@ -71,10 +78,18 @@ public class FaqServiceImpl implements FaqService {
     @Transactional
     public int deleteFaq(FaqDto dto) {
         try {
+            // 이미지 정보 삭제
             faqRepository.deleteImageAll(dto.getFaq_id());
+
+            // 로컬 파일 시스템에서 삭제할 이미지 목록 가져오기
+            List<ImageDto> fileList = getImageList(dto.getFaq_id(), "faq");
+            fileService.deleteFiles(fileList);
+
+            // FAQ 삭제
             return faqRepository.delete(dto);
+
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("FAQ 삭제 실패", e);
         }
     }
 

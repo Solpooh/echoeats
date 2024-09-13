@@ -30,4 +30,9 @@ public class NoticeRepositoryImplTest {
         System.out.println("noticeList = " + list);
         assertTrue(list.size() == 5);
     }
+
+    @Test
+    public void checkImageListTest() throws Exception {
+        noticeRepository.checkFileList();
+    }
 }

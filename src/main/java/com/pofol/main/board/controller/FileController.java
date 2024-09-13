@@ -1,8 +1,9 @@
 package com.pofol.main.board.controller;
 
 import com.pofol.main.board.domain.ImageDto;
-import com.pofol.main.board.domain.ImageUpload;
+import com.pofol.main.board.service.FileServiceImpl;
 import com.pofol.main.board.service.FaqService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,19 +21,15 @@ import java.nio.file.Files;
 import java.util.List;
 
 @RestController
-public class ImageController {
-    private final ImageUpload imageUpload;
+@RequiredArgsConstructor
+public class FileController {
+    private final FileServiceImpl fileServiceImpl;
     private final FaqService faqService;
-
-    public ImageController(ImageUpload imageUpload, FaqService faqService) {
-        this.imageUpload = imageUpload;
-        this.faqService = faqService;
-    }
 
     // 서버에 이미지 저장
     @PostMapping(value = "/uploadImage", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<ImageDto>> uploadAjaxActionPOST(MultipartFile[] uploadFile) {
-        List<ImageDto> list = imageUpload.handleFileUpload(uploadFile);
+    public ResponseEntity<List<ImageDto>> upload(MultipartFile[] uploadFile) {
+        List<ImageDto> list = fileServiceImpl.fileUpload(uploadFile);
 
         // 이미지 파일이 아닌 경우 처리
         if (list.isEmpty()) {

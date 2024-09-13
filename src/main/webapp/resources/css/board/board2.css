@@ -1,0 +1,37 @@
+.page-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.col-md-8 {
+    margin-top: 20px;
+    flex: 0 0 auto;
+    width: 80.666667%;
+}
+
+.btn-primary {
+    margin-top: 5px; /* 추가: 버튼과 인풋 사이의 간격 조절 */
+}
+
+.notice_btn {
+    float: right;
+    margin-top: -53px;
+}
+
+.modify_btn,
+.delete_btn {
+    padding: 0px 5px; /* 크기 조정 */
+    text-align: center;
+    overflow: hidden;
+    width: 80px;
+    height: 30px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-left: 5px; /* 간격 조정 */
+}
+
+.delete_btn {
+    background-color: #9A30AE;
+    color: #fff;
+}

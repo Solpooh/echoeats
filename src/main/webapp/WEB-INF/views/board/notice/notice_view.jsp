@@ -3,6 +3,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:scriptlet> pageContext.setAttribute("newline", "\n"); </jsp:scriptlet>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
 <!-- 공지사항 상세 조회 페이지 -->
 <html lang="ko">
 <head>
@@ -13,11 +15,15 @@
   <header>
     <%@ include file="../../include/header.jspf" %>
   </header>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/product/css/main-css.css">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/board.css">
+  <link rel="stylesheet" href="${contextPath}/resources/product/css/main-css.css">
+  <link rel="stylesheet" href="${contextPath}/resources/css/board/board.css">
+  <style>
+    .main {
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-
 <div class="container-fluid">
   <div class="row" style="padding-top:50px; padding-bottom: 50px">
     <div class="col-sm-2"></div>
@@ -33,7 +39,7 @@
             <td class="tbody_td" style="width: 10%; background-color: #4CAF50; vertical-align: middle; text-align: left; padding-left: 20px;">
               제목</td>
             <td style="text-align: left; vertical-align: middle; letter-spacing: -1px; padding-left: 20px;">
-              ${notice.notice_title }</td>
+              <c:out value="${notice.notice_title}"/></td>
           </tr>
           <tr>
             <td class="tbody_td" style="width: 10%; background-color: #4CAF50; vertical-align: middle; text-align: left; padding-left: 20px;">
@@ -58,7 +64,7 @@
                   <c:url var="fileCallPath" value="/display">
                     <c:param name="fileName" value="${image.uploadPath}/${image.uuid}_${image.fileName}" />
                   </c:url>
-                  <img src="${fileCallPath}" alt="Notice Image">
+                  <img src="<c:out value='${fileCallPath}'/>" alt="Notice Image">
                 </c:forEach>
                 <br/><br/>
               </c:if>
@@ -70,7 +76,7 @@
           </tfoot>
         </table>
       </div>
-      <button class="list_btn" type="button" onclick="location.href='/board/notice?page=${page}&pageSize=${pageSize}'">목록</button>
+      <button class="list_btn" type="button" onclick="location.href='<c:url value='/board/notice?page=${page}&pageSize=${pageSize}'/>'">목록</button>
     </div>
   </div>
   <div class="col-sm-2"></div>

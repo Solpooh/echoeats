@@ -1,7 +1,10 @@
 package com.pofol.main.board.domain;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class FaqDto {
     private int faq_id;

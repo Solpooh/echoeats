@@ -5,6 +5,7 @@ import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.repository.FaqRepository;
 import com.pofol.main.board.repository.FaqRepositoryImpl;
 import com.pofol.main.board.service.FaqServiceImpl;
+import lombok.Setter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +39,7 @@ public class FaqServiceImplTest {
 //        dto1.setUploadPath("test image 1");
 //        dto1.setUuid("test1111");
 //
-//        dto2.setFileName("test image2");
+//        dto2.setFileName("test image2aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 //        dto2.setUploadPath("test image 2");
 //        dto2.setUuid("test2222");
 //
@@ -49,11 +50,11 @@ public class FaqServiceImplTest {
 //        int result = service.insertFaq(dto);
 //        System.out.println("dto = " + dto);
 //    }
-    @DisplayName("이미지 가져오기 테스트")
-    @Test
-    public void getImageListTest() throws Exception {
-        int faq_id = 66;
-        String mode = "faq";
-        System.out.println("repository = " + repository.getImageList(faq_id, mode));
-    }
+//    @DisplayName("이미지 가져오기 테스트")
+//    @Test
+//    public void getImageListTest() throws Exception {
+//        int faq_id = 66;
+//        String mode = "faq";
+//        System.out.println("repository = " + repository.getImageList(faq_id, mode));
+//    }
 }

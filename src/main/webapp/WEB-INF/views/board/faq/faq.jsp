@@ -1,5 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
 <!-- FAQ 사용자 페이지 -->
 <html lang="ko">
 <head>
@@ -7,8 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoEats-FAQ</title>
     <%@ include file="../../include/bootstrap.jspf" %>
-    <link rel="stylesheet" href="/resources/product/css/main-css.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/board.css">
+    <link rel="stylesheet" href="${contextPath}/resources/product/css/main-css.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/board/board.css">
 </head>
 <header>
     <%@ include file="../../include/header.jspf" %>
@@ -51,13 +54,23 @@
                     <button type="button" class="right-button">다음</button>
                 </div>
             </div>
+
+            <sec:authorize access="hasAuthority('ADMIN')">
+                <button class="faq_btn" type="button" onclick="location.href='faq_write'">등록하기</button>
+            </sec:authorize>
         </div>
     </div>
 </div>
 <!-- JavaScript -->
 <script>
+    let msg = "${message}";
+    if (msg === "WRT_OK") alert("게시물 등록이 완료되었습니다.");
+    if (msg === "MOD_OK") alert("게시물 수정이 완료되었습니다.");
+
+    let userRole = '<sec:authorize access="hasAuthority('ADMIN')">ADMIN</sec:authorize>';
+
     const pageSize = 10;
-    let page;
+    let page = 1;
     let totalCnt;
     let totalPage;
 
@@ -85,6 +98,33 @@
         });
     });
 
+    function faq_delete(faq_id) {
+        if (!confirm("정말 삭제하시겠습니까??")) return;
+        alert("삭제가 완료되었습니다");
+
+        let dataSend = {
+            faq_id: faq_id
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/board/deleteFaq",
+            data: JSON.stringify(dataSend),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                // 삭제가 성공하면 화면을 업데이트합니다.
+                // 여기서는 새로운 게시물 목록을 가져오는 함수를 호출합니다.
+                console.log(data);
+                getFaqList();
+            },
+
+            error: function () {
+                alert("불러오기 실패")
+            }
+        });
+    }
+
     // FAQ 목록 비동기적으로 가져오기 -> AJAX 이용하여 서버에 요청, 받아와서 화면에 출력
     function getFaqList() {
         let dataSend = {
@@ -107,7 +147,7 @@
                 let faqList = data['faqList'];
 
                 if (faqList.length === 0) {
-                    console.log("더 이상 게시물이 없습니다.");
+                    alert("게시물이 없습니다.");
                     return; // 호출 중단
                 }
                 totalCnt = data['totalCnt'];
@@ -129,6 +169,7 @@
                     displayData += "<div id='collapseOne" + FaqDto.faq_id + "' class='collapse' data-parent='#accordion'>";
                     displayData += "<div class='card-body'>";
                     displayData += "<div class='card_answer'>";
+
                     // 이미지가 있는 경우 이미지를 추가
                     if (FaqDto.imageList && FaqDto.imageList.length > 0) {
                         for (let image of FaqDto.imageList) {
@@ -139,7 +180,16 @@
                     }
                     displayData += FaqDto.faq_con
                     displayData += "</div>";
+
+                    if (userRole === 'ADMIN') {
+                        displayData += "<div style='text-align: right;'>";
+                        displayData += "<a href='faq_write?mode=edit&faq_id=" + FaqDto.faq_id + "' style='font-size:9pt; color: darkgray; text-decoration: none;'>수정 |</a>";
+                        displayData += "<a onclick='faq_delete(" + FaqDto.faq_id + ")' style='font-size:9pt; color: red; text-decoration: none;'> 삭제</a>";
+                        displayData += "</div>";
+                    }
+
                     displayData += "</div></div>";
+
                 }
 
                 // FAQ 목록은 id= #type_faq 엘리먼트에 추가

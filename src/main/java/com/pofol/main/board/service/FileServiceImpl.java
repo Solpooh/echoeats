@@ -1,9 +1,8 @@
-package com.pofol.main.board.domain;
+package com.pofol.main.board.service;
 
+import com.pofol.main.board.domain.ImageDto;
 import net.coobird.thumbnailator.Thumbnails;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -11,18 +10,20 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Component
-public class ImageUpload {
-    private static final Logger logger = LoggerFactory.getLogger(ImageUpload.class);
+@Service
+public class FileServiceImpl implements FileService {
     private static final String UPLOAD_FOLDER = "C:\\upload";
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 
     // ImageDto 객체를 담아서 반환
-    public List<ImageDto> handleFileUpload(MultipartFile[] uploadFiles) {
+    @Override
+    public List<ImageDto> fileUpload(MultipartFile[] uploadFiles) {
         List<ImageDto> imageList = new ArrayList<>();
         String datePath = getDatePath();
 
@@ -36,28 +37,32 @@ public class ImageUpload {
                     imageList.add(imageDto);
                 }
             } catch (IOException e) {
-                logger.error("File upload error", e);
+                e.printStackTrace();
             }
         }
         return imageList;
     }
 
-    private String getDatePath() {
+    @Override
+    public String getDatePath() {
         Date date = new Date();
         return sdf.format(date).replace("-", File.separator);
     }
 
-    private File getUploadPath(String datePath) {
+    @Override
+    public File getUploadPath(String datePath) {
         return new File(UPLOAD_FOLDER, datePath);
     }
 
-    private void createDirectoryIfNotExists(File uploadPath) {
+    @Override
+    public void createDirectoryIfNotExists(File uploadPath) {
         if (!uploadPath.exists()) {
             uploadPath.mkdirs();
         }
     }
 
-    private boolean isImageFile(MultipartFile multipartFile) throws IOException {
+    @Override
+    public boolean isImageFile(MultipartFile multipartFile) throws IOException {
         File checkFile = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         String type = null;
         try {
@@ -68,9 +73,10 @@ public class ImageUpload {
         return type != null && type.startsWith("image");
     }
 
-    private ImageDto saveImageFile(MultipartFile multipartFile, File uploadPath, String datePath) throws IOException {
+    @Override
+    public ImageDto saveImageFile(MultipartFile file, File uploadPath, String datePath) throws IOException {
         ImageDto imageDto = new ImageDto();
-        String originalFileName = multipartFile.getOriginalFilename();
+        String originalFileName = file.getOriginalFilename();
         String uuid = UUID.randomUUID().toString();
         String uploadFileName = uuid + "_" + originalFileName;
 
@@ -81,7 +87,7 @@ public class ImageUpload {
         // 폴더에 비로소 저장
         File saveFile = new File(uploadPath, uploadFileName);
         try {
-            multipartFile.transferTo(saveFile);
+            file.transferTo(saveFile);
         } catch (IOException | IllegalStateException e) {
             e.printStackTrace();
         }
@@ -91,7 +97,8 @@ public class ImageUpload {
         return imageDto;
     }
 
-    private void createThumbnail(File saveFile, File uploadPath, String uploadFileName) throws IOException {
+    @Override
+    public void createThumbnail(File saveFile, File uploadPath, String uploadFileName) throws IOException {
         File thumbnailFile = new File(uploadPath, "s_" + uploadFileName);
         BufferedImage boImage = ImageIO.read(saveFile);
 
@@ -101,5 +108,28 @@ public class ImageUpload {
         Thumbnails.of(saveFile)
                 .size(width, height)
                 .toFile(thumbnailFile);
+    }
+
+    @Override
+    public void deleteFiles(List<ImageDto> fileList) {
+        if (fileList != null && !fileList.isEmpty()) {
+            List<Path> pathList = new ArrayList<>();
+            fileList.forEach(list -> {
+                // 원본 이미지
+                pathList.add(Paths.get(UPLOAD_FOLDER, list.getUploadPath(), list.getUuid() + "_" + list.getFileName()));
+                // 썸네일 이미지
+                pathList.add(Paths.get(UPLOAD_FOLDER, list.getUploadPath(), "s_" + list.getUuid() + "_" + list.getFileName()));
+            });
+
+            // 파일 삭제
+            pathList.forEach(path -> {
+                try {
+                    Files.deleteIfExists(path);
+                } catch (Exception e) {
+                    // 예외 처리: 로그 기록 및 트랜잭션 롤백
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 }

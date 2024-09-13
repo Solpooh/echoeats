@@ -9,7 +9,6 @@ public class NoticeDto {
     private String notice_title;
     private String notice_con;
     private Date notice_date;
-
     private List<ImageDto> imageList;
     public NoticeDto() {}
 

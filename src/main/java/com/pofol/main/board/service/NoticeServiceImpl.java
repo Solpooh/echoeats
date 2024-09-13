@@ -4,26 +4,33 @@ import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.domain.NoticeDto;
 import com.pofol.main.board.domain.SearchBoardCondition;
 import com.pofol.main.board.repository.NoticeRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class NoticeServiceImpl implements NoticeService {
-    // 생성자 주입 방식으로 바꿔보기
     private final NoticeRepository noticeRepository;
-    public NoticeServiceImpl(NoticeRepository noticeRepository) {
-        this.noticeRepository = noticeRepository;
-    }
+    private final FileService fileService;
     @Override
     @Transactional
     public int insertNotice(NoticeDto dto) {
         try {
+
             int result = noticeRepository.insertNotice(dto);
+
             List<ImageDto> imageList = dto.getImageList();
+
             if (imageList != null && !imageList.isEmpty()) {
                 for (ImageDto imageDto : imageList) {
                     imageDto.setItem_id(dto.getNotice_id()); // 외래 키 설정
@@ -31,7 +38,9 @@ public class NoticeServiceImpl implements NoticeService {
                     noticeRepository.imageInsert(imageDto);
                 }
             }
+
             return result;
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -41,10 +50,13 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional
     public int updateNotice(NoticeDto dto) {
         try {
+
             int result = noticeRepository.updateNotice(dto);
+
             List<ImageDto> imageList = dto.getImageList();
+
             if (result == 1 && imageList != null && !imageList.isEmpty()) {
-                // 일단 이미지 모두 삭제
+                // 이미지 모두 삭제
                 noticeRepository.deleteImageAll(dto.getNotice_id());
                 for (ImageDto imageDto : imageList) {
                     imageDto.setItem_id(dto.getNotice_id()); // 외래 키 설정
@@ -52,7 +64,9 @@ public class NoticeServiceImpl implements NoticeService {
                     noticeRepository.imageInsert(imageDto);
                 }
             }
+
             return result;
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -61,7 +75,9 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public List<ImageDto> getImageList(int item_id, String mode) {
         try {
+
             return noticeRepository.getImageList(item_id, mode);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -71,10 +87,18 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional
     public int deleteNotice(NoticeDto dto) {
         try {
+            // 이미지 정보 삭제
             noticeRepository.deleteImageAll(dto.getNotice_id());
+
+            // 로컬 파일 시스템에서 삭제할 이미지 목록 가져오기
+            List<ImageDto> fileList = getImageList(dto.getNotice_id(), "notice");
+            fileService.deleteFiles(fileList);
+
+            // FAQ 삭제
             return noticeRepository.deleteNotice(dto);
+
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("NOTICE 삭제 실패", e);
         }
     }
 

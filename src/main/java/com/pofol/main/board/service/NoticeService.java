@@ -18,5 +18,4 @@ public interface NoticeService {
     int getSearchResultCnt(SearchBoardCondition sc) throws Exception;
     List<NoticeDto> getSearchResultPage(SearchBoardCondition sc) throws Exception;
     List<ImageDto> getImageList(int item_id, String mode) throws Exception;
-
 }

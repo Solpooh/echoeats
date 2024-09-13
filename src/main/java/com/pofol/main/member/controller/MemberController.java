@@ -24,8 +24,6 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/member")
 public class MemberController {
-
-
     @Autowired
     MemberService memberService;
     @Autowired
