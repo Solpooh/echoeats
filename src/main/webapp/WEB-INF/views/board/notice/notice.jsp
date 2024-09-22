@@ -67,7 +67,7 @@
                         <td><c:out value="${notice.notice_id }" /></td>
                         <td>
                             <a class="n_title"
-                               href="<c:url value='notice_view?notice_id=${notice.notice_id}&page=${page}&pageSize=${pageSize}'/>">${notice.notice_title}</a>
+                               href="<c:url value='notice_view${sc.getQueryString()}&notice_id=${notice.notice_id}'/>">${notice.notice_title}</a>
                         </td>
                         <td>에코잇츠</td>
                         <td class="date">

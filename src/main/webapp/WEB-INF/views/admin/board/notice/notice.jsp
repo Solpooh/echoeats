@@ -4,6 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <c:set var="today" value="<%= new java.util.Date() %>" />
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<%@ page session="true"%>
 
 
 <!-- 공지사항 관리자 페이지 -->
@@ -55,7 +56,7 @@
                         <td>${notice.notice_id}</td>
                         <td>
                             <a class="n_title"
-                               href="<c:url value='notice_view?notice_id=${notice.notice_id}&page=${page}&pageSize=${pageSize}'/>">${notice.notice_title}</a>
+                               href="<c:url value='notice_view${sc.getQueryString()}&notice_id=${notice.notice_id}'/>">${notice.notice_title}</a>
                         </td>
                         <td>에코잇츠</td>
                         <td class="date">
@@ -72,7 +73,7 @@
                             <form id="form" class="form" method="post">
                             <!-- 수정, 삭제 버튼 -->
                                 <button class="modify_btn" type="button"
-                                        onclick="location.href='<c:url value="notice_write?mode=edit&notice_id=${notice.notice_id}&page=${page}&pageSize=${pageSize}"/>'">수정하기
+                                        onclick="location.href='<c:url value="notice_write${sc.getQueryString()}&mode=edit&notice_id=${notice.notice_id}"/>'">수정하기
                                 </button>
                                 <button class="delete_btn" type="button" onclick="notice_delete(${notice.notice_id})">삭제하기</button>
                             </form>
@@ -84,20 +85,20 @@
 
             <div class="paging-container">
                 <div class="paging">
-                    <c:if test="${ph.totalCnt==null || ph.totalCnt==0}">
+                    <c:if test="${ph.totalCnt == null || ph.totalCnt == 0}">
                         <div>게시물이 없습니다.</div>
                     </c:if>
-                    <c:if test="${ph.totalCnt!=null && ph.totalCnt!=0}">
+                    <c:if test="${ph.totalCnt != null && ph.totalCnt != 0}">
                         <c:if test="${ph.showPrev}">
                             <a class="page"
-                               href="<c:url value='/admin/notice${ph.sc.getQueryString(ph.beginPage-1)}'/>">&lt;</a>
+                               href="<c:url value='/admin/notice${ph.sc.getQueryString(ph.beginPage - 1)}'/>">&lt;</a>
                         </c:if>
                         <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
-                            <a class="page ${i==ph.sc.page? "paging-active" : ""}"
+                            <a class="page ${i == ph.sc.page? "paging-active" : ""}"
                                href="<c:url value='/admin/notice${ph.sc.getQueryString(i)}'/>">${i}</a>
                         </c:forEach>
                         <c:if test="${ph.showNext}">
-                            <a class="page" href="<c:url value='/admin/notice${ph.sc.getQueryString(ph.endPage+1)}'/>">&gt;</a>
+                            <a class="page" href="<c:url value='/admin/notice${ph.sc.getQueryString(ph.endPage + 1)}'/>">&gt;</a>
                         </c:if>
                     </c:if>
                 </div>
@@ -111,12 +112,12 @@
     if (msg === "MOD_OK") alert("게시물 수정이 완료되었습니다.");
     if (msg === "DEL_OK") alert("게시물 삭제가 완료되었습니다.");
 
-    function notice_delete(notice_id) {
+    function notice_delete(id) {
         let frm = document.getElementById('form');
         if (!confirm("정말 삭제하시겠습니까?")) {
             return false;
         } else {
-            frm.action = "<c:url value='deleteNotice?notice_id=" + notice_id + "&page=" + ${page} + "&pageSize=" + ${pageSize} + "'/>";
+            frm.action = "<c:url value='deleteNotice" + "${sc.getQueryString()}" + "&notice_id=" + id + "' />";
             frm.submit(); // 폼 제출
         }
     }

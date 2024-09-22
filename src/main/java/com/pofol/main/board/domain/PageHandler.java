@@ -1,13 +1,14 @@
 package com.pofol.main.board.domain;
 
-import org.springframework.web.util.UriComponentsBuilder;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class PageHandler {
     private SearchBoardCondition sc;
-    //    private int pageSize = 10; // 한 페이지당 게시물 갯수
-    //    private int page; // 현재 페이지
-    //    private String  option;
-    //    private String  keyword;
     public  final int NAV_SIZE = 10; // page navigation size
     private int totalCnt; // 게시물의 총 갯수
     private int totalPage; // 전체 페이지의 갯수
@@ -48,79 +49,5 @@ public class PageHandler {
             System.out.print(i + " ");
         }
         System.out.println(showNext? " NEXT" : "");
-    }
-
-    public SearchBoardCondition getSc() {
-        return sc;
-    }
-
-    public void setSc(SearchBoardCondition sc) {
-        this.sc = sc;
-    }
-
-    public int getTotalCnt() {
-        return totalCnt;
-    }
-
-    public void setTotalCnt(int totalCnt) {
-        this.totalCnt = totalCnt;
-    }
-
-    public boolean isShowNext() {
-        return showNext;
-    }
-
-    public void setShowNext(boolean showNext) {
-        this.showNext = showNext;
-    }
-
-    public int getBeginPage() {
-        return beginPage;
-    }
-
-    public void setBeginPage(int beginPage) {
-        this.beginPage = beginPage;
-    }
-
-    public int getNAV_SIZE() {
-        return NAV_SIZE;
-    }
-
-    public int getTotalPage() {
-        return totalPage;
-    }
-
-    public void setTotalPage(int totalPage) {
-        this.totalPage = totalPage;
-    }
-
-    public int getEndPage() {
-        return endPage;
-    }
-
-    public void setEndPage(int endPage) {
-        this.endPage = endPage;
-    }
-
-    public boolean isShowPrev() {
-        return showPrev;
-    }
-
-    public void setShowPrev(boolean showPrev) {
-        this.showPrev = showPrev;
-    }
-
-    @Override
-    public String toString() {
-        return "PageHandler{" +
-                "sc=" + sc +
-                ", totalCnt=" + totalCnt +
-                ", showNext=" + showNext +
-                ", beginPage=" + beginPage +
-                ", NAV_SIZE=" + NAV_SIZE +
-                ", totalPage=" + totalPage +
-                ", endPage=" + endPage +
-                ", showPrev=" + showPrev +
-                '}';
     }
 }

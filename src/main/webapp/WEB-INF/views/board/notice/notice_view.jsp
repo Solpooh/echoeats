@@ -76,7 +76,7 @@
           </tfoot>
         </table>
       </div>
-      <button class="list_btn" type="button" onclick="location.href='<c:url value='/board/notice?page=${page}&pageSize=${pageSize}'/>'">목록</button>
+      <button class="list_btn" type="button" onclick="location.href='<c:url value='/board/notice${sc.getQueryString()}'/>'">목록</button>
     </div>
   </div>
   <div class="col-sm-2"></div>

@@ -22,12 +22,6 @@ import java.util.List;
 public class FaqController {
     private final FaqService faqService;
 
-    // FAQ 페이지
-    @GetMapping("/faq")
-    public String faqPage() {
-        return "board/faq/faq";
-    }
-
     // FAQ 목록 조회
     @ResponseBody
     @PostMapping("/list")
@@ -41,7 +35,6 @@ public class FaqController {
         dto.setTotalCnt(totalCnt);
         dto.setTotalPage(dto.getPageSize());
 
-
         // 가져온 faqType으로 비즈니스 로직을 수행 -> 목록을 얻어옴
         List<FaqDto> list = faqService.selectPaged(dto);
 
@@ -53,12 +46,12 @@ public class FaqController {
         return response;
     }
 
-    // FAQ 등록/수정 페이지 화면
+    // FAQ 등록/수정 GET
     @GetMapping("/faq_write")
     public String faq_write(@RequestParam(defaultValue = "new") String mode,
                             FaqDto dto,
                             Model m) {
-        // 수정 모드일 때는 저장된 값을 보여줘야 함
+        // 수정 모드
         if ("edit".equals(mode)) {
             // 상세조회
             FaqDto faq = faqService.selectFaq(dto.getFaq_id());
@@ -73,7 +66,7 @@ public class FaqController {
         return "board/faq/faq_write";
     }
 
-    // FAQ 등록/수정 요청 제출
+    // FAQ 등록/수정 POST
     @PostMapping("/saveFaq")
     public String saveFaq(@RequestParam String mode,
                           FaqDto dto,

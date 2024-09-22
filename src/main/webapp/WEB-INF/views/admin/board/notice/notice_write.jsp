@@ -67,7 +67,7 @@
 
                     <!-- -->
                     <div style="text-align: right;">
-                        <button class="back_btn" type="button" onclick="location.href='<c:url value='notice'/>'"
+                        <button class="back_btn" type="button" onclick="location.href='<c:url value="notice${sc.getQueryString()}"/>'"
                                 style="width: 120; height: 44; border-radius: 3;">취소</button>
                         <button class="notice_btn" type="submit" onclick="saveNotice()"
                                 style="width: 120; height: 44; border-radius: 3;">

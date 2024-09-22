@@ -132,7 +132,6 @@
             page: page,
             pageSize: pageSize,
         };
-        console.log(dataSend);
 
         $.ajax({
             type: "POST",

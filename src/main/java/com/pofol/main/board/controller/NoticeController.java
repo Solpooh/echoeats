@@ -14,9 +14,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Controller
 @RequestMapping
 @RequiredArgsConstructor
+@Controller
 public class NoticeController {
     private final NoticeService noticeService;
 
@@ -24,19 +24,18 @@ public class NoticeController {
         return uri.startsWith("/admin")? "admin/board/notice/" + viewName : "board/notice/" + viewName;
     }
 
-    private void selectNotice(SearchBoardCondition sc, NoticeDto dto, Model m) throws Exception {
+    // 상세조회 메서드
+    private void selectNotice(NoticeDto dto, Model m) throws Exception {
         NoticeDto notice = noticeService.getNotice(dto);
         List<ImageDto> imageList = noticeService.getImageList(dto.getNotice_id(), "notice");
         notice.setImageList(imageList);
         m.addAttribute("notice", notice);
-        m.addAttribute("page", sc.getPage());
-        m.addAttribute("pageSize", sc.getPageSize());
     }
 
     // 공지사항 목록 조회
     @GetMapping({"/board/notice", "/admin/notice"})
     public String notice(HttpServletRequest request,
-                         SearchBoardCondition sc,
+                         @ModelAttribute("sc") SearchBoardCondition sc,
                          Model m) throws Exception {
         try {
 
@@ -49,9 +48,6 @@ public class NoticeController {
             m.addAttribute("list", list);
             m.addAttribute("ph", pageHandler);
 
-            m.addAttribute("page", sc.getPage());
-            m.addAttribute("pageSize", sc.getPageSize());
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,24 +58,24 @@ public class NoticeController {
     // 공지사항 상세조회
     @GetMapping({"/board/notice_view", "/admin/notice_view"})
     public String notice_view(HttpServletRequest request,
-                              SearchBoardCondition sc,
+                              @ModelAttribute("sc") SearchBoardCondition sc,
                               NoticeDto dto,
                               Model m) throws Exception {
         // 이전 페이지의 검색 조건을 유지하기 위해 현재 페이지 정보를 이전 페이지의 페이지 정보로 설정
 
-        selectNotice(sc, dto, m);
+        selectNotice(dto, m);
 
         return getViewName(request.getRequestURI(), "notice_view");
     }
 
-    // 공지사항 등록 페이지 (관리자)
+    // 공지사항 등록/수정 페이지 (관리자)
     @GetMapping("/admin/notice_write")
     public String notice_write(@RequestParam(defaultValue = "new") String mode,
                                @ModelAttribute("sc") SearchBoardCondition sc,
                                NoticeDto dto,
                                Model m) throws Exception{
         if ("edit".equals(mode)) {
-            selectNotice(sc, dto, m);
+            selectNotice(dto, m);
         }
         m.addAttribute("mode", mode);
 
@@ -95,23 +91,21 @@ public class NoticeController {
         if ("edit".equals(mode)) {
             noticeService.updateNotice(dto);
             redirectAttributes.addFlashAttribute("message", "MOD_OK");
-            return "redirect:/admin/notice?page=" + sc.getPage() + "&pageSize=" + sc.getPageSize();
+
+            return "redirect:/admin/notice" + sc.getQueryString();
         }
         noticeService.insertNotice(dto);
         redirectAttributes.addFlashAttribute("message", "WRT_OK");
+
         return "redirect:/admin/notice";
     }
 
 
     // 공지사항 삭제 처리 (관리자)
     @PostMapping("/admin/deleteNotice")
-    public String deleteNotice(SearchBoardCondition sc,
+    public String deleteNotice(@ModelAttribute("sc") SearchBoardCondition sc,
                                NoticeDto dto,
-                               Model m,
                                RedirectAttributes redirectAttributes) throws Exception {
-        m.addAttribute("page", sc.getPage());
-        m.addAttribute("pageSize", sc.getPageSize());
-
         int rowCnt = noticeService.deleteNotice(dto);
         redirectAttributes.addFlashAttribute("message", "DEL_OK");
 
@@ -119,6 +113,6 @@ public class NoticeController {
             throw new Exception("공지사항 삭제 실패");
         }
 
-        return "redirect:/admin/notice";
+        return "redirect:/admin/notice" + sc.getQueryString();
     }
 }
