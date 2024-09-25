@@ -85,7 +85,6 @@
             getFaqList(); // FAQ 목록 다시 가져오기
 
             leftBtn.prop('disabled', false); // 다음 페이지로 이동했으므로 왼쪽 버튼 활성화
-                // rightBtn.prop('disabled', true);
         });
 
         // 이전 버튼 클릭 시 페이지를 감소시키고 FAQ 목록을 다시 가져옴
@@ -157,12 +156,14 @@
 
                 // for 루프를 통해 서버에서 받아온 FAQ 데이터 순회하며 HTML 코드 생성
                 for (let FaqDto of faqList) {
-
                     // FAQ 세부 내용을 접을 수 있는 collapse -> BootStrap 사용
                     displayData += "<div class='card-header'>";
                     displayData += "<a class='card-link' data-toggle='collapse' href='#collapseOne" + FaqDto.faq_id + "'>";
-                    displayData += "<span style='width: 75px; display: inline-block;'>" + FaqDto.faq_id + "</span>";
-                    displayData += "<span style='width: 150px; display: inline-block;' class='" + FaqDto.faq_type + "'>" + FaqDto.faq_type + "</span>";
+                    if (dataSend.faq_type === '전체') {
+                        displayData += "<span style='width: 75px; display: inline-block;'>" + FaqDto.faq_id + "</span>";
+                    } else {
+                        displayData += "<span style='width: 75px; display: inline-block;'>" + FaqDto.rownum + "</span>";
+                    }                    displayData += "<span style='width: 150px; display: inline-block;' class='" + FaqDto.faq_type + "'>" + FaqDto.faq_type + "</span>";
                     displayData += "<span style='width: 840px; display: inline;'>" + FaqDto.faq_title + "</span></a>";
                     displayData += "</div>";
                     displayData += "<div id='collapseOne" + FaqDto.faq_id + "' class='collapse' data-parent='#accordion'>";
@@ -204,7 +205,6 @@
     }
     // 카테고리가 변경(새롭게 선택)될 때마다 change 이벤트 발생
     $("select[name=category]").change(function(){
-        console.log($(this).val()); // 여기서 this는 이벤트가 발생한 DOM요소를 참조
         page = 1;
         getFaqList();
     });

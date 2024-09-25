@@ -125,6 +125,8 @@
             $(this).val(content.substring(0, 2000));
             $('#counter').html("(2000 / 2000자)");
         }
+        $(this).css('height', 'auto');
+        $(this).css('height', content.scrollHeight + 'px');
     });
 
     function saveNotice() {

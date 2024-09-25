@@ -25,33 +25,29 @@
         DELETE FROM faq WHERE faq_id = #{faq_id}
     </delete>
 
-    <!-- 특정 faq 정보를 조회 -->
+    <!-- faq 상세조회 -->
     <select id="select" parameterType="int" resultType="FaqDto">
         SELECT *
         FROM faq WHERE faq_id = #{faq_id}
     </select>
 
     <sql id="selectFaq">
-        SELECT faq_id, faq_type, faq_title, faq_con
-        FROM faq
+        SELECT
+        -- rownum을 전체 faq의 개수에서 현재 offset과 페이지 내 순서를 빼서 계산
+        (SELECT COUNT(*) FROM faq WHERE faq_type = IF(#{faq_type} = '전체', faq_type, #{faq_type})) - (#{offset} + @rownum := @rownum + 1) + 1 AS rownum,
+        faq_id,
+        faq_type,
+        faq_title,
+        faq_con
+        FROM faq, (SELECT @rownum := 0) AS r  -- rownum 초기화
         <where>
-            <!-- MyBatis의 조건문을 사용하여 FAQ 타입에 따라 WHERE 절을 동적으로 생성한다 -->
-            <choose>
-                <!-- 쿼리에 전달된 매개변수 '_parameter' (MyBatis 내장변수) -->
-                <when test="_parameter == null or (_parameter == null and _parameter.equals('전체'))">
-                    <if test="faq_type != null and !faq_type.isEmpty()">
-                        AND faq_type = #{faq_type}
-                    </if>
-                </when>
-                <when test="!_parameter.equals('전체')">
-                    <if test="faq_type != null and !faq_type.isEmpty()">
-                        AND faq_type = #{faq_type}
-                    </if>
-                </when>
-            </choose>
+            <if test="faq_type != null and faq_type != '전체'">
+                faq_type = #{faq_type}
+            </if>
         </where>
         ORDER BY faq_id DESC
     </sql>
+
 
     <select id="selectAll" parameterType="FaqDto" resultType="FaqDto">
         <include refid="selectFaq"/>
