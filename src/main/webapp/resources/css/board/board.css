@@ -384,7 +384,7 @@ fieldset {
     border-top: 1px solid #4CAF50;
 }
 .css-hyfxhw {
-    flex-basis: 70px;
+    flex-basis: 107px;
     text-align: center;
     line-height: 20px;
     font-weight: 400;
@@ -701,7 +701,7 @@ h4 span {
     /* 메뉴바의 검색 버튼 아이콘  */
     width: 20%;
     height: 100%;
-    background-color: #4CAF50;
+    background-color: #00c73c;
     color: #fff;
     display: flex;
     align-items: center;
@@ -710,7 +710,7 @@ h4 span {
 }
 
 .search-button:hover {
-    color: #45a049;
+    color: #343a40;
 }
 
 .paging {
@@ -726,10 +726,12 @@ h4 span {
 }
 
 .paging-active {
-    background-color: #4CAF50;
+    border: 2px solid #4CAF50; /* 초록색 테두리 */
     border-radius: 5px;
-    color: rgb(24, 24, 24);
+    color: #4CAF50; /* 텍스트 색상 */
+    background-color: transparent; /* 내부 비우기 */
 }
+
 
 .paging-container {
     width: 100%;
@@ -756,7 +758,7 @@ tbody {
 tbody td {
     height: 50px;
     font-size: 14px;
-    font-weight: bolder;
+    /*font-weight: bolder;*/
 }
 tfoot td {
     font-size: 14px;

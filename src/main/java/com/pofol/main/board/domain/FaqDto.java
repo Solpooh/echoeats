@@ -13,12 +13,7 @@ public class FaqDto {
     private String faq_type;
     private String faq_title;
     private String faq_con;
-    private int rownum;
-    private Integer page = 1;
-    private Integer pageSize = 10;
-    private Integer offset;
-    private Integer totalCnt;
-    private Integer totalPage;
+    private int rowNum;
     private List<ImageDto> imageList = new ArrayList<>();
 
     public String getFaq_type() {
@@ -26,10 +21,6 @@ public class FaqDto {
             return null;
         }
         return faq_type;
-    }
-
-    public Integer getOffset() {
-        return (page-1) * pageSize;
     }
 
 }

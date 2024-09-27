@@ -34,7 +34,7 @@
     <sql id="selectFaq">
         SELECT
         -- rownum을 전체 faq의 개수에서 현재 offset과 페이지 내 순서를 빼서 계산
-        (SELECT COUNT(*) FROM faq WHERE faq_type = IF(#{faq_type} = '전체', faq_type, #{faq_type})) - (#{offset} + @rownum := @rownum + 1) + 1 AS rownum,
+        (SELECT COUNT(*) FROM faq WHERE faq_type = IF(#{faq_type} = '전체', faq_type, #{faq_type})) - (#{offset} + @rownum := @rownum + 1) + 1 AS rowNum,
         faq_id,
         faq_type,
         faq_title,
@@ -53,7 +53,7 @@
         <include refid="selectFaq"/>
     </select>
 
-    <select id="selectPaged" parameterType="FaqDto" resultType="FaqDto">
+    <select id="selectPaged" parameterType="Map" resultType="FaqDto">
         <include refid="selectFaq"/>
         LIMIT #{offset}, #{pageSize}
     </select>

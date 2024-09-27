@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class PageHandler {
     private SearchBoardCondition sc;
-    public  final int NAV_SIZE = 10; // page navigation size
+    public final int NAV_SIZE = 10; // page navigation size
     private int totalCnt; // 게시물의 총 갯수
     private int totalPage; // 전체 페이지의 갯수
     private int beginPage; // 화면에 보여줄 첫 페이지

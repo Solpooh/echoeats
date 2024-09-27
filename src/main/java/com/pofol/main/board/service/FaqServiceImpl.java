@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -112,9 +113,9 @@ public class FaqServiceImpl implements FaqService {
     }
 
     @Override
-    public List<FaqDto> selectPaged(FaqDto dto) {
+    public List<FaqDto> selectPaged(Map map) {
         try {
-            List<FaqDto> faqList = faqRepository.selectPaged(dto);
+            List<FaqDto> faqList = faqRepository.selectPaged(map);
             for (FaqDto faq : faqList) {
                 // faq_id로 이미지 조회
                 List<ImageDto> imageList = faqRepository.getImageList(faq.getFaq_id(), "faq");

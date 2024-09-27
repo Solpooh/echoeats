@@ -105,11 +105,11 @@
         // 초기화 함수: 모든 .form-control 요소의 글자 수를 초기화
         $('.form-control').each(function () {
             let content = $(this).val();
-            $('#counter').html("(" + content.length + "자 / 2000자)"); // 글자 수 초기화
+            $('#counter').html("(" + content.length + "자 / 3000자)"); // 글자 수 초기화
 
-            if (content.length > 2000) {
-                $(this).val(content.substring(0, 2000));
-                $('#counter').html("(2000 / 2000자)");
+            if (content.length > 3000) {
+                $(this).val(content.substring(0, 3000));
+                $('#counter').html("(3000 / 3000자)");
             }
         });
         </c:if>
@@ -118,12 +118,12 @@
     //textarea 글자수 제한
     $('.form-control').keyup(function () {
         let content = $(this).val();
-        $('#counter').html("(" + content.length + "자 / 2000자)");    //글자수 실시간 카운팅
+        $('#counter').html("(" + content.length + "자 / 3000자)");    //글자수 실시간 카운팅
 
-        if (content.length > 2000) {
-            alert("최대 2000자까지 입력 가능합니다.");
-            $(this).val(content.substring(0, 2000));
-            $('#counter').html("(2000 / 2000자)");
+        if (content.length > 3000) {
+            alert("최대 3000자까지 입력 가능합니다.");
+            $(this).val(content.substring(0, 3000));
+            $('#counter').html("(3000 / 3000자)");
         }
         $(this).css('height', 'auto');
         $(this).css('height', content.scrollHeight + 'px');

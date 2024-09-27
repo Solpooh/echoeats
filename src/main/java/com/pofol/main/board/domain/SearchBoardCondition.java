@@ -13,8 +13,8 @@ import java.util.Objects;
 public class SearchBoardCondition {
     private int page = 1;
     private Integer pageSize = DEFAULT_PAGE_SIZE;
-    private String  option = "";
-    private String  keyword = "";
+    private String option = "";
+    private String keyword = "";
 
     public static final int MIN_PAGE_SIZE = 5;
     public static final int DEFAULT_PAGE_SIZE = 10;
@@ -46,6 +46,6 @@ public class SearchBoardCondition {
     }
 
     public Integer getOffset() {
-        return (page-1) * pageSize;
+        return (page - 1) * pageSize;
     }
 }

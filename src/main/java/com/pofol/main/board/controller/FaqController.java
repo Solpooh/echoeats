@@ -1,7 +1,6 @@
 package com.pofol.main.board.controller;
 
-import com.pofol.main.board.domain.FaqDto;
-import com.pofol.main.board.domain.ImageDto;
+import com.pofol.main.board.domain.*;
 import com.pofol.main.board.service.FaqService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,8 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 
@@ -25,26 +22,32 @@ public class FaqController {
     // FAQ 목록 조회
     @ResponseBody
     @PostMapping("/list")
-    public Map<String, Object> getFaqList(@RequestBody FaqDto dto) {
-        String faqType = dto.getFaq_type();
+    public ResponseEntity<Map<String, Object>> getFaqList(@RequestBody FaqRequest request) {
+        FaqDto dto = request.getFaqDto();
+        SearchBoardCondition sc = request.getSearchBoardCondition();
 
+        // 전체 개수 조회
         int totalCnt = faqService.countFaq(dto);
-        int totalPage = (int) Math.ceil((double) totalCnt / dto.getPageSize());
 
-        dto.setFaq_type(faqType);
-        dto.setTotalCnt(totalCnt);
-        dto.setTotalPage(dto.getPageSize());
+        // 페이지 계산
+        PageHandler pageHandler = new PageHandler(totalCnt, sc);
 
-        // 가져온 faqType으로 비즈니스 로직을 수행 -> 목록을 얻어옴
-        List<FaqDto> list = faqService.selectPaged(dto);
+        // 페이징된 FAQ 목록 가져오기
+        Map<String, Object> map = new HashMap<>();
+        map.put("offset", sc.getOffset());
+        map.put("pageSize", sc.getPageSize());
+        map.put("faq_type", dto.getFaq_type());
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("faqList", list);
-        response.put("totalCnt", totalCnt);
-        response.put("totalPage", totalPage);
+        List<FaqDto> list = faqService.selectPaged(map);
 
-        return response;
+        // 결과 맵 구성
+        Map<String, Object> result = new HashMap<>();
+        result.put("faqList", list);
+        result.put("pageHandler", pageHandler);
+
+        return ResponseEntity.ok(result);
     }
+
 
     // FAQ 등록/수정 GET
     @GetMapping("/faq_write")

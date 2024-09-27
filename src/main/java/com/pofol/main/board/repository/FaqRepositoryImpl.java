@@ -39,8 +39,8 @@ public class FaqRepositoryImpl implements FaqRepository {
     }
     // 페이징된 리스트 보여주기
     @Override
-    public List<FaqDto> selectPaged(FaqDto dto) {
-        return session.selectList(namespace + "selectPaged", dto);
+    public List<FaqDto> selectPaged(Map map) {
+        return session.selectList(namespace + "selectPaged", map);
     }
     // 내용 상세보기
     @Override

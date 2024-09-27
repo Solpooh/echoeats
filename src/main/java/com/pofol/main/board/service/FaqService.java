@@ -17,7 +17,7 @@ public interface FaqService {
     int deleteFaq(FaqDto dto);
     FaqDto selectFaq(int bno);
     List<FaqDto> selectAllFaq(FaqDto dto);
-    List<FaqDto> selectPaged(FaqDto dto);
+    List<FaqDto> selectPaged(Map map);
     int countFaq(FaqDto dto);
     List<ImageDto> getImageList(int item_id, String mode);
 

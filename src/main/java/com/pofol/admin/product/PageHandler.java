@@ -36,8 +36,8 @@ public class PageHandler {
         this.showPrev = beginPage!=1;
         this.showNext = endPage!=totalPage;
     }
-    
-    void print() { 
+
+    void print() {
         System.out.println("page="+ sc.getPage());
         System.out.print(showPrev? "PREV " : "");
 
@@ -81,5 +81,5 @@ public class PageHandler {
 				+ totalPage + ", beginPage=" + beginPage + ", endPage=" + endPage + ", showNext=" + showNext
 				+ ", showPrev=" + showPrev + "]";
 	}
-    
+
 }

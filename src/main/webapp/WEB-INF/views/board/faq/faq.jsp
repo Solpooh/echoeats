@@ -71,7 +71,6 @@
 
     const pageSize = 10;
     let page = 1;
-    let totalCnt;
     let totalPage;
 
     $(document).ready(function(e) {
@@ -79,57 +78,43 @@
         let leftBtn = $('.left-button');
         let rightBtn = $('.right-button');
 
+        // 이전 버튼 클릭 시 페이지를 감소시키고 FAQ 목록을 다시 가져옴
+        leftBtn.click(function() {
+            if (page > 1) {
+                page--; // 페이지 감소
+                getFaqList();
+            }
+            if (page === 1) {
+                leftBtn.prop('disabled', true); // 첫 페이지로 돌아오면 왼쪽 버튼 비활성화
+            }
+        });
+
         // 다음 버튼 클릭 시 페이지를 증가시키고 FAQ 목록을 다시 가져옴
         rightBtn.click(function() {
-            if (totalPage > page) page++;
+            if (page < totalPage) page++;
             getFaqList(); // FAQ 목록 다시 가져오기
 
             leftBtn.prop('disabled', false); // 다음 페이지로 이동했으므로 왼쪽 버튼 활성화
         });
 
-        // 이전 버튼 클릭 시 페이지를 감소시키고 FAQ 목록을 다시 가져옴
-        leftBtn.click(function() {
-            if (page > 0) page--; // 페이지 감소
-            getFaqList(); // FAQ 목록 다시 가져오기
-            if (page === 1) {
-                leftBtn.prop('disabled', true); // 페이지가 1이면 왼쪽 버튼 비활성화
-            }
-        });
+        // 왼쪽 버튼은 첫 페이지에서는 비활성화
+        if (page === 1) {
+            leftBtn.prop('disabled', true);
+        }
     });
 
-    function faq_delete(faq_id) {
-        if (!confirm("정말 삭제하시겠습니까??")) return;
-        alert("삭제가 완료되었습니다");
-
-        let dataSend = {
-            faq_id: faq_id
-        };
-
-        $.ajax({
-            type: "POST",
-            url: "/board/deleteFaq",
-            data: JSON.stringify(dataSend),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                // 삭제가 성공하면 화면을 업데이트합니다.
-                // 여기서는 새로운 게시물 목록을 가져오는 함수를 호출합니다.
-                console.log(data);
-                getFaqList();
-            },
-
-            error: function () {
-                alert("불러오기 실패")
-            }
-        });
-    }
 
     // FAQ 목록 비동기적으로 가져오기 -> AJAX 이용하여 서버에 요청, 받아와서 화면에 출력
     function getFaqList() {
+        console.log(page);
         let dataSend = {
-            faq_type: $("select[name=category]").val(), // 선택된 카테고리 가져옴.
-            page: page,
-            pageSize: pageSize,
+            faqDto: {
+                faq_type: $("select[name=category]").val()
+            },
+            searchBoardCondition: {
+                page: page,
+                pageSize: pageSize
+            }
         };
 
         $.ajax({
@@ -141,15 +126,13 @@
 
             // 콜백함수 -> 성공시 받은 데이터를 이용하여 FAQ 목록을 동적으로 생성하여 화면에 출력
             success: function (data) {
-                console.log(data);
+                console.log(data)
                 let faqList = data['faqList'];
-
+                totalPage = data['pageHandler'].totalPage; // 서버에서 받은 총 페이지 수
                 if (faqList.length === 0) {
                     alert("게시물이 없습니다.");
                     return; // 호출 중단
                 }
-                totalCnt = data['totalCnt'];
-                totalPage = data['totalPage'];
 
                 // displayData 변수에 HTML 코드 문자열로 누적
                 let displayData = "";
@@ -159,11 +142,13 @@
                     // FAQ 세부 내용을 접을 수 있는 collapse -> BootStrap 사용
                     displayData += "<div class='card-header'>";
                     displayData += "<a class='card-link' data-toggle='collapse' href='#collapseOne" + FaqDto.faq_id + "'>";
-                    if (dataSend.faq_type === '전체') {
+                    if (dataSend['faqDto'].faq_type === '전체') {
                         displayData += "<span style='width: 75px; display: inline-block;'>" + FaqDto.faq_id + "</span>";
                     } else {
-                        displayData += "<span style='width: 75px; display: inline-block;'>" + FaqDto.rownum + "</span>";
-                    }                    displayData += "<span style='width: 150px; display: inline-block;' class='" + FaqDto.faq_type + "'>" + FaqDto.faq_type + "</span>";
+                        displayData += "<span style='width: 75px; display: inline-block;'>" + FaqDto.rowNum + "</span>";
+                    }
+                    // displayData += "<span style='width: 75px; display: inline-block;'>" + FaqDto.faq_id + "</span>";
+                    displayData += "<span style='width: 150px; display: inline-block;' class='" + FaqDto.faq_type + "'>" + FaqDto.faq_type + "</span>";
                     displayData += "<span style='width: 840px; display: inline;'>" + FaqDto.faq_title + "</span></a>";
                     displayData += "</div>";
                     displayData += "<div id='collapseOne" + FaqDto.faq_id + "' class='collapse' data-parent='#accordion'>";
@@ -194,7 +179,6 @@
 
                 // FAQ 목록은 id= #type_faq 엘리먼트에 추가
                 $("#type_faq").html(displayData);
-
             },
 
             // 콜백함수 -> 실패 시 경고창 출력
@@ -203,6 +187,34 @@
             }
         });
     }
+
+    function faq_delete(faq_id) {
+        if (!confirm("정말 삭제하시겠습니까??")) return;
+        alert("삭제가 완료되었습니다");
+
+        let dataSend = {
+            faq_id: faq_id
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/board/deleteFaq",
+            data: JSON.stringify(dataSend),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                // 삭제가 성공하면 화면을 업데이트합니다.
+                // 여기서는 새로운 게시물 목록을 가져오는 함수를 호출합니다.
+                console.log(data);
+                getFaqList();
+            },
+
+            error: function () {
+                alert("불러오기 실패")
+            }
+        });
+    }
+
     // 카테고리가 변경(새롭게 선택)될 때마다 change 이벤트 발생
     $("select[name=category]").change(function(){
         page = 1;

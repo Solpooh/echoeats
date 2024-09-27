@@ -130,8 +130,9 @@
 
   $('.form-control').keyup(function (e) {
     let content = $(this).val();
-    $('#counter').html("(" + content.length + "자 / 2000자)");    //글자수 실시간 카운팅
+    $('#counter').html("(" + content.length + "자 / 2000자)");    // 글자수 실시간 카운팅
 
+    // 2000자 초과 작성시 2000자로 고정
     if (content.length > 2000) {
       alert("최대 2000자까지 입력 가능합니다.");
       $(this).val(content.substring(0, 2000));
