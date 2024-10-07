@@ -4,6 +4,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <c:set var="today" value="<%= new java.util.Date() %>" />
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="nonce" value="${requestScope.cspNonce}" />
+
 
 <!-- 공지사항 사용자 페이지 -->
 <html lang="ko">
@@ -12,8 +14,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공지사항 - 에코잇츠</title>
     <%@ include file="../../include/bootstrap.jspf" %>
-    <link rel="stylesheet" href="${contextPath}/resources/product/css/main-css.css">
-    <link rel="stylesheet" href="${contextPath}/resources/css/board/board.css">
+    <link rel="stylesheet" href="${contextPath}/resources/product/css/main-css.css" nonce="${nonce}">
+    <link rel="stylesheet" href="${contextPath}/resources/board/css/board.css" nonce="${nonce}">
 </head>
 <body>
 <header>
@@ -45,17 +47,17 @@
         <div>
             <table class="table">
                 <thead>
-                <tr style="height: 60px">
-                    <th style="width: 10%; vertical-align: middle; border-top: 1px solid #4CAF50; border-bottom: 1px solid #4CAF50;">
+                <tr>
+                    <th style="width: 10%" nonce="${nonce}">
                         번호
                     </th>
-                    <th style="vertical-align: middle; border-top: 1px solid #4CAF50; border-bottom: 1px solid #4CAF50;">
+                    <th>
                         제목
                     </th>
-                    <th style="width: 15%; vertical-align: middle; border-top: 1px solid #4CAF50; border-bottom: 1px solid #4CAF50;">
+                    <th style="width: 15%" nonce="${nonce}">
                         작성자
                     </th>
-                    <th style="width: 20%; vertical-align: middle; border-top: 1px solid #4CAF50; border-bottom: 1px solid #4CAF50;">
+                    <th style="width: 20%" nonce="${nonce}">
                         작성일
                     </th>
                 </tr>
@@ -66,8 +68,9 @@
                     <tr>
                         <td><c:out value="${notice.notice_id }" /></td>
                         <td>
-                            <a class="n_title"
-                               href="<c:url value='notice_view${sc.getQueryString()}&notice_id=${notice.notice_id}'/>">${notice.notice_title}</a>
+                            <a class="n_title" href="<c:url value='notice_view${sc.getQueryString()}&notice_id=${notice.notice_id}'/>">
+                                    <c:out value="${notice.notice_title}" />
+                            </a>
                         </td>
                         <td>에코잇츠</td>
                         <td class="date">

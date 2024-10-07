@@ -1,5 +1,6 @@
 package com.pofol.main.member.config;
 
+import com.pofol.main.board.filter.CSPNonceFilter;
 import com.pofol.main.member.handler.CustomLogoutSuccessHandler;
 import com.pofol.main.member.handler.LoginFailureHandler;
 import com.pofol.main.member.handler.LoginSuccessHandler;
@@ -21,7 +22,14 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.header.HeaderWriter;
+import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.filter.GenericFilterBean;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 @Configuration
 @EnableWebSecurity
@@ -36,26 +44,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         //super.configure(web);
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests()//인증이 필요한 url지정
+                .addFilterBefore(new CSPNonceFilter(), HeaderWriterFilter.class)
+                .authorizeRequests()  // 인증이 필요한 URL 설정
                 .antMatchers("/board/faq_admin").hasAuthority("ADMIN")
                 .antMatchers("/admin/**", "/admin1/**").hasAuthority("ADMIN")
                 .antMatchers("/order/checkout").hasAuthority("USER")
-                .antMatchers("/grade", "/coupon", "/point/all", "/order/**", "/mypage/**").hasAnyAuthority("USER","ADMIN")
+                .antMatchers("/grade", "/coupon", "/point/all", "/order/**", "/mypage/**").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler())
                 .and()
-                .formLogin()    //Form Login 방식 적용
+                .formLogin()
                 .loginPage("/member/login_form")
                 .loginProcessingUrl("/login")
                 .successHandler(authenticationSuccessHandler())
@@ -65,13 +74,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                //.logoutSuccessUrl("/member/info")
                 .logoutSuccessHandler(logoutSuccessHandler())
-                //.logoutSuccessUrl("/member/logout")
                 .invalidateHttpSession(true);
-
-
     }
+
 
     //UserDetailsService가 로그인 요청을 하고 리턴시
     //사용자가 적은 패스워드를 해쉬로 암호화하고  DB의 회원가입 되어 암호화 된 비밀번호와 비교를 먼저해준다.

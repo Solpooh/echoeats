@@ -310,13 +310,6 @@ a {
     width: 100%;
 }
 
-/*button {*/
-/*    border-radius: 0;*/
-/*    display: inline-block;*/
-/*    background-color: transparent;*/
-/*    border: none;*/
-/*}*/
-
 .bottom-button {
     width: 100%;
 }
@@ -526,11 +519,6 @@ h4 {
 h4 span {
     vertical-align: middle;
     font-size: small;
-}
-
-.main {
-    padding-bottom: 24px;
-    padding-top: 10px;
 }
 
 .table {
@@ -773,7 +761,6 @@ tfoot td {
 .main {
     padding-bottom: 24px;
     padding-top: 10px;
-    /*text-align: center;*/
 }
 
 .list_btn {
@@ -807,13 +794,13 @@ h4 span {
     padding-top: 24px;
 }
 
-.title {
-    width: 100%;
-    vertical-align: middle;
-    padding-bottom: 9px;
-    border-color: lightgray;
-    border-width: 1px;
-}
+/*.title {*/
+/*    width: 100%;*/
+/*    vertical-align: middle;*/
+/*    padding-bottom: 9px;*/
+/*    border-color: lightgray;*/
+/*    border-width: 1px;*/
+/*}*/
 
 .col-sm-6 {
     max-width: 900px;
@@ -833,4 +820,92 @@ h4 span {
 }
 #result_card {
     position: relative;
+}
+
+/* faq */
+#option.dropdown {
+    width: 260px;
+    border-radius: 0;
+    padding-bottom: 0.5cm;
+    padding-left: 110px;
+    float: right;
+}
+
+/* faq_write */
+.row {
+    padding-top:50px;
+    padding-bottom: 50px
+}
+
+#faqMain {
+    text-align: center;
+    border-bottom: 2px solid black;
+}
+
+tr {
+    height: 60px;
+}
+
+.title-header {
+    width: 10%;
+    vertical-align: middle;
+    border-color: white;
+}
+
+.title-input {
+    vertical-align: middle;
+    border-bottom-color: white;
+}
+
+#titleMessage, #contentMessage {
+    color: red;
+}
+
+.category-header {
+    white-space: nowrap;
+    width: 10%;
+    vertical-align: middle;
+    border-color: white;
+    font-size: 15px
+}
+
+.category-input {
+    vertical-align: middle;
+    border-bottom-color: white;
+}
+
+.content-header {
+    font-weight: bolder;
+}
+
+#counter {
+    color:#aaa;
+    float: right;
+}
+
+.table thead th {
+    vertical-align: initial; /* 기본값으로 되돌림 */
+}
+
+#fileItem {
+    height: 30px;
+}
+
+.submit_btn {
+    text-align: right;
+}
+
+.tbody_td {
+    width: 10%;
+    background-color: #4CAF50;
+    vertical-align: middle;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.tbody_val {
+    text-align: left;
+    vertical-align: middle;
+    letter-spacing: -1px;
+    padding-left: 20px;
 }

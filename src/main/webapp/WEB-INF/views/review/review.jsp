@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/resources/product/css/footer.css">
     <link rel="stylesheet" href="/resources/css/member/grade.css">
     <link rel="stylesheet" href="/resources/css/member/mypage.css">
-    <link rel="stylesheet" href="/resources/css/board/review.css">
+    <link rel="stylesheet" href="/resources/board/css/review.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
         /*데이터없을경우*/

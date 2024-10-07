@@ -4,18 +4,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <c:set var="today" value="<%= new java.util.Date() %>" />
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-<%@ page session="true"%>
-
+<c:set var="nonce" value="${requestScope.cspNonce}" />
 
 <!-- 공지사항 관리자 페이지 -->
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <link rel="stylesheet" href="${contextPath}/resources/common/css/styles.css">
-    <link rel="stylesheet" href="${contextPath}/resources/admin/order/css/orderList.css">
-    <link rel="stylesheet" href="${contextPath}/resources/css/board/board.css">
-    <link rel="stylesheet" href="${contextPath}/resources/css/board/board2.css">
+    <link rel="stylesheet" href="${contextPath}/resources/common/css/styles.css" nonce="${nonce}">
+    <link rel="stylesheet" href="${contextPath}/resources/admin/order/css/orderList.css" nonce="${nonce}">
+    <link rel="stylesheet" href="${contextPath}/resources/board/css/board.css" nonce="${nonce}">
+    <link rel="stylesheet" href="${contextPath}/resources/board/css/boardAdmin.css" nonce="${nonce}">
 </head>
 
 <body class="sb-nav-fixed">
@@ -105,23 +104,12 @@
             </div>
         </div>
     </div>
-</div>
-<script>
-    let msg = "${message}";
-    if (msg === "WRT_OK") alert("게시물 등록이 완료되었습니다.");
-    if (msg === "MOD_OK") alert("게시물 수정이 완료되었습니다.");
-    if (msg === "DEL_OK") alert("게시물 삭제가 완료되었습니다.");
 
-    function notice_delete(id) {
-        let frm = document.getElementById('form');
-        if (!confirm("정말 삭제하시겠습니까?")) {
-            return false;
-        } else {
-            frm.action = "<c:url value='deleteNotice" + "${sc.getQueryString()}" + "&notice_id=" + id + "' />";
-            frm.submit(); // 폼 제출
-        }
-    }
-</script>
+    <div id="data-container" data-nonce="${nonce}" data-msg="${message}" data-paging="${sc.getQueryString()}"></div>
+
+</div>
+
+<script src="${contextPath}/resources/board/js/noticeCRUD.js" nonce="${nonce}"></script>
 
 </body>
 
