@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class FileController {
             // content-type 확실하게 명시
             header.add("Content-type", Files.probeContentType(file.toPath()));
             result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return result;
@@ -62,7 +63,7 @@ public class FileController {
         System.out.println("deleteFile........" + fileName);
         try {
             /* 썸네일 파일 삭제 */
-            file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
+            file = new File("c:\\upload\\" + URLDecoder.decode(fileName, StandardCharsets.UTF_8));
 
             file.delete();
 

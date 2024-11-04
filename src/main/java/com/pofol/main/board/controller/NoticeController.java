@@ -4,6 +4,7 @@ import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.domain.NoticeDto;
 import com.pofol.main.board.domain.PageHandler;
 import com.pofol.main.board.domain.SearchBoardCondition;
+import com.pofol.main.board.exception.CustomException;
 import com.pofol.main.board.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,11 @@ public class NoticeController {
     // 상세조회 메서드
     private void selectNotice(NoticeDto dto, Model m) throws Exception {
         NoticeDto notice = noticeService.getNotice(dto);
+
+        if (notice == null) {
+            throw new CustomException.NoExistBoardException("존재하지 않는 게시물입니다.");
+        }
+
         List<ImageDto> imageList = noticeService.getImageList(dto.getNotice_id(), "notice");
         notice.setImageList(imageList);
         m.addAttribute("notice", notice);
@@ -37,20 +43,18 @@ public class NoticeController {
     public String notice(HttpServletRequest request,
                          @ModelAttribute("sc") SearchBoardCondition sc,
                          Model m) throws Exception {
-        try {
+        int totalCnt = noticeService.getSearchResultCnt(sc);
+        m.addAttribute("totalCnt", totalCnt);
 
-            int totalCnt = noticeService.getSearchResultCnt(sc);
-            m.addAttribute("totalCnt", totalCnt);
+        PageHandler pageHandler = new PageHandler(totalCnt, sc);
+        List<NoticeDto> list = noticeService.getSearchResultPage(sc);
 
-            PageHandler pageHandler = new PageHandler(totalCnt, sc);
-
-            List<NoticeDto> list = noticeService.getSearchResultPage(sc);
-            m.addAttribute("list", list);
-            m.addAttribute("ph", pageHandler);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (list.isEmpty()) {
+            throw new CustomException.NoExistBoardException("공지사항 목록이 존재하지 않습니다.");
         }
+
+        m.addAttribute("list", list);
+        m.addAttribute("ph", pageHandler);
 
         return getViewName(request.getRequestURI(),"notice");
     }
@@ -107,11 +111,10 @@ public class NoticeController {
                                NoticeDto dto,
                                RedirectAttributes redirectAttributes) throws Exception {
         int rowCnt = noticeService.deleteNotice(dto);
-        redirectAttributes.addFlashAttribute("message", "DEL_OK");
-
         if (rowCnt != 1) {
             throw new Exception("공지사항 삭제 실패");
         }
+        redirectAttributes.addFlashAttribute("message", "DEL_OK");
 
         return "redirect:/admin/notice" + sc.getQueryString();
     }

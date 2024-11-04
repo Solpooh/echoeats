@@ -26,6 +26,7 @@ import org.springframework.security.web.header.HeaderWriter;
 import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,23 +38,28 @@ import java.util.UUID;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     AuthenticationSuccessHandler authenticationSuccessHandler;
-
     @Autowired
     AuthenticationFailureHandler authenticationFailureHandler;
-
     @Autowired
     private UserDetailsService userDetailsService;
-
+    @Autowired
+    private CSPNonceFilter nonceFilter;
+    @Bean
+    public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
+        return new HandlerMappingIntrospector();
+    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         //super.configure(web);
     }
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .addFilterBefore(new CSPNonceFilter(), HeaderWriterFilter.class)
+                .cors().and()
+                .addFilterBefore(nonceFilter, HeaderWriterFilter.class)
                 .authorizeRequests()  // 인증이 필요한 URL 설정
                 .antMatchers("/board/faq_admin").hasAuthority("ADMIN")
                 .antMatchers("/admin/**", "/admin1/**").hasAuthority("ADMIN")

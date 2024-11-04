@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="nonce" value="${requestScope.cspNonce}" />
+
 <html>
 <head>
   <title>Title</title>
@@ -126,7 +128,7 @@
     </div>
 </body>
 </html>
-<script>
+<script nonce="${nonce}">
   document.addEventListener('DOMContentLoaded', function() {
     let currentUrl = window.location.pathname;
     console.log(currentUrl)
