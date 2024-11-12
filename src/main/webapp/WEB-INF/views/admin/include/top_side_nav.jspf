@@ -1,18 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="utf-8"%>
+<c:set var="nonce" value="${requestScope.cspNonce}" />
+
 <head>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@duetds/date-picker@1.4.0/dist/duet/duet.esm.js"></script>
-    <script nomodule src="https://cdn.jsdelivr.net/npm/@duetds/date-picker@1.4.0/dist/duet/duet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" nonce="${nonce}"></script>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous" nonce="${nonce}"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@duetds/date-picker@1.4.0/dist/duet/duet.esm.js" nonce="${nonce}"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@duetds/date-picker@1.4.0/dist/duet/duet.js" nonce="${nonce}"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@duetds/date-picker@1.4.0/dist/duet/themes/default.css"/>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-    <script src="<c:url value='/resources/common/js/scripts.js' />"></script>
-    <script src="<c:url value='/resources/common/assets/demo/chart-area-demo.js' />"></script>
-    <script src="<c:url value='/resources/common/assets/demo/chart-bar-demo.js' />"></script>
-    <script src="<c:url value='/resources/common/js/datatables-simple-demo.js' />"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous" nonce="${nonce}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous" nonce="${nonce}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous" nonce="${nonce}"></script>
+    <script src="<c:url value='/resources/common/js/scripts.js' />" nonce="${nonce}"></script>
+    <script src="<c:url value='/resources/common/assets/demo/chart-area-demo.js' />" nonce="${nonce}"></script>
+    <script src="<c:url value='/resources/common/assets/demo/chart-bar-demo.js' />" nonce="${nonce}"></script>
+    <script src="<c:url value='/resources/common/js/datatables-simple-demo.js' />" nonce="${nonce}"></script>
 </head>
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->

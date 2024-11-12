@@ -97,7 +97,7 @@ function getFaqList() {
                     }
                     displayData += "<br/><br/>"
                 }
-                displayData += FaqDto.faq_con
+                displayData += FaqDto.faq_con;
                 displayData += "</div>";
 
                 if (userRole === 'ADMIN') {
@@ -116,7 +116,8 @@ function getFaqList() {
         },
 
         // 콜백함수 -> 실패 시 경고창 출력
-        error: function () {
+        error: function (result) {
+            console.log(result)
             alert("실패했습니다. 개발자도구를 통해 오류를 확인하세요.");
         }
     });

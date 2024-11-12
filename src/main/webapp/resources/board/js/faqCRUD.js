@@ -126,6 +126,7 @@ $("input[type='file']").on("change", function (e) {
     });
 });
 
+// 미리보기 제공
 function showUploadImage(data) {
     if (!data || data.length === 0) return;
 

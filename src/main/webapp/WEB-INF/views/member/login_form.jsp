@@ -1,6 +1,8 @@
 <%@ page language="java"  pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<c:set var="nonce" value="${requestScope.cspNonce}" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" nonce="${nonce}"></script>
 
 <link href="/resources/css/member/login_form.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="/resources/product/css/main-css.css">
@@ -96,7 +98,7 @@
 
 
 
-<script>
+<script nonce="${nonce}">
 
 
 

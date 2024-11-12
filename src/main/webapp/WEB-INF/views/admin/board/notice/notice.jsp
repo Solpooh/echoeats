@@ -23,7 +23,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="page-title">전체 공지사항 조회</div>
-            <button class="notice_btn" onclick="location.href='<c:url value="notice_write"/>'" type="button">등록하기</button>
+            <button class="notice_btn" type="button" id="registerButton">등록하기</button>
             <div class="card">
                 <div class="card-body">
                     <form action="<c:url value='/admin/notice'/>" class="form-inline mb-4">
@@ -71,10 +71,8 @@
                         <td>
                             <form id="form" class="form" method="post">
                             <!-- 수정, 삭제 버튼 -->
-                                <button class="modify_btn" type="button"
-                                        onclick="location.href='<c:url value="notice_write${sc.getQueryString()}&mode=edit&notice_id=${notice.notice_id}"/>'">수정하기
-                                </button>
-                                <button class="delete_btn" type="button" onclick="notice_delete(${notice.notice_id})">삭제하기</button>
+                                <button class="modify_btn" type="button" data-notice_id="${notice.notice_id}" id="editButton">수정하기</button>
+                                <button class="delete_btn" type="button" data-notice_id="${notice.notice_id}" id="deleteButton">삭제하기</button>
                             </form>
                         </td>
                     </tr>

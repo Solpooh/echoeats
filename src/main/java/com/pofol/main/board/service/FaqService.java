@@ -19,6 +19,4 @@ public interface FaqService {
     List<FaqDto> selectAllFaq(FaqDto dto);
     List<FaqDto> selectPaged(Map map);
     int countFaq(FaqDto dto);
-    List<ImageDto> getImageList(int item_id, String mode);
-
 }

@@ -24,11 +24,11 @@
                 </h4>
             </div>
             <div>
-                <form name="frm" method="post" onsubmit="return saveNotice()">
+                <form name="frm" method="post" id="noticeForm">
                     <table class="table">
                         <thead>
                         <tr>
-                            <th style="width: 10%">제목</th>
+                            <th style="width: 10%" nonce="${nonce}">제목</th>
                             <th>
                                 <input type="hidden" name="mode" value="<c:out value='${mode}'/>">
                                 <c:if test="${mode == 'edit'}">
@@ -65,10 +65,9 @@
                         </div>
                     </div>
 
-                    <!-- -->
                     <div class="submit_btn">
-                        <button class="back_btn" type="button" onclick="location.href='<c:url value="notice${sc.getQueryString()}"/>'">취소</button>
-                        <button class="notice_btn" type="submit" onclick="saveNotice()">
+                        <button class="back_btn" type="button" id="cancelButton">취소</button>
+                        <button class="notice_btn" type="submit" id="submitButton">
                             ${mode == 'new' ? '등록' : '수정'}
                         </button>
                     </div>

@@ -7,6 +7,43 @@ const mode = container.getAttribute("data-mode");
 const notice_id = container.getAttribute("data-noticeId");
 
 $(document).ready(function () {
+    // URL 쿼리스트링 가져오기
+    function getQueryString() {
+        return window.location.search;
+    }
+
+    // 등록하기 버튼 클릭 이벤트
+    $('#registerButton').on('click', function () {
+        location.href = 'notice_write';
+    });
+
+    // 수정하기 버튼 클릭 이벤트 - 이벤트 위임 방식
+    $(document).on('click', '#editButton', function () {
+        const noticeId = $(this).data('notice_id');
+        location.href = `notice_write${getQueryString()}&mode=edit&notice_id=${noticeId}`;
+    });
+
+    // 삭제하기 버튼 클릭 이벤트
+    $(document).on('click', '#deleteButton', function () {
+        const noticeId = $(this).data('notice_id');
+        notice_delete(noticeId);
+    });
+
+    // 작성 폼 제출 이벤트 핸들러
+    $('#noticeForm').on('submit', function (event) {
+        if (!saveNotice()) event.preventDefault();
+    });
+
+    // 취소 버튼 클릭 이벤트
+    $('#cancelButton').on('click', function () {
+        location.href = `notice${getQueryString()}`;
+    });
+
+    // 등록/수정 버튼 클릭 이벤트
+    $('#submitButton').on('click', function () {
+        $('#noticeForm').submit();
+    });
+
     if (mode === 'edit') {
         $.getJSON("/getImageList", {item_id: notice_id, mode: "notice"}, function (data) {
             console.log(data);
@@ -82,6 +119,7 @@ function saveNotice() {
         return false;  // 폼 제출을 중단합니다.
     }
 }
+
 // 이미지
 let regex = new RegExp("(.*?)\.(jpg|png)$");
 let maxSize = 1048576; //1MB
@@ -123,6 +161,7 @@ $("input[type='file']").on("change", function(e) {
             showUploadImage(result);
         },
         error: function(result) {
+            console.log(result);
             alert("이미지 파일이 아닙니다");
         }
     });

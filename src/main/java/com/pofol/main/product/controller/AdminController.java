@@ -3,22 +3,14 @@ package com.pofol.main.product.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pofol.main.product.category.CategoryDto;
 import com.pofol.main.product.category.CategoryList;
-import com.pofol.main.product.domain.OptionProductDto;
 import com.pofol.main.product.domain.ProductDto;
 import com.pofol.main.product.domain.ProductImageDto;
-import com.pofol.main.product.service.ProductService;
-import com.pofol.util.AwsS3ImgUploaderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -47,7 +38,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final ProductService productService;
+//    private final ProductService productService;
     private final CategoryList categoryList;
 
     @GetMapping("/test")
@@ -76,19 +67,19 @@ public class AdminController {
     }
 
     // 상품 등록
-    @PostMapping("hyoungJun/productEnroll")
-    public String productEnrollPOST(ProductDto productDto, RedirectAttributes redirectAttributes) throws Exception {
-        log.info("productEnrollPOST 진입");
-        log.info("{}", productDto);
-        productService.productEnroll(productDto);
-        log.info("{} 상품 등록 완료", productDto.getProd_name());
-        productService.productInfoEnroll(productDto);
-        log.info("{} 상품 정보 등록 완료", productDto.getProd_name());
-        redirectAttributes.addFlashAttribute(
-                "productEnroll_result",
-                productDto.getProd_name() + " 상품이 등록되었습니다.");
-        return "redirect:/admin/dashboard";
-    }
+//    @PostMapping("hyoungJun/productEnroll")
+//    public String productEnrollPOST(ProductDto productDto, RedirectAttributes redirectAttributes) throws Exception {
+//        log.info("productEnrollPOST 진입");
+//        log.info("{}", productDto);
+//        productService.productEnroll(productDto);
+//        log.info("{} 상품 등록 완료", productDto.getProd_name());
+//        productService.productInfoEnroll(productDto);
+//        log.info("{} 상품 정보 등록 완료", productDto.getProd_name());
+//        redirectAttributes.addFlashAttribute(
+//                "productEnroll_result",
+//                productDto.getProd_name() + " 상품이 등록되었습니다.");
+//        return "redirect:/admin/dashboard";
+//    }
 
     // 첨부 파일 업로드
     @PostMapping(value = "/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

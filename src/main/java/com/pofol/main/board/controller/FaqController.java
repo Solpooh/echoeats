@@ -2,7 +2,10 @@ package com.pofol.main.board.controller;
 
 import com.pofol.main.board.domain.*;
 import com.pofol.main.board.service.FaqService;
+import com.pofol.main.board.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FaqController {
     private final FaqService faqService;
+    private final FileService fileService;
+    private static final Logger logger = LoggerFactory.getLogger(FaqController.class);
 
     // FAQ 목록 조회
     @ResponseBody
@@ -37,6 +42,7 @@ public class FaqController {
         map.put("offset", sc.getOffset());
         map.put("pageSize", sc.getPageSize());
         map.put("faq_type", dto.getFaq_type());
+        logger.info("Request parameters (map): {}", map); // map 변수 로깅
 
         List<FaqDto> list = faqService.selectPaged(map);
 
@@ -44,6 +50,7 @@ public class FaqController {
         Map<String, Object> result = new HashMap<>();
         result.put("faqList", list);
         result.put("pageHandler", pageHandler);
+        logger.info("Response result: {}", result); // result 변수 로깅
 
         return ResponseEntity.ok(result);
     }
@@ -58,7 +65,7 @@ public class FaqController {
         if ("edit".equals(mode)) {
             // 상세조회
             FaqDto faq = faqService.selectFaq(dto.getFaq_id());
-            List<ImageDto> imageList = faqService.getImageList(dto.getFaq_id(), "faq");
+            List<ImageDto> imageList = fileService.getImageList(dto.getFaq_id(), "faq");
 
             faq.setImageList(imageList);
             m.addAttribute("faq", faq);

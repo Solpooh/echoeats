@@ -9,11 +9,7 @@ import java.util.List;
 
 public interface FileService {
     List<ImageDto> fileUpload(MultipartFile[] uploadFiles);
-    String getDatePath();
-    File getUploadPath(String datePath);
-    void createDirectoryIfNotExists(File uploadPath);
-    boolean isImageFile(MultipartFile multipartFile) throws IOException;
-    ImageDto saveImageFile(MultipartFile file, File uploadPath, String datePath) throws IOException;
-    void createThumbnail(File saveFile, File uploadPath, String uploadFileName) throws IOException;
-    void deleteFiles(List<ImageDto> fileList);
+    byte[] getFile(String fileName);
+    void deleteFile(String fileName);
+    List<ImageDto> getImageList(int item_id, String mode);
 }

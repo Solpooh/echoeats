@@ -90,11 +90,9 @@ public class NoticeServiceImpl implements NoticeService {
             // 이미지 정보 삭제
             noticeRepository.deleteImageAll(dto.getNotice_id());
 
-            // 로컬 파일 시스템에서 삭제할 이미지 목록 가져오기
-            List<ImageDto> fileList = getImageList(dto.getNotice_id(), "notice");
-            fileService.deleteFiles(fileList);
+//            List<ImageDto> fileList = getImageList(dto.getNotice_id(), "notice");
+//            fileService.deleteFile(fileList);
 
-            // FAQ 삭제
             return noticeRepository.deleteNotice(dto);
 
         } catch (Exception e) {

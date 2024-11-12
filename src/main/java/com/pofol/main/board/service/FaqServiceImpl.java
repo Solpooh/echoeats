@@ -5,6 +5,8 @@ import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.repository.FaqRepository;
 import com.pofol.main.board.repository.FaqRepositoryImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,9 +22,9 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FaqServiceImpl implements FaqService {
     private final FaqRepository faqRepository;
-    private final FileService fileService;
 
     @Override
     @Transactional
@@ -66,14 +68,6 @@ public class FaqServiceImpl implements FaqService {
         }
     }
 
-    @Override
-    public List<ImageDto> getImageList(int item_id, String mode) {
-        try {
-            return faqRepository.getImageList(item_id, mode);
-        } catch (Exception e) {
-            throw new RuntimeException("FAQ 이미지 조회 실패", e);
-        }
-    }
 
     @Override
     @Transactional
@@ -82,9 +76,8 @@ public class FaqServiceImpl implements FaqService {
             // 이미지 정보 삭제
             faqRepository.deleteImageAll(dto.getFaq_id());
 
-            // 로컬 파일 시스템에서 삭제할 이미지 목록 가져오기
-            List<ImageDto> fileList = getImageList(dto.getFaq_id(), "faq");
-            fileService.deleteFiles(fileList);
+//            List<ImageDto> fileList = getImageList(dto.getFaq_id(), "faq");
+//            fileService.deleteFiles(fileList);
 
             // FAQ 삭제
             return faqRepository.delete(dto);
@@ -116,9 +109,13 @@ public class FaqServiceImpl implements FaqService {
     public List<FaqDto> selectPaged(Map map) {
         try {
             List<FaqDto> faqList = faqRepository.selectPaged(map);
+            log.info("faqLIST" + faqList);
             for (FaqDto faq : faqList) {
+                log.info("faqsize" + faqList.size());
                 // faq_id로 이미지 조회
                 List<ImageDto> imageList = faqRepository.getImageList(faq.getFaq_id(), "faq");
+                log.info("Image list for FAQ ID " + faq.getFaq_id() + ": " + imageList);
+
                 faq.setImageList(imageList);
             }
             return faqList;

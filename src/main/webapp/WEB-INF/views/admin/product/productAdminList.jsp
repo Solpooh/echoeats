@@ -2,6 +2,8 @@
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%>
+<c:set var="nonce" value="${requestScope.cspNonce}" />
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -11,12 +13,7 @@
     <!-- <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" /> -->
     <link href="<c:url value='/resources/common/css/styles.css' />" rel="stylesheet" />
     <link href="<c:url value='/resources/admin/product/css/productAdminList.css'/>" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@duetds/date-picker@1.4.0/dist/duet/duet.esm.js"></script>
-    <script nomodule src="https://cdn.jsdelivr.net/npm/@duetds/date-picker@1.4.0/dist/duet/duet.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@duetds/date-picker@1.4.0/dist/duet/themes/default.css" />
-    <script>
+    <script nonce="${nonce}">
         $(function(){
             $('.start_date').val(fullDate(0));
             $('.end_date').val(fullDate(0));
@@ -497,7 +494,7 @@
     </footer>
 </div>
 </div>
-<script>
+<script nonce="${nonce}">
 
     let categoryList = JSON.parse('${categoryList}');
 
@@ -523,13 +520,7 @@
     });
 
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="<c:url value='/resources/common/js/scripts.js' />"></script>
-<script src="<c:url value='/resources/common/assets/demo/chart-area-demo.js' />"></script>
-<script src="<c:url value='/resources/common/assets/demo/chart-bar-demo.js' />"></script>
-<script src="<c:url value='/resources/common/js/datatables-simple-demo.js' />"></script>
-<script src="/resources/product/js/productAdmin.js"></script>
+
+<script src="/resources/product/js/productAdmin.js" nonce="${nonce}"></script>
 </body>
 </html>
