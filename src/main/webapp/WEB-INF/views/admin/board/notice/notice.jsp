@@ -26,7 +26,7 @@
             <button class="notice_btn" type="button" id="registerButton">등록하기</button>
             <div class="card">
                 <div class="card-body">
-                    <form action="<c:url value='/admin/notice'/>" class="form-inline mb-4">
+                    <form action="<c:url value='/admin/notice'/>" class="form-inline mb-4" id="searchForm">
                         <select class="form-control mr-2" name="option">
                             <option value="A" ${ph.sc.option=='A' || ph.sc.option=='' ? "selected" : ""}>제목+내용</option>
                             <option value="T" ${ph.sc.option=='T' ? "selected" : ""}>제목만</option>

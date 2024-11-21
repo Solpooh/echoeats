@@ -3,13 +3,18 @@ const msg = container.getAttribute("data-msg");
 const paging = container.getAttribute("data-paging");
 const nonce = container.getAttribute("data-nonce");
 
-const mode = container.getAttribute("data-mode");
+// const mode = container.getAttribute("data-mode");
 const notice_id = container.getAttribute("data-noticeId");
 
 $(document).ready(function () {
     // URL 쿼리스트링 가져오기
     function getQueryString() {
-        return window.location.search;
+        let queryString = window.location.search;
+        // 쿼리스트링이 없다면 기본값을 추가
+        if (!queryString) {
+            queryString = '?page=1&pageSize=10'; // 기본값을 추가
+        }
+        return queryString;
     }
 
     // 등록하기 버튼 클릭 이벤트
@@ -44,36 +49,16 @@ $(document).ready(function () {
         $('#noticeForm').submit();
     });
 
-    if (mode === 'edit') {
-        $.getJSON("/getImageList", {item_id: notice_id, mode: "notice"}, function (data) {
-            console.log(data);
+    // 검색 keyword가 비어있을 경우
+    $('#searchForm').on('submit', function(event) {
+        const keyword = $('input[name="keyword"]').val().trim(); // 검색어를 가져옴
 
-            let str = "";
-            data.forEach((obj, index) => {
-                let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
-                str += "<div id='result_card'>";
-                str += "<img src='/display?fileName=" + fileCallPath + "'>";
-                str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
-                str += "<input type='hidden' name='imageList[" + index + "].fileName' value='" + obj.fileName + "'>";
-                str += "<input type='hidden' name='imageList[" + index + "].uuid' value='" + obj.uuid + "'>";
-                str += "<input type='hidden' name='imageList[" + index + "].uploadPath' value='" + obj.uploadPath + "'>";
-                str += "</div>";
+        if (keyword === "") {  // 검색어가 비어 있으면
+            alert("검색어를 입력해 주세요.");  // 경고 메시지 띄우기
+            event.preventDefault();  // 폼 제출 막기
+        }
+    });
 
-                $("#uploadResult").append(str);
-            })
-        });
-
-        // 초기화 함수: 모든 .form-control 요소의 글자 수를 초기화
-        $('.form-control').each(function () {
-            let content = $(this).val();
-            $('#counter').html("(" + content.length + "자 / 3000자)"); // 글자 수 초기화
-
-            if (content.length > 3000) {
-                $(this).val(content.substring(0, 3000));
-                $('#counter').html("(3000 / 3000자)");
-            }
-        });
-    }
 });
 
 $('.form-control').keyup(function (e) {
@@ -135,60 +120,8 @@ function fileCheck(fileName, fileSize){
     return true;
 }
 
-$("input[type='file']").on("change", function(e) {
-    if ($(".imgDeleteBtn").length > 0) {
-        deleteFile(); // 필요에 따라 파일 삭제 처리
-    }
-
-    let formData = new FormData();
-    let fileInput = $('input[name="uploadFile"]');
-    let fileList = fileInput[0].files;
-    console.log(fileList);
-
-    for (let i = 0; i < fileList.length; i++) {
-        formData.append("uploadFile", fileList[i]);
-    }
-
-    $.ajax({
-        url: '/uploadImage',
-        processData: false,
-        contentType: false,
-        data: formData,
-        type: 'POST',
-        dataType: 'json',
-        success: function(result) {
-            console.log(result);
-            showUploadImage(result);
-        },
-        error: function(result) {
-            console.log(result);
-            alert("이미지 파일이 아닙니다");
-        }
-    });
-});
-
-function showUploadImage(data) {
-    if (!data || data.length === 0) return;
-
-    let uploadResult = $("#uploadResult");
-    data.forEach((obj, index) => {
-        let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
-
-        let str = "";
-
-        str += "<div id='result_card'>";
-        str += "<img src='/display?fileName=" + fileCallPath + "'>";
-        str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
-        str += "<input type='hidden' name='imageList[" + index + "].fileName' value='" + obj.fileName + "'>";
-        str += "<input type='hidden' name='imageList[" + index + "].uuid' value='" + obj.uuid + "'>";
-        str += "<input type='hidden' name='imageList[" + index + "].uploadPath' value='" + obj.uploadPath + "'>";
-        str += "</div>";
-
-        uploadResult.append(str);
-    });
-}
 // 동적으로 click event 거는 방법
-$("#uploadResult").on("click", ".imgDeleteBtn", function(e){
+$("#thumbnailPreview").on("click", ".imgDeleteBtn", function(e){
     deleteFile();
 });
 

@@ -2,6 +2,7 @@ package com.pofol.main.board.task;
 
 import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.repository.FaqRepositoryImpl;
+import com.pofol.main.board.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,7 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class ImageFileCheckTask {
-    private final FaqRepositoryImpl faqRepository;
+    private final FileRepository fileRepository;
 
     private String getYesFolder() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -33,7 +34,7 @@ public class ImageFileCheckTask {
         System.out.println("==================");
 
         // DB에 저장된 파일 리스트
-        List<ImageDto> fileList = faqRepository.checkFileList();
+        List<ImageDto> fileList = fileRepository.checkFileList();
 
         // 비교 기준 파일 리스트(Path 객체)
         List<Path> checkFilePath = new ArrayList<>();

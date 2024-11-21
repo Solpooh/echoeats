@@ -3,6 +3,7 @@ package com.pofol.main.board.controller;
 import com.pofol.main.board.domain.*;
 import com.pofol.main.board.service.FaqService;
 import com.pofol.main.board.service.FileService;
+import com.pofol.util.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
@@ -22,7 +24,6 @@ import java.util.List;
 public class FaqController {
     private final FaqService faqService;
     private final FileService fileService;
-    private static final Logger logger = LoggerFactory.getLogger(FaqController.class);
 
     // FAQ 목록 조회
     @ResponseBody
@@ -42,7 +43,6 @@ public class FaqController {
         map.put("offset", sc.getOffset());
         map.put("pageSize", sc.getPageSize());
         map.put("faq_type", dto.getFaq_type());
-        logger.info("Request parameters (map): {}", map); // map 변수 로깅
 
         List<FaqDto> list = faqService.selectPaged(map);
 
@@ -50,7 +50,6 @@ public class FaqController {
         Map<String, Object> result = new HashMap<>();
         result.put("faqList", list);
         result.put("pageHandler", pageHandler);
-        logger.info("Response result: {}", result); // result 변수 로깅
 
         return ResponseEntity.ok(result);
     }
@@ -80,7 +79,13 @@ public class FaqController {
     @PostMapping("/saveFaq")
     public String saveFaq(@RequestParam String mode,
                           FaqDto dto,
+                          @RequestParam(required = false, value = "uploadFile") List<MultipartFile> files,
                           RedirectAttributes redirectAttributes) {
+        // 유효한 파일이 있는 경우에만 파일 업로드 처리
+        if (files != null && !files.isEmpty()) {
+            dto.setImageList(fileService.fileUpload(files));
+        }
+
         if ("edit".equals(mode)) {
             faqService.updateFaq(dto);
             redirectAttributes.addFlashAttribute("message", "MOD_OK");
@@ -96,9 +101,12 @@ public class FaqController {
     @ResponseBody
     @PostMapping("/deleteFaq")
     public ResponseEntity<?> deleteFaq(@RequestBody FaqDto dto) {
-        int result = faqService.deleteFaq(dto);
+        List<ImageDto> list = faqService.deleteFaq(dto);
 
-        if (result > 0) {
+        // S3 객체에 있는 파일 삭제
+        fileService.deleteFile(list);
+
+        if (list != null) {
             return ResponseEntity.ok().body(dto.getFaq_id());
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 실패");

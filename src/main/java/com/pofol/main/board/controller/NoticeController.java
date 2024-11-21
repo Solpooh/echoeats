@@ -5,11 +5,13 @@ import com.pofol.main.board.domain.NoticeDto;
 import com.pofol.main.board.domain.PageHandler;
 import com.pofol.main.board.domain.SearchBoardCondition;
 import com.pofol.main.board.exception.CustomException;
+import com.pofol.main.board.service.FileService;
 import com.pofol.main.board.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ import java.util.List;
 @Controller
 public class NoticeController {
     private final NoticeService noticeService;
+    private final FileService fileService;
 
     private String getViewName(String uri, String viewName) {
         return uri.startsWith("/admin")? "admin/board/notice/" + viewName : "board/notice/" + viewName;
@@ -33,7 +36,7 @@ public class NoticeController {
             throw new CustomException.NoExistBoardException("존재하지 않는 게시물입니다.");
         }
 
-        List<ImageDto> imageList = noticeService.getImageList(dto.getNotice_id(), "notice");
+        List<ImageDto> imageList = fileService.getImageList(dto.getNotice_id(), "notice");
         notice.setImageList(imageList);
         m.addAttribute("notice", notice);
     }
@@ -91,7 +94,13 @@ public class NoticeController {
     public String insertNotice(@RequestParam(defaultValue = "new") String mode,
                                @ModelAttribute("sc") SearchBoardCondition sc,
                                NoticeDto dto,
+                               @RequestParam(required = false, value = "uploadFile") List<MultipartFile> files,
                                RedirectAttributes redirectAttributes) throws Exception {
+        // 유효한 파일이 있는 경우에만 파일 업로드 처리
+        if (files != null && !files.isEmpty()) {
+            dto.setImageList(fileService.fileUpload(files));
+        }
+
         if ("edit".equals(mode)) {
             noticeService.updateNotice(dto);
             redirectAttributes.addFlashAttribute("message", "MOD_OK");
@@ -110,10 +119,10 @@ public class NoticeController {
     public String deleteNotice(@ModelAttribute("sc") SearchBoardCondition sc,
                                NoticeDto dto,
                                RedirectAttributes redirectAttributes) throws Exception {
-        int rowCnt = noticeService.deleteNotice(dto);
-        if (rowCnt != 1) {
-            throw new Exception("공지사항 삭제 실패");
-        }
+        List<ImageDto> list = noticeService.deleteNotice(dto);
+
+        fileService.deleteFile(list);
+
         redirectAttributes.addFlashAttribute("message", "DEL_OK");
 
         return "redirect:/admin/notice" + sc.getQueryString();

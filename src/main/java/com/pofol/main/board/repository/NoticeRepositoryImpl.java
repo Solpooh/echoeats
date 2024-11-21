@@ -67,30 +67,4 @@ public class NoticeRepositoryImpl implements NoticeRepository {
     public List<NoticeDto> searchSelectPage(SearchBoardCondition sc) {
         return session.selectList(namespace + "searchSelectPage", sc);
     }
-
-    // 이미지 등록
-    @Override
-    public int imageInsert(ImageDto dto) {
-        return session.insert(namespace + "imageInsert", dto);
-    }
-
-    // 이미지 조회
-    @Override
-    public List<ImageDto> getImageList(int item_id, String mode) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("item_id", item_id);
-        map.put("mode", mode);
-        return session.selectList(namespace + "getImageList", map);
-    }
-
-    // 이미지 삭제
-    @Override
-    public void deleteImageAll(int notice_id) {
-        session.delete(namespace + "deleteImageAll", notice_id);
-    }
-
-    @Override
-    public List<ImageDto> checkFileList() {
-        return session.selectList(namespace + "checkFileList");
-    }
 }

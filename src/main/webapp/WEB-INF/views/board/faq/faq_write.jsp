@@ -23,7 +23,7 @@
       <div class="main" id="faqMain">
         <h4>FAQ ${mode == "new" ? "등록" : "수정"}</h4>
       </div>
-      <form name="frm" method="post" onsubmit="return saveFaq()">
+      <form name="frm" method="post" id="faqForm" enctype="multipart/form-data">
         <table class="table">
           <thead>
           <tr>
@@ -60,24 +60,27 @@
           </tr>
           </tbody>
         </table>
+
         <!-- 이미지 input 추가 -->
         <div class="form-section">
           <div class="form_section_title">
             <label></label>
             <div class="form-section-content">
-              <input type="file" id="fileItem" name="uploadFile" multiple>
-              <div id="uploadResult">
+              <input type="file" id="imageUpload" accept="image/*" name="uploadFile" multiple>
 
+              <div class="preview-container">
+                <img id="thumbnailPreview" src="" alt="Thumbnail Preview" style="display: none; width: 150px; height: 150px;"/>
               </div>
+
             </div>
           </div>
         </div>
 
         <div style="text-align: right;">
-          <button class="back_btn" type="button" onclick="location.href='${contextPath}/board/faq'">
+          <button class="back_btn" type="button" id="cancelButton">
             취소
           </button>
-          <button class="notice_btn" type="submit" onclick="saveFaq()">
+          <button class="notice_btn" type="submit" id="submitButton">
             ${mode == 'new' ? '등록' : '수정'}
           </button>
         </div>
@@ -86,12 +89,14 @@
     <div class="col-sm-2"></div>
   </div>
 
-  <div id="data-container" data-nonce="${nonce}" data-mode="${mode}" data-faqId="${faq.faq_id}"></div>
+  <div id="data-container" data-nonce="${nonce}" data-mode="${mode}" data-faqId="${faq.faq_id}" data-type="faq"></div>
 
 </div>
 </body>
 
 <script src="${contextPath}/resources/board/js/faqCRUD.js" nonce="${nonce}"></script>
+<script src="${contextPath}/resources/board/js/fileUpload.js" nonce="${nonce}"></script>
+
 <footer>
   <%@ include file="../../include/footer.jspf" %>
 </footer>

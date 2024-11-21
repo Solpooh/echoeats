@@ -79,28 +79,4 @@
         WHERE TRUE
         <include refid="searchBoardCondition" />
     </select>
-
-    <!-- 이미지 등록 -->
-    <insert id="imageInsert" parameterType="ImageDto">
-        INSERT INTO image (item_id, fileName, uploadPath, uuid, mode)
-        VALUES (#{item_id}, #{fileName}, #{uploadPath}, #{uuid}, 'notice')
-    </insert>
-
-    <!-- 이미지 조회 -->
-    <select id="getImageList" parameterType="Map" resultType="ImageDto">
-        SELECT * FROM image
-        WHERE item_id = #{item_id} AND mode = #{mode}
-    </select>
-
-    <!-- 이미지 삭제 -->
-    <delete id="deleteImageAll" parameterType="int">
-        DELETE FROM image
-        WHERE item_id = #{notice_id} AND mode = 'notice'
-    </delete>
-
-    <!-- 어제자 날짜 이미지 리스트 조회 -->
-    <select id="checkFileList" resultType="ImageDto">
-        SELECT * FROM image
-        WHERE uploadPath = DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 DAY), '%Y\\%m\\%d') AND mode = 'notice'
-    </select>
 </mapper>

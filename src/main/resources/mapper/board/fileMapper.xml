@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pofol.main.repository.fileRepository">
+    <!-- 이미지 등록 -->
+    <insert id="imageInsert" parameterType="ImageDto">
+        INSERT INTO image (item_id, fileName, uploadPath, uuid, mode)
+        VALUES (#{item_id}, #{fileName}, #{uploadPath}, #{uuid}, #{mode})
+    </insert>
+
+    <!-- 이미지 조회 -->
+    <select id="getImageList" parameterType="Map" resultType="ImageDto">
+        SELECT * FROM image
+        WHERE item_id = #{item_id} AND mode = #{mode}
+    </select>
+
+    <!-- 이미지 삭제 -->
+    <delete id="deleteImageAll" parameterType="Map">
+        DELETE FROM image
+        WHERE item_id = #{item_id} AND mode = #{mode}
+    </delete>
+
+    <!-- 어제자 날짜 이미지 리스트 조회 -->
+    <select id="checkFileList" resultType="ImageDto">
+        SELECT * FROM image
+        WHERE uploadPath = DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 DAY), '%Y\\%m\\%d') AND mode = #{mode}
+    </select>
+</mapper>

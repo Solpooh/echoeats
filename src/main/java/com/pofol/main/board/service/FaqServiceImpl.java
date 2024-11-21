@@ -4,6 +4,7 @@ import com.pofol.main.board.domain.FaqDto;
 import com.pofol.main.board.domain.ImageDto;
 import com.pofol.main.board.repository.FaqRepository;
 import com.pofol.main.board.repository.FaqRepositoryImpl;
+import com.pofol.main.board.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,18 +27,20 @@ import java.util.Map;
 @Slf4j
 public class FaqServiceImpl implements FaqService {
     private final FaqRepository faqRepository;
+    private final FileRepository fileRepository;
 
     @Override
     @Transactional
     public int insertFaq(FaqDto dto) {
         try {
             int result = faqRepository.insert(dto);
+
             List<ImageDto> imageList = dto.getImageList();
             if (imageList != null && !imageList.isEmpty()) {
                 for (ImageDto imageDto : imageList) {
                     imageDto.setItem_id(dto.getFaq_id()); // 외래 키 설정
                     imageDto.setMode("faq"); // 모드 설정
-                    faqRepository.imageInsert(imageDto);
+                    fileRepository.imageInsert(imageDto);
                 }
             }
             return result;
@@ -52,14 +56,17 @@ public class FaqServiceImpl implements FaqService {
             int result = faqRepository.update(dto);
             List<ImageDto> imageList = dto.getImageList();
             if (result == 1 && imageList != null && !imageList.isEmpty()) {
+
                 // 이미지 모두 삭제
-                faqRepository.deleteImageAll(dto.getFaq_id());
+                for (ImageDto image : imageList) {
+                    fileRepository.deleteImageAll(image.getItem_id(), image.getMode());
+                }
 
                 // 새로운 이미지로 업데이트
                 for (ImageDto imageDto : imageList) {
                     imageDto.setItem_id(dto.getFaq_id()); // 외래 키 설정
                     imageDto.setMode("faq");
-                    faqRepository.imageInsert(imageDto);
+                    fileRepository.imageInsert(imageDto);
                 }
             }
             return result;
@@ -71,17 +78,19 @@ public class FaqServiceImpl implements FaqService {
 
     @Override
     @Transactional
-    public int deleteFaq(FaqDto dto) {
+    public List<ImageDto> deleteFaq(FaqDto dto) {
         try {
-            // 이미지 정보 삭제
-            faqRepository.deleteImageAll(dto.getFaq_id());
-
-//            List<ImageDto> fileList = getImageList(dto.getFaq_id(), "faq");
-//            fileService.deleteFiles(fileList);
-
             // FAQ 삭제
-            return faqRepository.delete(dto);
+            faqRepository.delete(dto);
 
+            List<ImageDto> list = fileRepository.getImageList(dto.getFaq_id(), "faq");
+            // 이미지 정보 삭제
+            if (!list.isEmpty()) {
+                for (ImageDto image : list) {
+                    fileRepository.deleteImageAll(image.getItem_id(), image.getMode());
+                }
+            }
+            return list;
         } catch (Exception e) {
             throw new RuntimeException("FAQ 삭제 실패", e);
         }
@@ -109,13 +118,9 @@ public class FaqServiceImpl implements FaqService {
     public List<FaqDto> selectPaged(Map map) {
         try {
             List<FaqDto> faqList = faqRepository.selectPaged(map);
-            log.info("faqLIST" + faqList);
             for (FaqDto faq : faqList) {
-                log.info("faqsize" + faqList.size());
                 // faq_id로 이미지 조회
-                List<ImageDto> imageList = faqRepository.getImageList(faq.getFaq_id(), "faq");
-                log.info("Image list for FAQ ID " + faq.getFaq_id() + ": " + imageList);
-
+                List<ImageDto> imageList = fileRepository.getImageList(faq.getFaq_id(), "faq");
                 faq.setImageList(imageList);
             }
             return faqList;

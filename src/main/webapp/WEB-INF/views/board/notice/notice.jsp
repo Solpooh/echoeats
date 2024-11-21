@@ -32,7 +32,7 @@
     <div style="text-align:center">
         <div class="board-container">
             <div class="search-container">
-                <form action="<c:url value="/board/notice"/>" class="search-form">
+                <form action="<c:url value="/board/notice"/>" class="search-form" id="searchForm">
                     <select class="search-option" name="option">
                         <option value="A" ${ph.sc.option=='A' || ph.sc.option=='' ? "selected" : ""}>제목+내용</option>
                         <option value="T" ${ph.sc.option=='T' ? "selected" : ""}>제목만</option>
@@ -117,5 +117,8 @@
 <footer>
     <%@ include file="../../include/footer.jspf" %>
 </footer>
+
+<script src="${contextPath}/resources/board/js/noticeList.js" nonce="${nonce}"></script>
+
 </body>
 </html>

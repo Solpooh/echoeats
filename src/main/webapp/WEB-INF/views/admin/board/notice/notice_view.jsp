@@ -53,28 +53,31 @@
 
                     <tr style="border-top: 2px solid #FEF7FF;" nonce="${nonce}">
                         <td colspan="2" style="padding-top: 25px; padding-bottom: 50px; height: 350px;" nonce="${nonce}">
-                            <%--이미지가 있으면 이미지 출력--%>
+                            <%-- 이미지가 있으면 S3 URL로 이미지 출력 --%>
                             <c:if test="${not empty notice.imageList}">
                                 <c:forEach var="image" items="${notice.imageList}">
-                                    <c:url var="fileCallPath" value="/display">
-                                        <c:param name="fileName" value="${image.uploadPath}/${image.uuid}_${image.fileName}" />
-                                    </c:url>
-                                    <img src="<c:out value='${fileCallPath}'/>" alt="Notice Image">
+                                    <%-- S3 객체 URL을 동적으로 생성 --%>
+                                    <c:set var="fileCallPath" value="https://ecoeats-fileupload.s3.ap-northeast-2.amazonaws.com/${image.uploadPath}/${image.uuid}_${image.fileName}" />
+                                    <img src="${fileCallPath}" alt="Notice Image" style="max-width: 300px; margin: 10px;">
                                 </c:forEach>
                                 <br/><br/>
                             </c:if>
 
-                            <%--내용 출력--%>
+
+                        <%--내용 출력--%>
                             <c:out value="${fn:replace(notice.notice_con, newline, '<br>')}" escapeXml="false"/>
                         </td>
                     </tr>
                     </tfoot>
                 </table>
             </div>
-            <button class="list_btn" type="button" onclick="location.href='<c:url value='/admin/notice${sc.getQueryString()}'/>'">목록</button>
+            <button class="list_btn" type="button" id="listButton">목록</button>
         </div>
     </div>
     <div class="col-sm-2"></div>
 </div>
+
+<script src="${contextPath}/resources/board/js/noticeList.js" nonce="${nonce}"></script>
+
 </body>
 </html>

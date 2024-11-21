@@ -24,7 +24,7 @@
                 </h4>
             </div>
             <div>
-                <form name="frm" method="post" id="noticeForm">
+                <form name="frm" method="post" id="noticeForm" enctype="multipart/form-data">
                     <table class="table">
                         <thead>
                         <tr>
@@ -52,15 +52,18 @@
                         </tr>
                         </tbody>
                     </table>
+
                     <!-- 이미지 input 추가 -->
                     <div class="form-section">
                         <div class="form_section_title">
                             <label></label>
                             <div class="form-section-content">
-                                <input type="file" id="fileItem" name="uploadFile" multiple>
-                                <div id="uploadResult">
+                                <input type="file" id="imageUpload" accept="image/*" name="uploadFile" multiple>
 
+                                <div class="preview-container">
+                                    <img id="thumbnailPreview" src="" alt="Thumbnail Preview" style="display: none; width: 150px; height: 150px;"/>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -76,11 +79,12 @@
         </div>
     </div>
 
-    <div id="data-container" data-nonce="${nonce}" data-mode="${mode}" data-noticeId="${notice.notice_id}"></div>
+    <div id="data-container" data-nonce="${nonce}" data-mode="${mode}" data-noticeId="${notice.notice_id}" data-type="notice"></div>
 
 </div>
 
 <script src="${contextPath}/resources/board/js/noticeCRUD.js" nonce="${nonce}"></script>
+<script src="${contextPath}/resources/board/js/fileUpload.js" nonce="${nonce}"></script>
 
 </body>
 </html>

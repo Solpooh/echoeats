@@ -1,113 +1,115 @@
 package com.pofol.util;
 
 import com.pofol.main.board.domain.ImageDto;
-import com.pofol.main.board.repository.FaqRepository;
+import com.pofol.main.board.repository.FileRepository;
 import com.pofol.main.board.service.FileService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
-import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.async.AsyncRequestBody;
-import software.amazon.awssdk.core.async.AsyncResponseTransformer;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3AsyncClient;
-import software.amazon.awssdk.services.s3.model.*;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-@RequiredArgsConstructor
 @Service
-@Slf4j
+@RequiredArgsConstructor
 public class S3Service implements FileService {
-    private final S3AsyncClient s3Client;
-    private final String bucketName = "ecoeats-fileupload";
-    private FaqRepository faqRepository;
-
-    public S3Service() {
-        // S3 클라이언트 생성
-        this.s3Client = S3AsyncClient.builder()
-                .region(Region.AP_NORTHEAST_2)
-                .credentialsProvider(ProfileCredentialsProvider.create("default"))
-                .build();
-    }
-
+    private final S3AsyncClient S3AsyncClient;
+    private final FileRepository fileRepository;
     @Override
-    public List<ImageDto> fileUpload(MultipartFile[] uploadFiles) {
+    public List<ImageDto> fileUpload(List<MultipartFile> uploadFiles) {
         List<ImageDto> list = new ArrayList<>();
-        List<CompletableFuture<PutObjectResponse>> futures = new ArrayList<>();
+
+        String dateFormat = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
 
         for (MultipartFile file : uploadFiles) {
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            // "images/2024-11-10/myimage.jpg"
-            String uploadPath = "images/" + LocalDate.now().toString() + "/" + fileName;
+            String uuid = UUID.randomUUID().toString();
+            String fileName = file.getOriginalFilename();
+            String uploadPath = dateFormat + "/" + uuid + "_" + fileName;
 
-            CompletableFuture<PutObjectResponse> future = null;
+            // 업로드하기 위한 요청 생성
+            PutObjectRequest objectRequest = PutObjectRequest.builder()
+                    .bucket("ecoeats-fileupload")
+                    .key(uploadPath)
+                    .contentType(file.getContentType())
+                    .build();
 
+            // MultipartFile의 데이터를 byte[]로 읽음
             try {
-                future = s3Client.putObject(
-                        PutObjectRequest.builder()
-                                .bucket(bucketName)
-                                .key(uploadPath)
-                                .contentType(file.getContentType())
-                                .build(),
-                        AsyncRequestBody.fromBytes(file.getBytes())
+                byte[] fileBytes = file.getBytes();
+
+                CompletableFuture<PutObjectResponse> future = S3AsyncClient.putObject(
+                        objectRequest,
+                        AsyncRequestBody.fromBytes(fileBytes)
                 );
+
+                future.whenComplete((resp, err) -> {
+                    try {
+                        if (resp != null) {
+                            list.add(new ImageDto(fileName, dateFormat, uuid));
+                            System.out.println("업로드 완료, 세부사항 = " + resp);
+                        } else {
+                            err.printStackTrace();
+                        }
+                    } finally {
+                        S3AsyncClient.close();
+                    }
+                });
+
+                future.join();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            futures.add(future);
-
-            future.thenAccept(response -> {
-                if (response.sdkHttpResponse().isSuccessful()) {
-                    list.add(new ImageDto(fileName, uploadPath, UUID.randomUUID().toString()));
-                }
-            });
         }
-        // 모든 비동기 작업이 완료될 때까지 대기
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         return list;
     }
 
     @Override
     public byte[] getFile(String fileName) {
-        CompletableFuture<ResponseBytes<GetObjectResponse>> future = s3Client.getObject(
-                GetObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(fileName)
-                        .build(),
-                AsyncResponseTransformer.toBytes()
-        );
-
-        // byte 배열로 변환해서 반환
-        return future.thenApply(ResponseBytes::asByteArray).join();
+        return null;
     }
 
     @Override
-    public void deleteFile(String fileName) {
-        CompletableFuture<DeleteObjectResponse> future = s3Client.deleteObject(
-                DeleteObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(fileName)
-                        .build()
-        );
+    public CompletableFuture<Void> deleteFile(List<ImageDto> imageList) {
+        for (ImageDto image : imageList) {
+            String uploadPath = image.getUploadPath() + "/" + image.getUuid() + "_" + image.getFileName();
 
-        future.join();
+            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                    .bucket("ecoeats-fileupload")
+                    .key(uploadPath)
+                    .build();
+
+            CompletableFuture<DeleteObjectResponse> response = S3AsyncClient.deleteObject(deleteObjectRequest);
+
+            response.whenComplete((res, ex) -> {
+                if (res != null) {
+                    System.out.println("이미지 삭제 완료 " + res);
+                } else {
+                    throw new RuntimeException("An S3 exception occurred during delete", ex);
+                }
+            });
+        }
+        return null;
     }
 
     @Override
     public List<ImageDto> getImageList(int item_id, String mode) {
         try {
-            return faqRepository.getImageList(item_id, mode);
+
+            return fileRepository.getImageList(item_id, mode);
+
         } catch (Exception e) {
-            throw new RuntimeException("FAQ 이미지 조회 실패", e);
+            throw new RuntimeException(e);
         }
     }
-
 }

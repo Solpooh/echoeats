@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class NoticeRepositoryImplTest {
     @Autowired
     NoticeRepository noticeRepository;
+    @Autowired
+    FileRepository fileRepository;
 
     @Test
     public void searchResultCnt() throws Exception {
@@ -33,6 +35,6 @@ public class NoticeRepositoryImplTest {
 
     @Test
     public void checkImageListTest() throws Exception {
-        noticeRepository.checkFileList();
+        fileRepository.checkFileList();
     }
 }

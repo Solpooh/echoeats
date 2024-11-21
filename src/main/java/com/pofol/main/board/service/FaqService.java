@@ -14,7 +14,7 @@ public interface FaqService {
     /* FAQ 등록 */
     int insertFaq(FaqDto dto);
 
-    int deleteFaq(FaqDto dto);
+    List<ImageDto> deleteFaq(FaqDto dto);
     FaqDto selectFaq(int bno);
     List<FaqDto> selectAllFaq(FaqDto dto);
     List<FaqDto> selectPaged(Map map);

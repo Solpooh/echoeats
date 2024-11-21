@@ -57,7 +57,7 @@
             </div>
 
             <sec:authorize access="hasAuthority('ADMIN')">
-                <button class="faq_btn" type="button" onclick="location.href='faq_write'">등록하기</button>
+                <button class="faq_btn" type="button" id="registerButton">등록하기</button>
             </sec:authorize>
 
             <div id="data-container" data-nonce="${nonce}" data-msg="${message}" data-role='<sec:authorize access="hasAuthority('ADMIN')">ADMIN</sec:authorize>'></div>

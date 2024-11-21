@@ -7,8 +7,15 @@ const msg = container.getAttribute("data-msg");
 const userRole = container.getAttribute("data-role");
 const nonce = container.getAttribute("data-nonce");
 
-$(document).ready(function (e) {
+$(document).ready(function () {
+
     getFaqList();
+
+    // 등록 버튼 클릭 이벤트
+    $('#registerButton').on('click', function () {
+        location.href = 'faq_write';
+    });
+
     let leftBtn = $('.left-button');
     let rightBtn = $('.right-button');
 
@@ -35,6 +42,13 @@ $(document).ready(function (e) {
     if (page === 1) {
         leftBtn.prop('disabled', true);
     }
+});
+
+// 삭제 버튼 클릭 이벤트
+$(document).on('click', "[id^='deleteButton']", function() {
+    const faqId = $(this).attr('id').replace('deleteButton', '');
+    console.log(faqId)
+    faq_delete(faqId);
 });
 
 // FAQ 목록 비동기적으로 가져오기 -> AJAX 이용하여 서버에 요청, 받아와서 화면에 출력
@@ -92,8 +106,11 @@ function getFaqList() {
                 // 이미지가 있는 경우 이미지를 추가
                 if (FaqDto.imageList && FaqDto.imageList.length > 0) {
                     for (let image of FaqDto.imageList) {
-                        let fileCallPath = encodeURIComponent(image.uploadPath + "/s_" + image.uuid + "_" + image.fileName);
-                        displayData += "<img src='/display?fileName=" + fileCallPath + "'>";
+                        // S3 URL 생성
+                        let fileUrl = "https://ecoeats-fileupload.s3.ap-northeast-2.amazonaws.com/"
+                            + encodeURIComponent(image.uploadPath + "/" + image.uuid + "_" + image.fileName);
+
+                        displayData += "<img src='" + fileUrl + "' style='max-width: 300px; margin: 10px;'>";
                     }
                     displayData += "<br/><br/>"
                 }
@@ -103,7 +120,7 @@ function getFaqList() {
                 if (userRole === 'ADMIN') {
                     displayData += "<div style='text-align: right;' nonce='" + nonce + "'>";
                     displayData += "<a href='faq_write?mode=edit&faq_id=" + FaqDto.faq_id + "' style='font-size:9pt; color: darkgray; text-decoration: none;' nonce='" + nonce + "'>수정 |</a>";
-                    displayData += "<a onclick='faq_delete(" + FaqDto.faq_id + ")' style='font-size:9pt; color: red; text-decoration: none;' nonce='" + nonce + "'> 삭제</a>";
+                    displayData += "<a id='deleteButton" + FaqDto.faq_id + "' style='font-size:9pt; color: red; text-decoration: none; cursor: pointer;' nonce='" + nonce + "'> 삭제</a>";
                     displayData += "</div>";
                 }
 
